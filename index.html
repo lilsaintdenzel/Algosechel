@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALGOSECHEL :: Algorithms Through Elixir</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- ═══ NAV ═══════════════════════════════════════════════════════ -->
+<nav>
+  <a href="#" class="nav-brand">ALGOSE<span>CHEL</span></a>
+  <div class="nav-links">
+    <a href="#visualizers" class="nav-link active">Visualizers</a>
+    <a href="#philosophy" class="nav-link">Philosophy</a>
+    <a href="#roadmap"    class="nav-link">Roadmap</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ══════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <!-- Background animated graph -->
+  <div class="hero-graph-wrap">
+    <svg id="hero-svg" viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- edges drawn by JS -->
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Algorithm Visualization Engine :: Elixir / OTP</div>
+    <div class="hero-title">ALGOSE<span class="hl">CHEL</span></div>
+    <div class="hero-subtitle">ALGORITHMS :: ELIXIR :: VISUAL</div>
+    <a href="#visualizers" class="hero-cta">
+      Explore Visualizers <span class="arrow">↓</span>
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ PILLARS ═══════════════════════════════════════════════════ -->
+<div class="pillars">
+  <div class="pillar">
+    <div class="pillar-label">Language</div>
+    <div class="pillar-val">Elixir / OTP</div>
+    <div class="pillar-desc">Functional, concurrent, fault-tolerant. Every algorithm expressed in pure Elixir with pattern matching and pipe operators.</div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-label">Paradigm</div>
+    <div class="pillar-val">Visual First</div>
+    <div class="pillar-desc">See the algorithm think. Every step animated, every data structure rendered. No pseudocode, no fruit arrays.</div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-label">Philosophy</div>
+    <div class="pillar-val">Seeds Over Stats</div>
+    <div class="pillar-desc">Meaningful impact over viral metrics. Build understanding that compounds — not content that fades after 48 hours.</div>
+  </div>
+</div>
+
+<!-- ═══ VISUALIZERS ════════════════════════════════════════════════ -->
+<section class="section" id="visualizers">
+  <div class="section-header">
+    <span class="section-label">01</span>
+    <span class="section-title">Visualizers</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="viz-grid">
+
+    <!-- Card 1: Dijkstra -->
+    <a href="algosechel-dijkstra.html" class="viz-card">
+      <div class="viz-card-bar"></div>
+      <div class="viz-preview">
+        <svg id="card-dijkstra-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="viz-body">
+        <div class="viz-tags">
+          <span class="viz-tag cyan">Greedy</span>
+          <span class="viz-tag">Graph</span>
+          <span class="viz-tag">O((V+E) log V)</span>
+        </div>
+        <div class="viz-name">Dijkstra's Algorithm</div>
+        <div class="viz-desc">Shortest path from source to all nodes. Watch the algorithm greedily select the closest unvisited node and relax its neighbors — step by step, in full Elixir.</div>
+      </div>
+      <div class="viz-footer">
+        <span>6 Elixir subtabs · 7 steps · Real-world use cases</span>
+        <span class="viz-open">OPEN <span>→</span></span>
+      </div>
+    </a>
+
+    <!-- Card 2: BST -->
+    <a href="algosechel-bst.html" class="viz-card">
+      <div class="viz-card-bar"></div>
+      <div class="viz-preview">
+        <svg id="card-bst-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="viz-body">
+        <div class="viz-tags">
+          <span class="viz-tag purple">Recursive</span>
+          <span class="viz-tag">Tree</span>
+          <span class="viz-tag">O(log n)</span>
+        </div>
+        <div class="viz-name">Binary Search Tree</div>
+        <div class="viz-desc">Database indexing engine. Insert, search, delete and range query a live BST. In-order traversal always yields sorted keys — the foundation of SQL range scans.</div>
+      </div>
+      <div class="viz-footer">
+        <span>8 Elixir subtabs · Interactive · DB use cases</span>
+        <span class="viz-open">OPEN <span>→</span></span>
+      </div>
+    </a>
+
+    <!-- Card 3: Coming Soon -->
+    <div class="viz-card soon">
+      <div class="viz-card-bar"></div>
+      <div class="viz-preview">
+        <div class="soon-label">// NEXT<span class="cursor-blink"></span></div>
+      </div>
+      <div class="viz-body">
+        <div class="viz-tags">
+          <span class="viz-tag">In Progress</span>
+        </div>
+        <div class="viz-name">Coming Soon</div>
+        <div class="viz-desc">Next visualizer in development. Follow the roadmap below.</div>
+      </div>
+      <div class="viz-footer">
+        <span>—</span>
+        <span>TBA</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- ═══ PHILOSOPHY ════════════════════════════════════════════════ -->
+<section class="philosophy" id="philosophy">
+  <div class="philosophy-inner">
+    <div class="phil-eyebrow">02 :: Philosophy</div>
+
+    <div class="phil-quote">
+      Most people learn algorithms with <span class="gd">pseudocode</span> and fruit arrays.<br>
+      ALGOSECHEL teaches them through <span class="hi">Elixir</span> —<br>
+      where the algorithm <em>is</em> the code.
+    </div>
+
+    <div class="phil-body">
+      <div class="phil-item">
+        <span class="phil-item-num">01</span>
+        <div class="phil-item-text">Pattern matching is your decision tree. Every branch is explicit, every path is traced.</div>
+      </div>
+      <div class="phil-item">
+        <span class="phil-item-num">02</span>
+        <div class="phil-item-text">Recursion is your traversal. Tail-call optimization means the stack never lies.</div>
+      </div>
+      <div class="phil-item">
+        <span class="phil-item-num">03</span>
+        <div class="phil-item-text">The pipe operator is your data flow. Input → transform → output. Always readable.</div>
+      </div>
+      <div class="phil-item">
+        <span class="phil-item-num">04</span>
+        <div class="phil-item-text">Nothing abstracted away. You see the init, the loop, the relaxation, the reconstruction.</div>
+      </div>
+    </div>
+
+    <div class="phil-footer">
+      // built with Share Tech Mono · Rajdhani · VT323<br>
+      // inspired by terminal UIs and functional purity<br>
+      // seeds over stats — always
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ELIXIR STRIP ══════════════════════════════════════════════ -->
+<div class="elixir-strip">
+  <div class="elixir-inner">
+    <div class="elixir-text">
+      <div class="label">Why Elixir</div>
+      <h2>Functional Clarity<br>at Every Step</h2>
+      <p>Elixir's immutable data and pattern matching make algorithms <em>transparent</em>. When you write <code style="color:var(--cyan)">def relax(nil, _key), do: nil</code> you're not hiding control flow — you're declaring it. That's the ALGOSECHEL difference.</p>
+    </div>
+    <div class="elixir-badges">
+      <div class="elixir-badge lit">Pattern Matching</div>
+      <div class="elixir-badge lit">Tail Recursion</div>
+      <div class="elixir-badge lit">Immutable Data</div>
+      <div class="elixir-badge">Pipe Operator</div>
+      <div class="elixir-badge">OTP / GenServer</div>
+      <div class="elixir-badge">Enum / Stream</div>
+      <div class="elixir-badge">MapSet / Map</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TERMINAL / ROADMAP ════════════════════════════════════════ -->
+<section class="terminal-section" id="roadmap">
+  <div class="section-header" style="margin-bottom:24px;">
+    <span class="section-label">03</span>
+    <span class="section-title">Roadmap</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="t-dot t-dot-r"></div>
+      <div class="t-dot t-dot-y"></div>
+      <div class="t-dot t-dot-g"></div>
+      <span class="t-title">algosechel :: build log</span>
+    </div>
+    <div class="terminal-body">
+      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Dijkstra's Shortest Path — 6 Elixir subtabs, 7-step walkthrough, real-world use cases</span></div>
+      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Binary Search Tree — DB indexing engine, interactive insert/search/delete/range</span></div>
+      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Dark / Light mode toggle — persists across sessions via localStorage</span></div>
+      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Mobile-responsive layouts — touch targets, scrollable tabs, stacked grids</span></div>
+      <div class="t-line" style="margin-top:8px;"><span class="t-prompt">→</span><span class="t-pending">IN PROGRESS</span><span>A* Search — heuristic pathfinding, Manhattan distance, grid visualization</span></div>
+      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Dynamic Programming — Fibonacci, LCS, Knapsack with memoization table</span></div>
+      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>GenServer Visualizer — Actor model, mailbox animation, OTP supervision tree</span></div>
+      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Red-Black Tree — self-balancing BST, rotation animations, color invariants</span></div>
+      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Quicksort / Mergesort — divide and conquer, pivot selection, in-place vs functional</span></div>
+      <div class="t-line" style="margin-top:8px;"><span class="t-prompt">$</span><span class="t-muted">seeds over stats. building what matters.</span><span class="t-cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-brand">ALGOSE<span>CHEL</span></div>
+  <div class="footer-right">
+    <span>Algorithms Through Elixir</span>
+    <a href="algosechel-dijkstra.html">Dijkstra</a>
+    <a href="algosechel-bst.html">BST</a>
+  </div>
+  <div class="footer-seeds">// seeds over stats — always //</div>
+</footer>
+
+<!-- ═══ THEME TOGGLE ══════════════════════════════════════════════ -->
+<button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">
+  <span id="theme-icon">☀️</span>
+  <span id="theme-label">Light Mode</span>
+</button>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// THEME TOGGLE
+// ═══════════════════════════════════════════════════════════════
+function toggleTheme() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const next = isLight ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').textContent  = isLight ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isLight ? 'Light Mode' : 'Dark Mode';
+  rebuildHero();
+  rebuildCardPreviews();
+  try { localStorage.setItem('algosechel-theme', next); } catch(e) {}
+}
+
+try {
+  const saved = localStorage.getItem('algosechel-theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent  = '🌙';
+    document.getElementById('theme-label').textContent = 'Dark Mode';
+  }
+} catch(e) {}
+
+// ═══════════════════════════════════════════════════════════════
+// SVG HELPERS
+// ═══════════════════════════════════════════════════════════════
+function el(tag, attrs, parent) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+function isLight() {
+  return document.documentElement.getAttribute('data-theme') === 'light';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HERO GRAPH — LOOPING DIJKSTRA ANIMATION
+// ═══════════════════════════════════════════════════════════════
+const H_NODES = { A:{x:100,y:190}, B:{x:260,y:80}, C:{x:440,y:130}, D:{x:430,y:290}, E:{x:250,y:300} };
+const H_EDGES = [['A','B',4],['A','E',2],['B','C',3],['B','D',5],['C','D',1],['D','E',6]];
+
+// Dijkstra steps for animation
+const H_STEPS = [
+  { active:null, visited:[], glow:[] },
+  { active:'A',  visited:[], glow:['A'] },
+  { active:'A',  visited:['A'], glow:['B','E'] },
+  { active:'E',  visited:['A','E'], glow:['B','D'] },
+  { active:'B',  visited:['A','E','B'], glow:['C'] },
+  { active:'C',  visited:['A','E','B','C'], glow:['D'] },
+  { active:'D',  visited:['A','E','B','C','D'], glow:[] },
+];
+
+let heroTimer = null;
+let heroStep = 0;
+
+function buildHeroGraph(svg) {
+  svg.innerHTML = '';
+  const lt = isLight();
+  const edgeCol  = lt ? '#c4b9a8' : '#1e293b';
+  const nodeFill = lt ? '#f0ede8' : '#0a0a14';
+  const nodeStr  = lt ? '#d4d0c8' : '#1a1a2e';
+  const txtFill  = lt ? '#1a1a18' : '#e2e8f0';
+
+  // defs arrowhead
+  const defs = el('defs', {}, svg);
+  const mk = (id, color) => {
+    const m = el('marker', {id, markerWidth:'7', markerHeight:'7', refX:'5', refY:'3', orient:'auto'}, defs);
+    el('path', {d:'M0,0 L0,6 L7,3 z', fill:color}, m);
+  };
+  mk('harr-def', edgeCol);
+  mk('harr-cyn', '#06b6d4');
+
+  for (const [a,b] of H_EDGES) {
+    const pa = H_NODES[a], pb = H_NODES[b];
+    el('line', {id:`hedge-${a}-${b}`, x1:pa.x, y1:pa.y, x2:pb.x, y2:pb.y,
+      stroke:edgeCol, 'stroke-width':'1.5', 'marker-end':'url(#harr-def)'}, svg);
+    el('line', {id:`hedge-${b}-${a}`, x1:pb.x, y1:pb.y, x2:pa.x, y2:pa.y,
+      stroke:edgeCol, 'stroke-width':'1.5', 'marker-end':'url(#harr-def)'}, svg);
+  }
+
+  for (const n of Object.keys(H_NODES)) {
+    const {x, y} = H_NODES[n];
+    const g = el('g', {id:`hnode-${n}`, transform:`translate(${x},${y})`}, svg);
+    el('circle', {id:`hcirc-${n}`, r:'22', fill:nodeFill, stroke:nodeStr, 'stroke-width':'1.5'}, g);
+    const t = el('text', {y:'5', 'text-anchor':'middle', 'font-family':'Rajdhani, sans-serif',
+      'font-size':'16', 'font-weight':'700', fill:txtFill}, g);
+    t.textContent = n;
+  }
+}
+
+function applyHeroStep(step) {
+  const lt = isLight();
+  const s = H_STEPS[step];
+  const defEdge = lt ? '#c4b9a8' : '#1e293b';
+  const defNode = lt ? '#f0ede8' : '#0a0a14';
+  const defStr  = lt ? '#d4d0c8' : '#1a1a2e';
+
+  // reset all edges
+  for (const [a,b] of H_EDGES) {
+    for (const id of [`hedge-${a}-${b}`, `hedge-${b}-${a}`]) {
+      const e = document.getElementById(id);
+      if (e) { e.setAttribute('stroke', defEdge); e.setAttribute('stroke-width', '1.5'); }
+    }
+  }
+
+  // reset all nodes
+  for (const n of Object.keys(H_NODES)) {
+    const c = document.getElementById(`hcirc-${n}`);
+    if (c) { c.setAttribute('fill', defNode); c.setAttribute('stroke', defStr); c.setAttribute('stroke-width', '1.5'); }
+  }
+
+  // visited nodes — green
+  for (const n of s.visited) {
+    const c = document.getElementById(`hcirc-${n}`);
+    if (c) { c.setAttribute('fill', lt ? '#dcfce7' : '#1e3a2a'); c.setAttribute('stroke', lt ? '#15803d' : '#10b981'); c.setAttribute('stroke-width', '2'); }
+  }
+
+  // glowing/relaxed — blue
+  for (const n of s.glow) {
+    const c = document.getElementById(`hcirc-${n}`);
+    if (c) { c.setAttribute('fill', lt ? '#dbeafe' : '#1e3050'); c.setAttribute('stroke', lt ? '#2563eb' : '#06b6d4'); c.setAttribute('stroke-width', '2'); }
+  }
+
+  // active node — pink pulse
+  if (s.active) {
+    const c = document.getElementById(`hcirc-${s.active}`);
+    if (c) { c.setAttribute('fill', lt ? '#fde8f4' : '#2d1b4e'); c.setAttribute('stroke', lt ? '#be185d' : '#ec4899'); c.setAttribute('stroke-width', '3'); }
+    if (H_NODES[s.active]) {
+      for (const [a, b] of H_EDGES) {
+        if (a === s.active || b === s.active) {
+          const e1 = document.getElementById(`hedge-${a}-${b}`);
+          const e2 = document.getElementById(`hedge-${b}-${a}`);
+          if (e1) { e1.setAttribute('stroke', lt ? '#0369a1' : '#06b6d4'); e1.setAttribute('stroke-width', '2'); }
+          if (e2) { e2.setAttribute('stroke', lt ? '#0369a1' : '#06b6d4'); e2.setAttribute('stroke-width', '2'); }
+        }
+      }
+    }
+  }
+}
+
+function rebuildHero() {
+  buildHeroGraph(document.getElementById('hero-svg'));
+  applyHeroStep(heroStep);
+}
+
+function startHeroLoop() {
+  if (heroTimer) clearInterval(heroTimer);
+  heroTimer = setInterval(() => {
+    heroStep = (heroStep + 1) % H_STEPS.length;
+    applyHeroStep(heroStep);
+  }, 900);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CARD PREVIEW — DIJKSTRA MINI
+// ═══════════════════════════════════════════════════════════════
+const D_NODES = { A:{x:70,y:110}, B:{x:160,y:55}, C:{x:270,y:80}, D:{x:265,y:165}, E:{x:155,y:175} };
+const D_EDGES = [['A','B',4],['A','E',2],['B','C',3],['B','D',5],['C','D',1],['D','E',6]];
+
+function buildDijkstraCard(svg) {
+  svg.innerHTML = '';
+  const lt = isLight();
+  const edgeVisited = lt ? '#15803d' : '#10b981';
+  const edgeDef     = lt ? '#d4d0c8' : '#1e293b';
+
+  const defs = el('defs', {}, svg);
+  const mk = (id, col) => {
+    const m = el('marker', {id, markerWidth:'6', markerHeight:'6', refX:'4', refY:'3', orient:'auto'}, defs);
+    el('path', {d:'M0,0 L0,6 L6,3 z', fill:col}, m);
+  };
+  mk('darr-v', edgeVisited);
+  mk('darr-d', edgeDef);
+
+  const optEdges = [['A','E'],['E','D'],['D','C'],['A','B']];
+
+  for (const [a,b] of D_EDGES) {
+    const pa = D_NODES[a], pb = D_NODES[b];
+    const isOpt = optEdges.some(([x,y]) => (x===a&&y===b)||(x===b&&y===a));
+    const col = isOpt ? (lt ? '#b45309' : '#f59e0b') : edgeDef;
+    const arrId = isOpt ? 'darr-v' : 'darr-d';
+    el('line', {x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y, stroke:col,
+      'stroke-width': isOpt ? '2' : '1.2',
+      'marker-end':`url(#${arrId})`,
+      opacity: isOpt ? '1' : '0.5'}, svg);
+  }
+
+  const nodeColors = {
+    A: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
+    B: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
+    C: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
+    D: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
+    E: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
+  };
+  const dists = { A:'0', B:'4', C:'7', D:'8', E:'2' };
+
+  for (const n of Object.keys(D_NODES)) {
+    const {x, y} = D_NODES[n];
+    const nc = nodeColors[n];
+    const g = el('g', {transform:`translate(${x},${y})`}, svg);
+    el('circle', {r:'17', fill: nc.f, stroke: nc.s, 'stroke-width':'2'}, g);
+    const t = el('text', {y:'-2', 'text-anchor':'middle', 'font-family':'Rajdhani,sans-serif',
+      'font-size':'13', 'font-weight':'700', fill: nc.s}, g);
+    t.textContent = n;
+    const d = el('text', {y:'11', 'text-anchor':'middle', 'font-family':'Share Tech Mono,monospace',
+      'font-size':'9', fill: nc.s, opacity:'0.8'}, g);
+    d.textContent = dists[n];
+  }
+
+  const t = el('text', {x:'340', y:'25', 'text-anchor':'end', 'font-family':'VT323,monospace',
+    'font-size':'14', fill: lt ? '#b45309' : '#f59e0b', 'letter-spacing':'2'}, svg);
+  t.textContent = 'ALL PATHS FOUND';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CARD PREVIEW — BST MINI
+// ═══════════════════════════════════════════════════════════════
+function buildBSTCard(svg) {
+  svg.innerHTML = '';
+  const lt = isLight();
+
+  const nodes = [
+    {k:50, x:200, y:30,  level:0},
+    {k:25, x:110, y:85,  level:1},
+    {k:75, x:290, y:85,  level:1},
+    {k:10, x:65,  y:140, level:2},
+    {k:35, x:155, y:140, level:2},
+    {k:60, x:245, y:140, level:2},
+    {k:90, x:335, y:140, level:2},
+    {k:42, x:175, y:195, level:3},
+  ];
+  const edges = [[0,1],[0,2],[1,3],[1,4],[2,5],[2,6],[4,7]];
+
+  const lineCol = lt ? '#d4d0c8' : '#1e293b';
+  for (const [p, c] of edges) {
+    const pn = nodes[p], cn = nodes[c];
+    el('line', {x1:pn.x,y1:pn.y,x2:cn.x,y2:cn.y, stroke:lineCol,'stroke-width':'1.2', opacity:'0.7'}, svg);
+  }
+
+  const colors = [
+    { f: lt ? '#ede9fe' : '#2e1a5e', s: lt ? '#6d28d9' : '#a78bfa' },
+    { f: lt ? '#dbeafe' : '#1e3050', s: lt ? '#1d4ed8' : '#60a5fa' },
+    { f: lt ? '#dbeafe' : '#1e3050', s: lt ? '#1d4ed8' : '#60a5fa' },
+    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
+    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
+    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
+    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
+    { f: lt ? '#fef3c7' : '#3d2a0a', s: lt ? '#b45309' : '#fbbf24' },
+  ];
+
+  for (let i = 0; i < nodes.length; i++) {
+    const n = nodes[i], c = colors[i];
+    const g = el('g', {transform:`translate(${n.x},${n.y})`}, svg);
+    el('circle', {r:'16', fill:c.f, stroke:c.s, 'stroke-width':'1.8'}, g);
+    const t = el('text', {y:'5', 'text-anchor':'middle',
+      'font-family':'Space Mono,monospace', 'font-size':'10',
+      'font-weight':'700', fill:c.s}, g);
+    t.textContent = n.k;
+  }
+
+  const t = el('text', {x:'340', y:'218', 'text-anchor':'end', 'font-family':'VT323,monospace',
+    'font-size':'14', fill: lt ? '#6d28d9' : '#a78bfa', 'letter-spacing':'2'}, svg);
+  t.textContent = 'IN-ORDER → SORTED';
+}
+
+function rebuildCardPreviews() {
+  buildDijkstraCard(document.getElementById('card-dijkstra-svg'));
+  buildBSTCard(document.getElementById('card-bst-svg'));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SMOOTH NAV HIGHLIGHT ON SCROLL
+// ═══════════════════════════════════════════════════════════════
+const sections = ['visualizers', 'philosophy', 'roadmap'];
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver(entries => {
+  for (const e of entries) {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
+      });
+    }
+  }
+}, { threshold: 0.4 });
+
+for (const id of sections) {
+  const el_ = document.getElementById(id);
+  if (el_) observer.observe(el_);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════════
+buildHeroGraph(document.getElementById('hero-svg'));
+applyHeroStep(0);
+startHeroLoop();
+rebuildCardPreviews();
+</script>
+</body>
+</html>
