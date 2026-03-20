@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALGOSECHEL :: Dijkstra's Algorithm</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/dijkstra.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-badge">ALGORITHM VISUALIZATION ENGINE</div>
+      <div class="header-title">ALGOSE<span>CHEL</span></div>
+      <div class="header-sub">DIJKSTRA'S SHORTEST PATH :: NETWORK ROUTING</div>
+    </div>
+    <div class="header-right">
+      <div>ALGORITHM <strong>Dijkstra (1959)</strong></div>
+      <div>COMPLEXITY <strong>O((V + E) log V)</strong></div>
+      <div>LANGUAGE <strong>Elixir / OTP</strong></div>
+      <div>PARADIGM <strong>Greedy / BFS Variant</strong></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('visualizer', this)">VISUALIZER</button>
+    <button class="tab" onclick="switchTab('fullcode', this)">FULL SOURCE CODE</button>
+    <button class="tab" onclick="switchTab('usecases', this)">REAL-WORLD USE CASES</button>
+  </div>
+
+  <!-- ═══ TAB: VISUALIZER ═══ -->
+  <div class="tab-pane active" id="tab-visualizer">
+
+    <div class="step-indicator">
+      <span class="step-indicator-label">PROGRESS</span>
+      <div id="step-dots"></div>
+    </div>
+
+    <div class="step-desc" id="step-desc">
+      <span class="step-num">[ READY ]</span>
+      <span>Press <strong>NEXT STEP</strong> to begin. The algorithm will find shortest paths from node <strong>A</strong> to all other nodes.</span>
+    </div>
+
+    <div class="viz-grid">
+      <!-- LEFT: Graph + Controls -->
+      <div>
+        <div class="panel">
+          <div class="panel-title">:: Network Graph</div>
+          <div id="graph-canvas">
+            <svg id="graph-svg" viewBox="0 0 600 380"></svg>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="btn-next" onclick="nextStep()">NEXT STEP ›</button>
+          <button class="btn ghost" id="btn-auto" onclick="toggleAuto()">AUTO RUN</button>
+          <button class="btn danger" onclick="restart()">↺ RESTART</button>
+          <select class="speed-sel" id="speed-select">
+            <option value="2200">SLOW</option>
+            <option value="900" selected>NORMAL</option>
+            <option value="350">FAST</option>
+          </select>
+        </div>
+        <div class="path-display" id="path-display">
+          <div class="path-title">OPTIMAL SHORTEST PATHS FROM SOURCE (A)</div>
+          <div id="path-rows"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Code + Table -->
+      <div class="right-col">
+        <div class="panel" style="padding:0;overflow:hidden;">
+          <div class="panel-title" style="padding:12px 14px 8px;">:: Step-by-Step Elixir Code</div>
+          <div class="code-outer">
+            <div class="code-tabs" id="code-tabs">
+              <button class="code-tab active" onclick="switchCodeTab(0,this)">module</button>
+              <button class="code-tab" onclick="switchCodeTab(1,this)">init</button>
+              <button class="code-tab" onclick="switchCodeTab(2,this)">pick_min</button>
+              <button class="code-tab" onclick="switchCodeTab(3,this)">relax</button>
+              <button class="code-tab" onclick="switchCodeTab(4,this)">run</button>
+              <button class="code-tab" onclick="switchCodeTab(5,this)">reconstruct</button>
+            </div>
+            <div class="code-content" id="code-display"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">:: Distance Table</div>
+          <table class="dist-table">
+            <thead>
+              <tr><th>NODE</th><th>DIST</th><th>PREV</th><th>STATUS</th></tr>
+            </thead>
+            <tbody id="dist-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: FULL SOURCE CODE ═══ -->
+  <div class="tab-pane" id="tab-fullcode">
+    <div class="panel">
+      <div class="full-code-header">
+        <div class="full-code-title">DIJKSTRA.EX — COMPLETE ELIXIR MODULE</div>
+        <button class="copy-btn" onclick="copyFullCode()">COPY ALL</button>
+      </div>
+
+      <div class="section-label">MODULE DEFINITION &amp; GRAPH SETUP</div>
+      <div class="full-code-block" id="full-block-1"></div>
+
+      <div class="section-label">CORE ALGORITHM FUNCTIONS</div>
+      <div class="full-code-block" id="full-block-2"></div>
+
+      <div class="section-label">PATH RECONSTRUCTION &amp; UTILITIES</div>
+      <div class="full-code-block" id="full-block-3"></div>
+
+      <div class="section-label">EXAMPLE USAGE</div>
+      <div class="full-code-block" id="full-block-4"></div>
+
+      <div class="complexity-row">
+        <div class="complexity-badge">Time Complexity: <span>O((V+E) log V)</span></div>
+        <div class="complexity-badge">Space Complexity: <span>O(V)</span></div>
+        <div class="complexity-badge">Data Structure: <span>Priority Queue</span></div>
+        <div class="complexity-badge">Limitation: <span>No negative weights</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: REAL-WORLD USE CASES ═══ -->
+  <div class="tab-pane" id="tab-usecases">
+    <div class="usecases-grid" id="usecases-grid"></div>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">
+  <span class="t-icon" id="theme-icon">☀️</span>
+  <span id="theme-label">Light Mode</span>
+</button>
+
+<script>
+// ──────────────────────────────────────────────────────────────────
+// GRAPH DATA
+// ──────────────────────────────────────────────────────────────────
+const GRAPH   = { A:{B:4,E:2}, B:{A:4,C:3,D:5}, C:{B:3,D:1}, D:{B:5,C:1,E:6}, E:{A:2,D:6} };
+const NODES   = ['A','B','C','D','E'];
+const NODE_POS = { A:{x:120,y:190}, B:{x:280,y:90}, C:{x:460,y:140}, D:{x:450,y:290}, E:{x:260,y:300} };
+const EDGES   = [['A','B',4],['A','E',2],['B','C',3],['B','D',5],['C','D',1],['D','E',6]];
+
+// ──────────────────────────────────────────────────────────────────
+// ALL ELIXIR CODE SNIPPETS (6 subtabs × 7 steps)
+// ──────────────────────────────────────────────────────────────────
+const CODE_LIBRARY = [
+  // ── TAB 0: module overview ──────────────────────────────────────
+  [
+    `<span class="cm"># dijkstra.ex — AlgoSchel :: Step 0: Module scaffold</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="at">@moduledoc</span> <span class="str">"""
+  Dijkstra's shortest-path algorithm.
+  Finds minimum-cost paths from a source node
+  to every reachable node in a weighted graph.
+
+  Graph format:
+    %{ node => %{ neighbor => weight } }
+
+  Constraints:
+    - All edge weights must be non-negative
+    - Works on directed or undirected graphs
+  """</span>
+
+  <span class="cm"># Public API</span>
+  <span class="kw">def</span> <span class="fn">shortest_paths</span>(graph, source), <span class="kw">do:</span>
+    graph <span class="op">|></span> <span class="fn">init</span>(source) <span class="op">|></span> <span class="fn">run</span>(graph)
+
+  <span class="kw">def</span> <span class="fn">path_to</span>(graph, source, target) <span class="kw">do</span>
+    {dist, prev} <span class="op">=</span> <span class="fn">shortest_paths</span>(graph, source)
+    {dist[target], <span class="fn">reconstruct</span>(prev, target)}
+  <span class="kw">end</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 1: Graph is defined, module ready</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># We will implement these private functions:</span>
+  <span class="cm">#   init/2       — set up distance + prev maps</span>
+  <span class="cm">#   pick_min/2   — select next node to visit</span>
+  <span class="cm">#   relax/4      — update neighbor distances</span>
+  <span class="cm">#   run/3        — main recursive loop</span>
+  <span class="cm">#   reconstruct/2 — trace optimal path back</span>
+
+  <span class="cm"># Graph for this walkthrough:</span>
+  <span class="cm"># A--4--B--3--C</span>
+  <span class="cm"># |     |     |</span>
+  <span class="cm"># 2     5     1</span>
+  <span class="cm"># |     |     |</span>
+  <span class="cm"># E--6--D-----+</span>
+  <span class="cm"># Source: A (cost=0)</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 2: A selected as current node (d=0)</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># Entry point — chains init -> run</span>
+  <span class="kw">def</span> <span class="fn">shortest_paths</span>(graph, source) <span class="kw">do</span>
+    {dist, prev, unvisited} <span class="op">=</span> <span class="fn">init</span>(graph, source)
+    <span class="fn">run</span>(graph, dist, prev, unvisited)
+  <span class="kw">end</span>
+
+  <span class="cm"># Current state:</span>
+  <span class="cm"># dist = %{A: 0, B: inf, C: inf, D: inf, E: inf}</span>
+  <span class="cm"># pick_min returns -> {:A, 0}</span>
+  <span class="cm"># A is now the active node</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 3: Relaxing A's neighbors B and E</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># After relax/4 from A:</span>
+  <span class="cm"># dist[B] = 0 + 4 = 4  (was inf)  UPDATED</span>
+  <span class="cm"># dist[E] = 0 + 2 = 2  (was inf)  UPDATED</span>
+  <span class="cm"># A added to visited set</span>
+  <span class="cm"># Next: pick_min finds E (d=2)</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 4: Visiting E (d=2), relaxing D</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># After relax/4 from E:</span>
+  <span class="cm"># dist[D] = 2 + 6 = 8  (was inf)  UPDATED</span>
+  <span class="cm"># dist[A] = 2 + 2 = 4  > 0  SKIPPED</span>
+  <span class="cm"># E added to visited set</span>
+  <span class="cm"># Next: pick_min finds B (d=4)</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 5: Visiting B (d=4), relaxing C,D</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># After relax/4 from B:</span>
+  <span class="cm"># dist[C] = 4 + 3 = 7  (was inf)  UPDATED</span>
+  <span class="cm"># dist[D] = 4 + 5 = 9  > 8        SKIPPED</span>
+  <span class="cm"># B added to visited set</span>
+  <span class="cm"># Next: pick_min finds C (d=7)</span>
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 6: All nodes visited. COMPLETE.</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="cm"># Final distances:</span>
+  <span class="cm"># %{A: 0, B: 4, C: 7, D: 8, E: 2}</span>
+  <span class="cm"># prev:</span>
+  <span class="cm"># %{A: nil, B: :A, C: :B, D: :E, E: :A}</span>
+
+  <span class="cm"># reconstruct(prev, :D)</span>
+  <span class="cm"># => [:A, :E, :D]  cost: 8</span>
+  <span class="hl"># SHORTEST PATHS FOUND</span>
+<span class="kw">end</span>`
+  ],
+
+  // ── TAB 1: init ─────────────────────────────────────────────────
+  [
+    `<span class="cm"># init/2 — Build initial data structures</span>
+<span class="kw">defp</span> <span class="fn">init</span>(graph, source) <span class="kw">do</span>
+  nodes <span class="op">=</span> <span class="fn">Map</span>.keys(graph)
+
+  <span class="cm"># Distance map: source=0, all others=:infinity</span>
+  dist <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="kw">fn</span> n <span class="op">-></span>
+    {n, <span class="kw">if</span>(n <span class="op">==</span> source, <span class="kw">do:</span> <span class="nm">0</span>, <span class="kw">else:</span> <span class="nm">:infinity</span>)}
+  <span class="kw">end</span>)
+
+  <span class="cm"># Predecessor map: nil for all nodes at start</span>
+  prev <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="op">&</span>{<span class="op">&</span>1, <span class="nm">nil</span>})
+
+  <span class="cm"># Unvisited set: starts with all nodes</span>
+  unvisited <span class="op">=</span> <span class="fn">MapSet</span>.new(nodes)
+
+  {dist, prev, unvisited}
+<span class="kw">end</span>
+
+<span class="cm"># Result for source :A:</span>
+<span class="cm"># dist      = %{A: 0, B: inf, C: inf, D: inf, E: inf}</span>
+<span class="cm"># prev      = %{A: nil, B: nil, C: nil, D: nil, E: nil}</span>
+<span class="cm"># unvisited = #MapSet<[:A, :B, :C, :D, :E]></span>`,
+
+    `<span class="cm"># Step 1 — init called with source :A</span>
+<span class="cm"># Checking :infinity comparison in Elixir:</span>
+<span class="nm">:infinity</span> <span class="op">></span> <span class="nm">1_000_000</span>   <span class="cm"># => true</span>
+<span class="nm">:infinity</span> <span class="op">+</span> <span class="nm">5</span>           <span class="cm"># => :infinity + 5 (CAUTION!)</span>
+
+<span class="cm"># Safer: use large integer sentinel instead</span>
+<span class="at">@inf</span> <span class="nm">1_000_000_000</span>
+
+<span class="kw">defp</span> <span class="fn">init</span>(graph, source) <span class="kw">do</span>
+  nodes <span class="op">=</span> <span class="fn">Map</span>.keys(graph)
+  dist  <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="kw">fn</span> n <span class="op">-></span>
+    {n, <span class="kw">if</span>(n <span class="op">==</span> source, <span class="kw">do:</span> <span class="nm">0</span>, <span class="kw">else:</span> <span class="at">@inf</span>)}
+  <span class="kw">end</span>)
+  prev      <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="op">&</span>{<span class="op">&</span>1, <span class="nm">nil</span>})
+  unvisited <span class="op">=</span> <span class="fn">MapSet</span>.new(nodes)
+  {dist, prev, unvisited}
+<span class="kw">end</span>`,
+
+    `<span class="cm"># After init, A is selected: dist[A] = 0</span>
+<span class="cm"># All others remain at @inf (1_000_000_000)</span>
+<span class="cm">#</span>
+<span class="cm"># dist = %{</span>
+<span class="cm">#   A: 0,          &lt;-- SOURCE</span>
+<span class="cm">#   B: 1000000000,</span>
+<span class="cm">#   C: 1000000000,</span>
+<span class="cm">#   D: 1000000000,</span>
+<span class="cm">#   E: 1000000000</span>
+<span class="cm"># }</span>
+<span class="cm">#</span>
+<span class="cm"># unvisited = #MapSet<[:A, :B, :C, :D, :E]></span>`,
+
+    `<span class="cm"># Step 3: B and E updated after A relaxed</span>
+<span class="cm"># dist = %{A: 0, B: 4, C: inf, D: inf, E: 2}</span>
+<span class="cm"># prev = %{A: nil, B: :A, C: nil, D: nil, E: :A}</span>
+<span class="cm">#</span>
+<span class="cm"># Note: init is only called ONCE per run.</span>
+<span class="cm"># After this, relax/4 updates dist + prev.</span>`,
+
+    `<span class="cm"># Step 4: After visiting E</span>
+<span class="cm"># dist = %{A: 0, B: 4, C: inf, D: 8, E: 2}</span>
+<span class="cm"># prev = %{A: nil, B: :A, C: nil, D: :E, E: :A}</span>`,
+
+    `<span class="cm"># Step 5: After visiting B</span>
+<span class="cm"># dist = %{A: 0, B: 4, C: 7, D: 8, E: 2}</span>
+<span class="cm"># prev = %{A: nil, B: :A, C: :B, D: :E, E: :A}</span>`,
+
+    `<span class="cm"># FINAL state after all nodes visited:</span>
+<span class="cm"># dist = %{A: 0, B: 4, C: 7, D: 8, E: 2}</span>
+<span class="cm"># prev = %{A: nil, B: :A, C: :B, D: :E, E: :A}</span>
+<span class="cm">#</span>
+<span class="cm"># init/2 set the foundation —</span>
+<span class="cm"># everything else built on top of these maps.</span>`
+  ],
+
+  // ── TAB 2: pick_min ─────────────────────────────────────────────
+  [
+    `<span class="cm"># pick_min/2 — Select next node to process</span>
+<span class="cm"># Returns the unvisited node with smallest distance</span>
+<span class="kw">defp</span> <span class="fn">pick_min</span>(dist, unvisited) <span class="kw">do</span>
+  unvisited
+  <span class="op">|></span> <span class="fn">Enum</span>.map(<span class="kw">fn</span> n <span class="op">-></span> {n, dist[n]} <span class="kw">end</span>)
+  <span class="op">|></span> <span class="fn">Enum</span>.min_by(
+       <span class="kw">fn</span> {_, d} <span class="op">-></span> d <span class="kw">end</span>,
+       <span class="kw">fn</span> <span class="op">-></span> <span class="nm">nil</span> <span class="kw">end</span>   <span class="cm"># fallback when set is empty</span>
+     )
+<span class="kw">end</span>
+
+<span class="cm"># Examples:</span>
+<span class="cm"># pick_min(%{A:0,B:inf,E:inf}, all)  => {:A, 0}</span>
+<span class="cm"># pick_min(%{B:4,E:2,C:inf}, {B,E,C}) => {:E, 2}</span>
+<span class="cm"># pick_min(%{}, MapSet.new())        => nil (done)</span>
+
+<span class="cm"># Time complexity: O(V) — linear scan</span>
+<span class="cm"># Use a priority queue (heap) for O(log V)</span>`,
+
+    `<span class="cm"># Step 1: First call to pick_min</span>
+<span class="cm"># dist      = %{A:0, B:inf, C:inf, D:inf, E:inf}</span>
+<span class="cm"># unvisited = [:A, :B, :C, :D, :E]</span>
+<span class="cm">#</span>
+<span class="cm"># Enum.min_by({A,0},{B,inf},...) => {:A, 0}</span>
+<span class="cm"># current = :A</span>`,
+
+    `<span class="cm"># Step 2: A processing done. A removed from unvisited.</span>
+<span class="cm"># Next pick_min call (after relaxing A's neighbors):</span>
+<span class="cm">#</span>
+<span class="cm"># dist      = %{A:0, B:4, C:inf, D:inf, E:2}</span>
+<span class="cm"># unvisited = [:B, :C, :D, :E]  (A removed)</span>
+<span class="cm">#</span>
+<span class="cm"># Enum.min_by => {:E, 2}  ← smallest unvisited</span>`,
+
+    `<span class="cm"># Step 3: E selected (d=2)</span>
+<span class="cm"># pick_min(%{B:4,C:inf,D:8,E:2}, {B,C,D,E})</span>
+<span class="cm"># => {:E, 2}</span>
+<span class="cm">#</span>
+<span class="cm"># This greedy choice is why the algorithm works:</span>
+<span class="cm"># once we pick the smallest unvisited node,</span>
+<span class="cm"># its distance is already OPTIMAL (cannot improve</span>
+<span class="cm"># it via any other path without negative edges).</span>`,
+
+    `<span class="cm"># Step 4: E processed. B is next.</span>
+<span class="cm"># dist      = %{B:4, C:inf, D:8}</span>
+<span class="cm"># unvisited = [:B, :C, :D]</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:B, 4}</span>`,
+
+    `<span class="cm"># Step 5: B processed. C is next.</span>
+<span class="cm"># dist      = %{C:7, D:8}</span>
+<span class="cm"># unvisited = [:C, :D]</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:C, 7}</span>`,
+
+    `<span class="cm"># Step 6: C and D processed. Unvisited is empty.</span>
+<span class="cm"># pick_min(%{}, MapSet.new()) => nil</span>
+<span class="cm">#</span>
+<span class="cm"># nil return signals run/4 to stop recursion.</span>
+<span class="hl"># Algorithm terminates.</span>`
+  ],
+
+  // ── TAB 3: relax ────────────────────────────────────────────────
+  [
+    `<span class="cm"># relax/4 — Update neighbor distances</span>
+<span class="cm"># The core "edge relaxation" step of Dijkstra</span>
+<span class="kw">defp</span> <span class="fn">relax</span>(dist, prev, current, neighbors) <span class="kw">do</span>
+  <span class="fn">Enum</span>.reduce(neighbors, {dist, prev},
+    <span class="kw">fn</span> {nbr, weight}, {d, p} <span class="op">-></span>
+      new_dist <span class="op">=</span> d[current] <span class="op">+</span> weight
+
+      <span class="cm"># Only update if we found a shorter path</span>
+      <span class="kw">if</span> new_dist <span class="op">&lt;</span> d[nbr] <span class="kw">do</span>
+        { <span class="fn">Map</span>.put(d, nbr, new_dist),
+          <span class="fn">Map</span>.put(p, nbr, current) }
+      <span class="kw">else</span>
+        {d, p}   <span class="cm"># no improvement, keep as-is</span>
+      <span class="kw">end</span>
+    <span class="kw">end</span>)
+<span class="kw">end</span>`,
+
+    `<span class="cm"># Step 1: relax not called yet (init phase)</span>
+<span class="cm"># relax/4 is called once per visited node.</span>
+<span class="cm">#</span>
+<span class="cm"># Signature:</span>
+<span class="cm">#   relax(dist, prev, current, neighbors)</span>
+<span class="cm">#   neighbors = graph[current]</span>
+<span class="cm">#             = %{B: 4, E: 2}  when current = :A</span>`,
+
+    `<span class="cm"># Step 2: relax called with current = :A</span>
+<span class="cm"># neighbors = graph[:A] = %{B: 4, E: 2}</span>
+<span class="cm">#</span>
+<span class="cm"># Iteration 1: nbr=:B, weight=4</span>
+<span class="cm">#   new_dist = dist[:A] + 4 = 0 + 4 = 4</span>
+<span class="cm">#   4 &lt; :infinity  => UPDATE</span>
+<span class="cm">#   dist[:B] = 4,  prev[:B] = :A</span>
+<span class="cm">#</span>
+<span class="cm"># Iteration 2: nbr=:E, weight=2</span>
+<span class="cm">#   new_dist = 0 + 2 = 2</span>
+<span class="cm">#   2 &lt; :infinity  => UPDATE</span>
+<span class="cm">#   dist[:E] = 2,  prev[:E] = :A</span>`,
+
+    `<span class="cm"># Step 3: relax called with current = :E</span>
+<span class="cm"># neighbors = graph[:E] = %{A: 2, D: 6}</span>
+<span class="cm">#</span>
+<span class="cm"># Iteration 1: nbr=:A, weight=2</span>
+<span class="cm">#   new_dist = dist[:E] + 2 = 2 + 2 = 4</span>
+<span class="cm">#   4 &lt; dist[:A]=0 ?  NO  => SKIP</span>
+<span class="cm">#</span>
+<span class="cm"># Iteration 2: nbr=:D, weight=6</span>
+<span class="cm">#   new_dist = 2 + 6 = 8</span>
+<span class="cm">#   8 &lt; :infinity  => UPDATE</span>
+<span class="cm">#   dist[:D] = 8,  prev[:D] = :E</span>`,
+
+    `<span class="cm"># Step 4: relax called with current = :B</span>
+<span class="cm"># neighbors = graph[:B] = %{A:4, C:3, D:5}</span>
+<span class="cm">#</span>
+<span class="cm"># nbr=:A: 4+4=8  > dist[:A]=0    => SKIP</span>
+<span class="cm"># nbr=:C: 4+3=7  &lt; :infinity     => UPDATE</span>
+<span class="cm">#   dist[:C]=7,  prev[:C]=:B</span>
+<span class="cm"># nbr=:D: 4+5=9  > dist[:D]=8    => SKIP</span>`,
+
+    `<span class="cm"># Step 5: relax called with current = :C</span>
+<span class="cm"># neighbors = graph[:C] = %{B:3, D:1}</span>
+<span class="cm">#</span>
+<span class="cm"># nbr=:B: 7+3=10  > dist[:B]=4   => SKIP</span>
+<span class="cm"># nbr=:D: 7+1=8   = dist[:D]=8   => SKIP (equal, no improvement)</span>
+<span class="cm">#</span>
+<span class="cm"># Note: "if new_dist &lt; d[nbr]" — strict less-than</span>
+<span class="cm"># means ties don't overwrite existing optimal paths.</span>`,
+
+    `<span class="cm"># Step 6: relax called with current = :D</span>
+<span class="cm"># neighbors = graph[:D] = %{B:5, C:1, E:6}</span>
+<span class="cm">#</span>
+<span class="cm"># All neighbors already visited or not improved.</span>
+<span class="cm"># No updates. dist and prev unchanged.</span>
+<span class="cm">#</span>
+<span class="hl"># relax/4 called 5 times total (once per node).</span>`
+  ],
+
+  // ── TAB 4: run ──────────────────────────────────────────────────
+  [
+    `<span class="cm"># run/4 — Main recursive loop</span>
+<span class="cm"># Processes nodes until unvisited set is empty</span>
+<span class="kw">defp</span> <span class="fn">run</span>(graph, dist, prev, unvisited) <span class="kw">do</span>
+  <span class="kw">case</span> <span class="fn">pick_min</span>(dist, unvisited) <span class="kw">do</span>
+    <span class="cm"># Base case: nothing left to visit</span>
+    <span class="nm">nil</span> <span class="op">-></span>
+      {dist, prev}
+
+    <span class="cm"># Recursive case: process current node</span>
+    {current, _d} <span class="op">-></span>
+      neighbors     <span class="op">=</span> graph[current]
+      unvisited2    <span class="op">=</span> <span class="fn">MapSet</span>.delete(unvisited, current)
+      {dist2, prev2} <span class="op">=</span> <span class="fn">relax</span>(dist, prev, current, neighbors)
+      <span class="fn">run</span>(graph, dist2, prev2, unvisited2)
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="cm"># Tail-recursive — Elixir optimizes this.</span>
+<span class="cm"># No stack overflow even for large graphs.</span>`,
+
+    `<span class="cm"># Step 1: run/4 — first call</span>
+<span class="cm"># unvisited = {:A, :B, :C, :D, :E}</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:A, 0}</span>
+<span class="cm"># neighbors = graph[:A] = %{B:4, E:2}</span>
+<span class="cm"># unvisited2 = {:B, :C, :D, :E}  (A removed)</span>
+<span class="cm"># relax(dist, prev, :A, %{B:4, E:2})</span>
+<span class="cm">#   => dist2 = %{A:0, B:4, C:inf, D:inf, E:2}</span>
+<span class="cm"># Tail-call: run(graph, dist2, prev2, unvisited2)</span>`,
+
+    `<span class="cm"># Step 2: run/4 — recursive call #2</span>
+<span class="cm"># unvisited = {:B, :C, :D, :E}</span>
+<span class="cm"># dist = %{A:0, B:4, C:inf, D:inf, E:2}</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:E, 2}</span>
+<span class="cm"># neighbors = graph[:E] = %{A:2, D:6}</span>
+<span class="cm"># unvisited2 = {:B, :C, :D}  (E removed)</span>
+<span class="cm"># relax => dist2 = %{...D:8}</span>
+<span class="cm"># Tail-call: run(graph, dist2, prev2, {:B,:C,:D})</span>`,
+
+    `<span class="cm"># Step 3: run/4 — recursive call #3</span>
+<span class="cm"># unvisited = {:B, :C, :D}</span>
+<span class="cm"># dist = %{A:0, B:4, C:inf, D:8, E:2}</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:B, 4}</span>
+<span class="cm"># relax B -> C updated to 7, D stays 8</span>
+<span class="cm"># Tail-call: run(graph, dist2, prev2, {:C,:D})</span>`,
+
+    `<span class="cm"># Step 4: run/4 — recursive call #4</span>
+<span class="cm"># unvisited = {:C, :D}</span>
+<span class="cm"># dist = %{A:0, B:4, C:7, D:8, E:2}</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:C, 7}</span>
+<span class="cm"># relax C -> D: 7+1=8, not &lt; 8, skip</span>
+<span class="cm"># Tail-call: run(graph, dist2, prev2, {:D})</span>`,
+
+    `<span class="cm"># Step 5: run/4 — recursive call #5</span>
+<span class="cm"># unvisited = {:D}</span>
+<span class="cm"># dist = %{A:0, B:4, C:7, D:8, E:2}</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min => {:D, 8}</span>
+<span class="cm"># relax D's neighbors — no improvements</span>
+<span class="cm"># Tail-call: run(graph, dist, prev, {})</span>`,
+
+    `<span class="cm"># Step 6: run/4 — BASE CASE REACHED</span>
+<span class="cm"># unvisited = #MapSet<[]>  (empty!)</span>
+<span class="cm">#</span>
+<span class="cm"># pick_min returns nil</span>
+<span class="cm"># Pattern match: nil -> {dist, prev}</span>
+<span class="cm">#</span>
+<span class="hl"># Returns: {%{A:0,B:4,C:7,D:8,E:2}, prev_map}</span>
+<span class="cm"># 5 recursive calls total for 5 nodes.</span>`
+  ],
+
+  // ── TAB 5: reconstruct ──────────────────────────────────────────
+  [
+    `<span class="cm"># reconstruct/2 — Trace back the optimal path</span>
+<span class="cm"># Walks prev map backwards from target to source</span>
+<span class="kw">defp</span> <span class="fn">reconstruct</span>(prev, target) <span class="kw">do</span>
+  <span class="fn">Stream</span>.unfold(target, <span class="kw">fn</span>
+    <span class="nm">nil</span>  <span class="op">-></span> <span class="nm">nil</span>
+    node <span class="op">-></span> {node, prev[node]}
+  <span class="kw">end</span>)
+  <span class="op">|></span> <span class="fn">Enum</span>.to_list()
+  <span class="op">|></span> <span class="fn">Enum</span>.reverse()
+<span class="kw">end</span>
+
+<span class="cm"># reconstruct(prev, :D)</span>
+<span class="cm">#   D -> prev[D]=E -> prev[E]=A -> prev[A]=nil STOP</span>
+<span class="cm">#   reversed: [:A, :E, :D]   cost: 8</span>
+<span class="cm">#</span>
+<span class="cm"># reconstruct(prev, :C)</span>
+<span class="cm">#   C -> B -> A -> nil</span>
+<span class="cm">#   reversed: [:A, :B, :C]   cost: 7</span>`,
+
+    `<span class="cm"># Step 1: prev map starts as all nil</span>
+<span class="cm"># %{A: nil, B: nil, C: nil, D: nil, E: nil}</span>
+<span class="cm">#</span>
+<span class="cm"># reconstruct not useful yet —</span>
+<span class="cm"># we haven't found any paths.</span>`,
+
+    `<span class="cm"># Step 2: After relaxing A</span>
+<span class="cm"># prev = %{A:nil, B::A, C:nil, D:nil, E::A}</span>
+<span class="cm">#</span>
+<span class="cm"># reconstruct(prev, :E)</span>
+<span class="cm">#   E -> prev[E]=:A -> prev[A]=nil STOP</span>
+<span class="cm">#   => [:A, :E]  (partial — D not yet found)</span>`,
+
+    `<span class="cm"># Step 3: After visiting E</span>
+<span class="cm"># prev = %{A:nil, B::A, C:nil, D::E, E::A}</span>
+<span class="cm">#</span>
+<span class="cm"># reconstruct(prev, :D) now gives:</span>
+<span class="cm">#   D -> E -> A -> nil</span>
+<span class="cm">#   => [:A, :E, :D]  cost: 8</span>`,
+
+    `<span class="cm"># Step 4: After visiting B</span>
+<span class="cm"># prev = %{A:nil, B::A, C::B, D::E, E::A}</span>
+<span class="cm">#</span>
+<span class="cm"># reconstruct(prev, :C):</span>
+<span class="cm">#   C -> B -> A -> nil</span>
+<span class="cm">#   => [:A, :B, :C]  cost: 7</span>`,
+
+    `<span class="cm"># Step 5: After visiting C (no change to prev)</span>
+<span class="cm"># C->D: 7+1=8, equal to current — no update</span>
+<span class="cm"># prev[:D] stays as :E</span>
+<span class="cm">#</span>
+<span class="cm"># So path to D is via E, not via C.</span>`,
+
+    `<span class="cm"># FINAL prev map:</span>
+<span class="cm"># %{A: nil, B: :A, C: :B, D: :E, E: :A}</span>
+<span class="cm">#</span>
+<span class="hl"># All paths from A:</span>
+<span class="cm"># A => A  :  [:A]         cost: 0</span>
+<span class="cm"># A => B  :  [:A,:B]      cost: 4</span>
+<span class="cm"># A => C  :  [:A,:B,:C]   cost: 7</span>
+<span class="cm"># A => D  :  [:A,:E,:D]   cost: 8</span>
+<span class="cm"># A => E  :  [:A,:E]      cost: 2</span>`
+  ]
+];
+
+// ──────────────────────────────────────────────────────────────────
+// STEP DATA
+// ──────────────────────────────────────────────────────────────────
+const STEPS = [
+  { current:null, visitedAfter:[],                distAfter:{A:0,B:Infinity,C:Infinity,D:Infinity,E:Infinity}, prevAfter:{A:null,B:null,C:null,D:null,E:null}, relaxed:[], active:null },
+  { current:'A',  visitedAfter:[],                distAfter:{A:0,B:Infinity,C:Infinity,D:Infinity,E:Infinity}, prevAfter:{A:null,B:null,C:null,D:null,E:null}, relaxed:[], active:'A' },
+  { current:'A',  visitedAfter:['A'],             distAfter:{A:0,B:4,C:Infinity,D:Infinity,E:2},              prevAfter:{A:null,B:'A',C:null,D:null,E:'A'},    relaxed:['B','E'], active:null },
+  { current:'E',  visitedAfter:['A','E'],         distAfter:{A:0,B:4,C:Infinity,D:8,E:2},                    prevAfter:{A:null,B:'A',C:null,D:'E',E:'A'},     relaxed:['D'], active:'E' },
+  { current:'B',  visitedAfter:['A','E','B'],     distAfter:{A:0,B:4,C:7,D:8,E:2},                           prevAfter:{A:null,B:'A',C:'B',D:'E',E:'A'},      relaxed:['C'], active:'B' },
+  { current:'C',  visitedAfter:['A','E','B','C'], distAfter:{A:0,B:4,C:7,D:8,E:2},                           prevAfter:{A:null,B:'A',C:'B',D:'E',E:'A'},      relaxed:[], active:'C' },
+  { current:'D',  visitedAfter:['A','E','B','C','D'], distAfter:{A:0,B:4,C:7,D:8,E:2},                       prevAfter:{A:null,B:'A',C:'B',D:'E',E:'A'},      relaxed:[], active:'D', done:true }
+];
+
+const STEP_DESCS = [
+  ['READY',    'Graph loaded. Source node is <strong>A</strong>. All distances set to <strong>∞</strong> except A=0. Unvisited set contains all 5 nodes.'],
+  ['STEP 1/6', 'Pick unvisited node with smallest distance. <strong>A (d=0)</strong> selected as first current node. About to relax neighbors B and E.'],
+  ['STEP 2/6', 'Relax A\'s neighbors via edge relaxation: <strong>B</strong> updated to d=4 (via A→B cost 4). <strong>E</strong> updated to d=2 (via A→E cost 2). A marked visited.'],
+  ['STEP 3/6', 'Pick unvisited min: <strong>E (d=2)</strong>. Relax E→D: 2+6=8 → dist[D]=8. E→A: 2+2=4 > 0, skipped. E marked visited.'],
+  ['STEP 4/6', 'Pick unvisited min: <strong>B (d=4)</strong>. Relax B→C: 4+3=7 → dist[C]=7. B→D: 4+5=9 > 8, skipped (not an improvement). B marked visited.'],
+  ['STEP 5/6', 'Pick unvisited min: <strong>C (d=7)</strong>. Relax C→D: 7+1=8 = 8, no update (strict less-than). C→B: already visited. C marked visited.'],
+  ['COMPLETE', 'Visit <strong>D (d=8)</strong>. All nodes processed. Algorithm complete. Optimal shortest paths reconstructed from predecessor map.']
+];
+
+// ──────────────────────────────────────────────────────────────────
+// REAL-WORLD USE CASES
+// ──────────────────────────────────────────────────────────────────
+const USE_CASES = [
+  {
+    icon: '🗺',
+    title: 'GPS Navigation',
+    industry: 'TRANSPORTATION & LOGISTICS',
+    desc: 'Google Maps, Apple Maps, and Waze use Dijkstra variants to compute the fastest or shortest driving route between two points across a massive road network with millions of intersections.',
+    example: '<strong>Nodes:</strong> intersections / <strong>Edges:</strong> road segments / <strong>Weights:</strong> travel time or distance. When you ask "fastest route to the airport," Dijkstra (or A*) runs in milliseconds on a subgraph.'
+  },
+  {
+    icon: '🌐',
+    title: 'Internet Packet Routing',
+    industry: 'NETWORKING & TELECOMMUNICATIONS',
+    desc: 'OSPF (Open Shortest Path First), the dominant routing protocol on the internet backbone, uses Dijkstra\'s algorithm to build routing tables. Every router computes shortest paths to every other router in its area.',
+    example: '<strong>Nodes:</strong> routers / <strong>Edges:</strong> network links / <strong>Weights:</strong> link cost (bandwidth, latency, hop count). Your HTTP request is routed using Dijkstra.'
+  },
+  {
+    icon: '✈',
+    title: 'Flight Path Optimization',
+    industry: 'AVIATION & AEROSPACE',
+    desc: 'Airlines and air traffic control systems use shortest-path algorithms to compute fuel-optimal or time-optimal flight routes, accounting for wind speeds, restricted airspace, and airport connection costs.',
+    example: '<strong>Nodes:</strong> airports / <strong>Edges:</strong> flight segments / <strong>Weights:</strong> fuel burn, flight time, or connection cost. Also used in layover minimization for booking engines.'
+  },
+  {
+    icon: '🎮',
+    title: 'Video Game Pathfinding',
+    industry: 'GAME DEVELOPMENT & AI',
+    desc: 'NPC movement, enemy AI, and real-time strategy (RTS) unit navigation rely on Dijkstra or A* (Dijkstra with heuristic) to navigate terrain grids, avoiding obstacles and finding optimal movement paths.',
+    example: '<strong>Nodes:</strong> grid tiles or waypoints / <strong>Edges:</strong> valid moves / <strong>Weights:</strong> movement cost (terrain penalty, elevation). Used in Starcraft, Age of Empires, and open-world games.'
+  },
+  {
+    icon: '🏥',
+    title: 'Medical Imaging & Robot Surgery',
+    industry: 'HEALTHCARE & ROBOTICS',
+    desc: 'Surgical planning systems use Dijkstra to compute the least-invasive path for instruments through 3D anatomical models. Robotic arms navigate tissue while minimizing damage to critical structures.',
+    example: '<strong>Nodes:</strong> 3D voxels or anatomical landmarks / <strong>Edges:</strong> navigable paths / <strong>Weights:</strong> tissue damage score or proximity to nerves and blood vessels.'
+  },
+  {
+    icon: '📦',
+    title: 'Supply Chain & Warehousing',
+    industry: 'E-COMMERCE & LOGISTICS',
+    desc: 'Amazon, FedEx, and UPS route packages through distribution networks using shortest-path algorithms. Warehouse robots also use Dijkstra to plan collision-free pick paths across shelving grids.',
+    example: '<strong>Nodes:</strong> distribution centers or shelf locations / <strong>Edges:</strong> transport lanes / <strong>Weights:</strong> transit time, cost, or capacity. Minimizes delivery cost across millions of daily shipments.'
+  }
+];
+
+// ──────────────────────────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────────────────────────
+let dist = {}, prev = {}, currentStep = -1, autoInterval = null, autoRunning = false;
+let activeCodeTab = 0;
+const svg = document.getElementById('graph-svg');
+
+// ──────────────────────────────────────────────────────────────────
+// SVG HELPERS
+// ──────────────────────────────────────────────────────────────────
+function svgEl(tag, attrs) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+  return el;
+}
+
+function buildGraph() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const edgeDefault  = isLight ? '#c4b9a8' : '#1e293b';
+  const nodeFill     = isLight ? '#f5f3ef' : '#0f172a';
+  const nodeStroke   = isLight ? '#d4d0c8' : '#1e293b';
+  const labelFill    = isLight ? '#1a1a18' : '#e2e8f0';
+  const distFill     = isLight ? '#78716c' : '#64748b';
+  const srcColor     = isLight ? '#0369a1' : '#06b6d4';
+
+  svg.innerHTML = '';
+  const defs = svgEl('defs',{});
+  const mk = (id, color) => {
+    const m = svgEl('marker',{id, markerWidth:'7', markerHeight:'7', refX:'5', refY:'3', orient:'auto'});
+    m.appendChild(svgEl('path',{d:'M0,0 L0,6 L7,3 z', fill:color}));
+    return m;
+  };
+  [edgeDefault,'#10b981','#ec4899','#f59e0b','#67e8f9'].forEach((c,i) =>
+    defs.appendChild(mk(`arr${i}`, c)));
+  svg.appendChild(defs);
+
+  for (const [a,b,w] of EDGES) {
+    const pa=NODE_POS[a], pb=NODE_POS[b];
+    const dx=pb.x-pa.x, dy=pb.y-pa.y, len=Math.sqrt(dx*dx+dy*dy);
+    const nx=-dy/len*13, ny=dx/len*13;
+    const mid={x:(pa.x+pb.x)/2+nx, y:(pa.y+pb.y)/2+ny};
+
+    svg.appendChild(svgEl('line',{id:`edge-${a}-${b}`,x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,stroke:edgeDefault,'stroke-width':'2','marker-end':'url(#arr0)'}));
+    svg.appendChild(svgEl('line',{id:`edge-${b}-${a}`,x1:pb.x,y1:pb.y,x2:pa.x,y2:pa.y,stroke:edgeDefault,'stroke-width':'2','marker-end':'url(#arr0)'}));
+    const wt = svgEl('text',{x:mid.x,y:mid.y,class:'edge-weight'});
+    wt.textContent = w;
+    svg.appendChild(wt);
+  }
+
+  for (const n of NODES) {
+    const {x,y} = NODE_POS[n];
+    const g = svgEl('g',{id:`node-${n}`,transform:`translate(${x},${y})`});
+    g.appendChild(svgEl('circle',{id:`ring-${n}`,r:'30',fill:'none',stroke:'#7c3aed','stroke-width':'0',opacity:'0'}));
+    g.appendChild(svgEl('circle',{id:`circle-${n}`,r:'22',fill:nodeFill,stroke:nodeStroke,'stroke-width':'2'}));
+    const lbl = svgEl('text',{class:'node-label',y:'-5',fill:labelFill}); lbl.textContent=n; g.appendChild(lbl);
+    const dt  = svgEl('text',{id:`dist-${n}`,class:'node-dist',y:'11',fill:distFill}); dt.textContent='∞'; g.appendChild(dt);
+    svg.appendChild(g);
+  }
+  const src = svgEl('text',{x:NODE_POS['A'].x,y:NODE_POS['A'].y+40,'text-anchor':'middle','font-family':'VT323, monospace','font-size':'12',fill:srcColor});
+  src.textContent='SOURCE'; svg.appendChild(src);
+}
+
+function updateNodeVisual(n, status) {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const circle = document.getElementById(`circle-${n}`);
+  const ring   = document.getElementById(`ring-${n}`);
+  const distEl = document.getElementById(`dist-${n}`);
+  const group  = document.getElementById(`node-${n}`);
+  group.classList.remove('node-active');
+  const d = dist[n];
+  if (distEl) distEl.textContent = (d===undefined||d===Infinity) ? '∞' : d;
+
+  const dark = {
+    active:    {fill:'#2d1b4e',stroke:'#ec4899',sw:'3',ring:'#ec4899',rop:'0.5',df:'#f9a8d4'},
+    visited:   {fill:'#1e3a2a',stroke:'#10b981',sw:'2',ring:null,     rop:'0',  df:'#6ee7b7'},
+    relaxed:   {fill:'#1a2a0a',stroke:'#84cc16',sw:'2',ring:null,     rop:'0',  df:'#bef264'},
+    unvisited: {fill:'#0f172a',stroke:'#1e293b',sw:'2',ring:null,     rop:'0',  df:'#64748b'}
+  };
+  const light = {
+    active:    {fill:'#fde8f4',stroke:'#be185d',sw:'3',ring:'#be185d',rop:'0.4',df:'#be185d'},
+    visited:   {fill:'#dcfce7',stroke:'#15803d',sw:'2',ring:null,     rop:'0',  df:'#15803d'},
+    relaxed:   {fill:'#ecfccb',stroke:'#4d7c0f',sw:'2',ring:null,     rop:'0',  df:'#4d7c0f'},
+    unvisited: {fill:'#f5f3ef',stroke:'#d4d0c8',sw:'2',ring:null,     rop:'0',  df:'#78716c'}
+  };
+  const styles = isLight ? light : dark;
+  const s = styles[status]||styles.unvisited;
+  circle.setAttribute('fill',s.fill);
+  circle.setAttribute('stroke',s.stroke);
+  circle.setAttribute('stroke-width',s.sw);
+  ring.setAttribute('stroke-width',s.ring?'2':'0');
+  ring.setAttribute('opacity',s.rop);
+  if (s.ring) ring.setAttribute('stroke',s.ring);
+  if (distEl) distEl.setAttribute('fill',s.df);
+  if (status==='active') group.classList.add('node-active');
+}
+
+function highlightEdge(a, b, color) {
+  for (const id of [`edge-${a}-${b}`,`edge-${b}-${a}`]) {
+    const el=document.getElementById(id);
+    if (el) { el.setAttribute('stroke',color); el.setAttribute('stroke-width','2.5'); }
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────
+// UI UPDATES
+// ──────────────────────────────────────────────────────────────────
+function updateDistTable(s) {
+  const tbody = document.getElementById('dist-tbody');
+  tbody.innerHTML = '';
+  for (const n of NODES) {
+    const d=s.distAfter[n], p=s.prevAfter[n];
+    const isVisited=s.visitedAfter.includes(n), isActive=s.active===n, isRelaxed=s.relaxed.includes(n);
+    const tr=document.createElement('tr');
+    if (isActive) tr.className='row-active';
+    else if (isVisited) tr.className='row-visited';
+    else if (isRelaxed) tr.className='row-updated';
+    const dStr=d===Infinity?'∞':d, pStr=p??'—';
+    const statusTxt=isActive?'◉ ACTIVE':isVisited?'✓ DONE':'○ WAIT';
+    tr.innerHTML=`<td style="color:${isActive?'#ec4899':isVisited?'#10b981':'#94a3b8'}">${n}</td><td style="color:${d===Infinity?'#475569':'#f59e0b'}">${dStr}</td><td>${pStr}</td><td style="font-size:11px;letter-spacing:1px">${statusTxt}</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function updateStepDots(idx) {
+  const c=document.getElementById('step-dots'); c.innerHTML='';
+  for (let i=0;i<STEPS.length;i++) {
+    const d=document.createElement('div'); d.className='step-dot';
+    if (i<idx) d.classList.add('done'); else if (i===idx) d.classList.add('active');
+    c.appendChild(d);
+  }
+}
+
+function updateStepDesc(idx) {
+  const [label,text]=STEP_DESCS[idx];
+  document.getElementById('step-desc').innerHTML=`<span class="step-num">[ ${label} ]</span><span> ${text}</span>`;
+}
+
+function switchCodeTab(tabIdx, btn) {
+  activeCodeTab = tabIdx;
+  document.querySelectorAll('.code-tab').forEach((b,i)=>b.classList.toggle('active',i===tabIdx));
+  const si = Math.max(0, Math.min(currentStep,6));
+  document.getElementById('code-display').innerHTML = CODE_LIBRARY[tabIdx][si];
+}
+
+function updateCode(stepIdx) {
+  const si = Math.max(0,Math.min(stepIdx,6));
+  document.getElementById('code-display').innerHTML = CODE_LIBRARY[activeCodeTab][si];
+}
+
+function showPaths(s) {
+  const pv=s.prevAfter, dt=s.distAfter;
+  function getPath(t){const p=[];let c=t;while(c!==null){p.unshift(c);c=pv[c];}return p;}
+  const rows=document.getElementById('path-rows'); rows.innerHTML='';
+  for (const n of NODES) {
+    const path=getPath(n), d=dt[n], row=document.createElement('div');
+    row.className='path-row';
+    row.innerHTML=`<span class="path-from">A → ${n}</span><span class="path-sep">|</span><span class="path-nodes">${path.join(' → ')}</span><span class="path-cost">cost=${d}</span>`;
+    rows.appendChild(row);
+  }
+  document.getElementById('path-display').classList.add('visible');
+  for (const n of NODES) {const p=getPath(n);for(let i=0;i<p.length-1;i++)highlightEdge(p[i],p[i+1],'#f59e0b');}
+}
+
+// ──────────────────────────────────────────────────────────────────
+// APPLY STEP
+// ──────────────────────────────────────────────────────────────────
+function applyStep(idx) {
+  const s=STEPS[idx];
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const edgeDef = isLight ? '#c4b9a8' : '#1e293b';
+  const edgeAct = isLight ? '#4d7c0f' : '#334155';
+  dist={...s.distAfter}; prev={...s.prevAfter};
+  for (const [a,b] of EDGES) highlightEdge(a,b,edgeDef);
+  for (const n of NODES) {
+    let st='unvisited';
+    if (s.visitedAfter.includes(n)) st='visited';
+    if (s.relaxed.includes(n)&&!s.visitedAfter.includes(n)) st='relaxed';
+    if (s.active===n) st='active';
+    updateNodeVisual(n,st);
+  }
+  if (s.active&&!s.done) {
+    for (const nbr of Object.keys(GRAPH[s.active]||{}))
+      highlightEdge(s.active,nbr,s.relaxed.includes(nbr)?'#10b981':edgeAct);
+  }
+  updateDistTable(s); updateStepDots(idx); updateStepDesc(idx); updateCode(idx);
+  if (s.done) {
+    showPaths(s);
+    document.getElementById('btn-next').disabled=true;
+    stopAuto();
+  } else {
+    document.getElementById('path-display').classList.remove('visible');
+    document.getElementById('btn-next').disabled=false;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────
+// CONTROLS
+// ──────────────────────────────────────────────────────────────────
+function nextStep() { if(currentStep<STEPS.length-1){currentStep++;applyStep(currentStep);} }
+
+function restart() {
+  stopAuto(); currentStep=-1; dist={}; prev={};
+  buildGraph();
+  document.getElementById('path-display').classList.remove('visible');
+  document.getElementById('btn-next').disabled=false;
+  document.getElementById('step-desc').innerHTML='<span class="step-num">[ READY ]</span><span> Press <strong>NEXT STEP</strong> to begin traversal from node <strong>A</strong>.</span>';
+  document.getElementById('code-display').innerHTML=CODE_LIBRARY[activeCodeTab][0];
+  const tb=document.getElementById('dist-tbody');tb.innerHTML='';
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const nc = isLight ? '#6b7280' : '#94a3b8';
+  const ic = isLight ? '#9ca3af' : '#475569';
+  for(const n of NODES){const r=document.createElement('tr');r.innerHTML=`<td style="color:${nc}">${n}</td><td style="color:${ic}">∞</td><td>—</td><td style="font-size:11px">○ WAIT</td>`;tb.appendChild(r);}
+  updateStepDots(-1);
+}
+
+function toggleAuto() {
+  if(autoRunning){stopAuto();}
+  else {
+    autoRunning=true;
+    document.getElementById('btn-auto').textContent='⏸ PAUSE';
+    const sp=parseInt(document.getElementById('speed-select').value);
+    autoInterval=setInterval(()=>{if(currentStep>=STEPS.length-1)stopAuto();else nextStep();},sp);
+  }
+}
+function stopAuto(){autoRunning=false;clearInterval(autoInterval);document.getElementById('btn-auto').textContent='AUTO RUN';}
+
+// ──────────────────────────────────────────────────────────────────
+// TAB SWITCHING
+// ──────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// ──────────────────────────────────────────────────────────────────
+// FULL CODE BLOCKS
+// ──────────────────────────────────────────────────────────────────
+function renderFullCode() {
+  document.getElementById('full-block-1').innerHTML = `<span class="cm"># dijkstra.ex — AlgoSchel</span>
+<span class="kw">defmodule</span> <span class="fn">AlgoSchel.Dijkstra</span> <span class="kw">do</span>
+  <span class="at">@moduledoc</span> <span class="str">"""
+  Dijkstra's shortest-path algorithm in pure Elixir.
+  Finds optimal paths from one source node to all
+  other nodes in a non-negatively weighted graph.
+  Time:  O((V + E) log V) with priority queue
+  Space: O(V) for distance and predecessor maps
+  """</span>
+
+  <span class="at">@inf</span> <span class="nm">1_000_000_000</span>   <span class="cm"># sentinel for "no path found yet"</span>
+
+  <span class="cm"># ── PUBLIC API ─────────────────────────────────</span>
+
+  <span class="at">@doc</span> <span class="str">"Returns {dist_map, prev_map} from source."</span>
+  <span class="kw">def</span> <span class="fn">shortest_paths</span>(graph, source) <span class="kw">do</span>
+    {dist, prev, unvisited} <span class="op">=</span> <span class="fn">init</span>(graph, source)
+    <span class="fn">run</span>(graph, dist, prev, unvisited)
+  <span class="kw">end</span>
+
+  <span class="at">@doc</span> <span class="str">"Returns {cost, path_list} for a specific target."</span>
+  <span class="kw">def</span> <span class="fn">path_to</span>(graph, source, target) <span class="kw">do</span>
+    {dist, prev} <span class="op">=</span> <span class="fn">shortest_paths</span>(graph, source)
+    {dist[target], <span class="fn">reconstruct</span>(prev, target)}
+  <span class="kw">end</span>`;
+
+  document.getElementById('full-block-2').innerHTML = `  <span class="cm"># ── PRIVATE FUNCTIONS ──────────────────────────</span>
+
+  <span class="kw">defp</span> <span class="fn">init</span>(graph, source) <span class="kw">do</span>
+    nodes <span class="op">=</span> <span class="fn">Map</span>.keys(graph)
+    dist  <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="kw">fn</span> n <span class="op">-></span>
+      {n, <span class="kw">if</span>(n <span class="op">==</span> source, <span class="kw">do:</span> <span class="nm">0</span>, <span class="kw">else:</span> <span class="at">@inf</span>)}
+    <span class="kw">end</span>)
+    prev      <span class="op">=</span> <span class="fn">Map</span>.new(nodes, <span class="op">&</span>{<span class="op">&</span>1, <span class="nm">nil</span>})
+    unvisited <span class="op">=</span> <span class="fn">MapSet</span>.new(nodes)
+    {dist, prev, unvisited}
+  <span class="kw">end</span>
+
+  <span class="kw">defp</span> <span class="fn">run</span>(graph, dist, prev, unvisited) <span class="kw">do</span>
+    <span class="kw">case</span> <span class="fn">pick_min</span>(dist, unvisited) <span class="kw">do</span>
+      <span class="nm">nil</span> <span class="op">-></span>
+        {dist, prev}
+      {current, _d} <span class="op">-></span>
+        neighbors      <span class="op">=</span> graph[current]
+        unvisited2     <span class="op">=</span> <span class="fn">MapSet</span>.delete(unvisited, current)
+        {dist2, prev2} <span class="op">=</span> <span class="fn">relax</span>(dist, prev, current, neighbors)
+        <span class="fn">run</span>(graph, dist2, prev2, unvisited2)
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+
+  <span class="kw">defp</span> <span class="fn">pick_min</span>(dist, unvisited) <span class="kw">do</span>
+    unvisited
+    <span class="op">|></span> <span class="fn">Enum</span>.map(<span class="kw">fn</span> n <span class="op">-></span> {n, dist[n]} <span class="kw">end</span>)
+    <span class="op">|></span> <span class="fn">Enum</span>.min_by(<span class="kw">fn</span> {_, d} <span class="op">-></span> d <span class="kw">end</span>, <span class="kw">fn</span> <span class="op">-></span> <span class="nm">nil</span> <span class="kw">end</span>)
+  <span class="kw">end</span>
+
+  <span class="kw">defp</span> <span class="fn">relax</span>(dist, prev, current, neighbors) <span class="kw">do</span>
+    <span class="fn">Enum</span>.reduce(neighbors, {dist, prev}, <span class="kw">fn</span> {nbr, w}, {d, p} <span class="op">-></span>
+      new_dist <span class="op">=</span> d[current] <span class="op">+</span> w
+      <span class="kw">if</span> new_dist <span class="op">&lt;</span> d[nbr] <span class="kw">do</span>
+        {<span class="fn">Map</span>.put(d, nbr, new_dist), <span class="fn">Map</span>.put(p, nbr, current)}
+      <span class="kw">else</span>
+        {d, p}
+      <span class="kw">end</span>
+    <span class="kw">end</span>)
+  <span class="kw">end</span>`;
+
+  document.getElementById('full-block-3').innerHTML = `  <span class="kw">defp</span> <span class="fn">reconstruct</span>(prev, target) <span class="kw">do</span>
+    <span class="fn">Stream</span>.unfold(target, <span class="kw">fn</span>
+      <span class="nm">nil</span>  <span class="op">-></span> <span class="nm">nil</span>
+      node <span class="op">-></span> {node, prev[node]}
+    <span class="kw">end</span>)
+    <span class="op">|></span> <span class="fn">Enum</span>.to_list()
+    <span class="op">|></span> <span class="fn">Enum</span>.reverse()
+  <span class="kw">end</span>
+
+  <span class="at">@doc</span> <span class="str">"Print all shortest paths from source in readable format."</span>
+  <span class="kw">def</span> <span class="fn">print_all</span>(graph, source) <span class="kw">do</span>
+    {dist, prev} <span class="op">=</span> <span class="fn">shortest_paths</span>(graph, source)
+    graph
+    <span class="op">|></span> <span class="fn">Map</span>.keys()
+    <span class="op">|></span> <span class="fn">Enum</span>.sort()
+    <span class="op">|></span> <span class="fn">Enum</span>.each(<span class="kw">fn</span> target <span class="op">-></span>
+      path <span class="op">=</span> <span class="fn">reconstruct</span>(prev, target)
+      cost <span class="op">=</span> dist[target]
+      <span class="fn">IO</span>.puts(<span class="str">"#{source} -> #{target} : #{inspect(path)} (cost: #{cost})"</span>)
+    <span class="kw">end</span>)
+  <span class="kw">end</span>
+<span class="kw">end</span>   <span class="cm"># end defmodule</span>`;
+
+  document.getElementById('full-block-4').innerHTML = `<span class="cm"># ── EXAMPLE USAGE ──────────────────────────────────────</span>
+
+graph <span class="op">=</span> %{
+  <span class="at">A:</span> %{<span class="at">B:</span> <span class="nm">4</span>, <span class="at">E:</span> <span class="nm">2</span>},
+  <span class="at">B:</span> %{<span class="at">A:</span> <span class="nm">4</span>, <span class="at">C:</span> <span class="nm">3</span>, <span class="at">D:</span> <span class="nm">5</span>},
+  <span class="at">C:</span> %{<span class="at">B:</span> <span class="nm">3</span>, <span class="at">D:</span> <span class="nm">1</span>},
+  <span class="at">D:</span> %{<span class="at">B:</span> <span class="nm">5</span>, <span class="at">C:</span> <span class="nm">1</span>, <span class="at">E:</span> <span class="nm">6</span>},
+  <span class="at">E:</span> %{<span class="at">A:</span> <span class="nm">2</span>, <span class="at">D:</span> <span class="nm">6</span>}
+}
+
+<span class="cm"># Get all shortest paths from :A</span>
+{dist, prev} <span class="op">=</span> <span class="fn">AlgoSchel.Dijkstra</span>.shortest_paths(graph, <span class="at">:A</span>)
+<span class="cm"># dist => %{A: 0, B: 4, C: 7, D: 8, E: 2}</span>
+<span class="cm"># prev => %{A: nil, B: :A, C: :B, D: :E, E: :A}</span>
+
+<span class="cm"># Get path to a specific node</span>
+{cost, path} <span class="op">=</span> <span class="fn">AlgoSchel.Dijkstra</span>.path_to(graph, <span class="at">:A</span>, <span class="at">:D</span>)
+<span class="cm"># cost => 8</span>
+<span class="cm"># path => [:A, :E, :D]</span>
+
+<span class="cm"># Print all paths</span>
+<span class="fn">AlgoSchel.Dijkstra</span>.print_all(graph, <span class="at">:A</span>)
+<span class="cm"># A -> A : [:A]          (cost: 0)</span>
+<span class="cm"># A -> B : [:A, :B]      (cost: 4)</span>
+<span class="cm"># A -> C : [:A, :B, :C]  (cost: 7)</span>
+<span class="cm"># A -> D : [:A, :E, :D]  (cost: 8)</span>
+<span class="hl"># A -> E : [:A, :E]      (cost: 2)</span>`;
+}
+
+function copyFullCode() {
+  const blocks = ['full-block-1','full-block-2','full-block-3','full-block-4'];
+  const text = blocks.map(id=>document.getElementById(id).innerText).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    btn.textContent='COPIED!'; btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent='COPY ALL';btn.style.color='';},1800);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────────
+// USE CASES RENDER
+// ──────────────────────────────────────────────────────────────────
+function renderUseCases() {
+  const grid = document.getElementById('usecases-grid');
+  grid.innerHTML = USE_CASES.map(uc=>`
+    <div class="usecase-card">
+      <div class="uc-icon">${uc.icon}</div>
+      <div class="uc-title">${uc.title}</div>
+      <div class="uc-industry">${uc.industry}</div>
+      <div class="uc-desc">${uc.desc}</div>
+      <div class="uc-example">${uc.example}</div>
+    </div>
+  `).join('');
+}
+
+// ──────────────────────────────────────────────────────────────────
+// BOOT
+// ──────────────────────────────────────────────────────────────────
+buildGraph();
+renderFullCode();
+renderUseCases();
+
+// Init dist table
+const tbody=document.getElementById('dist-tbody');
+for(const n of NODES){const r=document.createElement('tr');r.innerHTML=`<td style="color:#94a3b8">${n}</td><td style="color:#475569">∞</td><td>—</td><td style="font-size:11px">○ WAIT</td>`;tbody.appendChild(r);}
+
+// Init dots
+const dotC=document.getElementById('step-dots');
+for(let i=0;i<STEPS.length;i++){const d=document.createElement('div');d.className='step-dot';dotC.appendChild(d);}
+
+// Init code display
+document.getElementById('code-display').innerHTML=CODE_LIBRARY[0][0];
+
+// ──────────────────────────────────────────────────────────────────
+// THEME TOGGLE
+// ──────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  const next = isLight ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').textContent  = isLight ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isLight ? 'Light Mode' : 'Dark Mode';
+  buildGraph();
+  if (currentStep >= 0) applyStep(currentStep);
+  try { localStorage.setItem('algosechel-dijkstra-theme', next); } catch(e) {}
+}
+
+try {
+  const saved = localStorage.getItem('algosechel-dijkstra-theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent  = '🌙';
+    document.getElementById('theme-label').textContent = 'Dark Mode';
+    buildGraph();
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
