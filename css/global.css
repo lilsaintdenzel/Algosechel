@@ -190,12 +190,6 @@ footer {
 }
 .footer-right a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
 .footer-right a:hover { color: var(--cyan); }
-.footer-seeds {
-  width: 100%; text-align: center;
-  font-family: 'VT323', monospace; font-size: 14px;
-  color: var(--muted); letter-spacing: 3px; padding-top: 4px;
-  border-top: 1px solid var(--border); margin-top: 8px;
-}
 
 /* ═══════════════════════════════════════════════════════════════
    UTILITY
