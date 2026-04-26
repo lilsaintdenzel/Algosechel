@@ -1,0 +1,546 @@
+[
+  {
+    "id": "bsearch",
+    "title": "Binary Search",
+    "tag": "algo",
+    "file": "binary_search.exs",
+    "views": 446,
+    "prev": "O(log n) - halve the search space",
+    "runKey": "bsearch",
+    "explain": {
+      "cx": [
+        {"l": "Best", "v": "O(1)", "c": "g"},
+        {"l": "Average", "v": "O(log n)", "c": ""},
+        {"l": "Worst", "v": "O(log n)", "c": ""},
+        {"l": "Space", "v": "O(1)", "c": "g"}
+      ],
+      "desc": "Binary Search works by <b>halving the search space</b> on every step. Compare the target against the <b>middle element</b> of the current range. If it matches, done. If the target is smaller, discard the right half. If larger, discard the left half. Each iteration eliminates 50% of remaining candidates. <b>Only works on sorted arrays.</b>",
+      "uc": [
+        ["Dictionary lookups", "Finding a word in a sorted word list or autocomplete index."],
+        ["Database indexes", "B-tree range queries use binary search internally."],
+        ["Git bisect", "Finds which commit introduced a bug by binary searching history."],
+        ["Standard libraries", "Python bisect, Java Arrays.binarySearch, and Elixir Enum all use this."],
+        ["Numeric approximation", "Finding square roots or solving equations by bisection."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Binary Search - O(log n)"},
+      {"t": "cm", "s": "# Requires a sorted array"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "BinarySearch do"},
+      {"t": "kw", "s": "  def ", "f": "search", "r": "(arr, target)"},
+      {"t": "", "s": "    lo = 0"},
+      {"t": "", "s": "    hi = length(arr) - 1"},
+      {"t": "kw", "s": "    do_search", "r": "(arr, target, lo, hi)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "do_search", "r": "(_, _, lo, hi) when lo > hi"},
+      {"t": "op", "s": "    :not_found"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "do_search", "r": "(arr, t, lo, hi) do"},
+      {"t": "", "s": "    mid = div(lo + hi, 2)"},
+      {"t": "", "s": "    val = Enum.at(arr, mid)"},
+      {"t": "kw", "s": "    cond do"},
+      {"t": "op", "s": "      val == t", "r": " -> mid"},
+      {"t": "op", "s": "      val <  t", "r": " -> do_search(arr, t, mid+1, hi)"},
+      {"t": "kw", "s": "      true    ", "r": " -> do_search(arr, t, lo, mid-1)"},
+      {"t": "kw", "s": "    end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "bubble",
+    "title": "Bubble Sort",
+    "tag": "algo",
+    "file": "bubble_sort.exs",
+    "views": 120,
+    "prev": "O(n^2) - swap adjacent pairs",
+    "runKey": "bubble",
+    "explain": {
+      "cx": [
+        {"l": "Best", "v": "O(n)", "c": "g"},
+        {"l": "Average", "v": "O(n^2)", "c": "r"},
+        {"l": "Worst", "v": "O(n^2)", "c": "r"},
+        {"l": "Space", "v": "O(1)", "c": "g"}
+      ],
+      "desc": "Bubble Sort makes repeated passes through the array, <b>comparing adjacent pairs</b> and swapping them if they are out of order. After each pass the largest unsorted element rises to its final position. The algorithm is <b>stable</b> (equal elements keep their order) and in-place, but O(n^2) average time makes it unsuitable for large datasets.",
+      "uc": [
+        ["Teaching", "The clearest illustration of a comparison sort - ideal for learning."],
+        ["Nearly sorted data", "With early-exit, performs O(n) on almost-sorted input."],
+        ["Tiny datasets", "Acceptable for fewer than 20 elements where simplicity wins."],
+        ["Embedded systems", "When code size must be minimal and memory is very tight."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Bubble Sort - O(n^2) time, O(1) space"},
+      {"t": "cm", "s": "# Swap adjacent out-of-order pairs"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "BubbleSort do"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "(list) do"},
+      {"t": "", "s": "    n = length(list)"},
+      {"t": "", "s": "    arr = List.to_tuple(list)"},
+      {"t": "kw", "s": "    pass", "r": "(arr, n, n)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "pass", "r": "(arr, _, 0), do: arr"},
+      {"t": "kw", "s": "  defp ", "f": "pass", "r": "(arr, n, rem) do"},
+      {"t": "", "s": "    arr = sweep(arr, 0, n - 1)"},
+      {"t": "kw", "s": "    pass", "r": "(arr, n, rem - 1)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "sweep", "r": "(arr, i, m) when i >= m, do: arr"},
+      {"t": "kw", "s": "  defp ", "f": "sweep", "r": "(arr, i, m) do"},
+      {"t": "", "s": "    a = elem(arr, i); b = elem(arr, i+1)"},
+      {"t": "kw", "s": "    arr = if a > b, do: swap(arr,i,i+1), else: arr"},
+      {"t": "kw", "s": "    sweep", "r": "(arr, i+1, m)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "dijkstra",
+    "title": "Dijkstra's Algorithm",
+    "tag": "algo",
+    "file": "dijkstra.exs",
+    "views": 716,
+    "prev": "Greedy shortest path",
+    "runKey": "dijkstra",
+    "explain": {
+      "cx": [
+        {"l": "Time", "v": "O((V+E) log V)", "c": "a"},
+        {"l": "Space", "v": "O(V)", "c": ""},
+        {"l": "Fib Heap", "v": "O(E + V log V)", "c": "g"}
+      ],
+      "desc": "Dijkstra finds the <b>shortest path from a source node to all others</b> in a weighted graph. It works greedily - always expanding the <b>nearest unvisited node</b> via a min-heap. Stale entries in the priority queue are skipped when popped. <b>Does not work with negative edge weights</b> - use Bellman-Ford for those.",
+      "uc": [
+        ["GPS navigation", "Google Maps and Waze use Dijkstra variants for route planning."],
+        ["Network routing", "OSPF protocol uses Dijkstra to build router forwarding tables."],
+        ["Game pathfinding", "NPC movement in games uses Dijkstra or its heuristic variant A*."],
+        ["Social networks", "Finding shortest connection between people (degrees of separation)."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Dijkstra - O((V+E) log V)"},
+      {"t": "cm", "s": "# Always expand nearest unvisited node"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "Dijkstra do"},
+      {"t": "kw", "s": "  def ", "f": "run", "r": "(graph, src) do"},
+      {"t": "", "s": "    dist = Map.new(nodes(graph), &{&1, :inf})"},
+      {"t": "", "s": "    dist = Map.put(dist, src, 0)"},
+      {"t": "", "s": "    pq   = [{0, src}]"},
+      {"t": "kw", "s": "    loop", "r": "(graph, dist, pq)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "loop", "r": "(_, dist, []), do: dist"},
+      {"t": "kw", "s": "  defp ", "f": "loop", "r": "(g, dist, [{cost,node}|rest]) do"},
+      {"t": "kw", "s": "    if ", "r": "cost > dist[node] do"},
+      {"t": "kw", "s": "      loop", "r": "(g, dist, rest)"},
+      {"t": "kw", "s": "    else"},
+      {"t": "", "s": "      {dist,pq} = relax(g,dist,rest,node,cost)"},
+      {"t": "kw", "s": "      loop", "r": "(g, dist, Enum.sort(pq))"},
+      {"t": "kw", "s": "    end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "avl",
+    "title": "AVL Tree Rotations",
+    "tag": "algo",
+    "file": "avl_tree.exs",
+    "views": 69,
+    "prev": "Self-balancing BST",
+    "runKey": "avl",
+    "explain": {
+      "cx": [
+        {"l": "Search", "v": "O(log n)", "c": "g"},
+        {"l": "Insert", "v": "O(log n)", "c": "g"},
+        {"l": "Delete", "v": "O(log n)", "c": "g"},
+        {"l": "Space", "v": "O(n)", "c": ""}
+      ],
+      "desc": "An AVL tree is a <b>self-balancing Binary Search Tree</b>. After every insert or delete it checks the <b>balance factor</b> (height difference between left and right subtrees) at each node. If any node has a balance factor outside {-1, 0, 1}, one of four rotations restores balance. This guarantees O(log n) operations at all times - unlike a plain BST which degrades to O(n) with sorted input.",
+      "uc": [
+        ["Database engines", "Index structures need fast reads and writes - AVL guarantees both."],
+        ["File systems", "Directory trees and inode indexes use balanced BST variants."],
+        ["Memory allocators", "Tracking free memory blocks in size-ordered balanced trees."],
+        ["Computational geometry", "Range and interval trees are built on AVL-like structures."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# AVL Tree - self-balancing BST"},
+      {"t": "cm", "s": "# bf = height(left) - height(right)"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "AVL do"},
+      {"t": "kw", "s": "  def ", "f": "insert", "r": "(nil, v), do: %{v:v, l:nil, r:nil}"},
+      {"t": "kw", "s": "  def ", "f": "insert", "r": "(node, v) do"},
+      {"t": "kw", "s": "    node = if ", "r": "v < node.v"},
+      {"t": "", "s": "      do %{node | l: insert(node.l, v)}"},
+      {"t": "", "s": "      else %{node | r: insert(node.r, v)} end"},
+      {"t": "kw", "s": "    balance", "r": "(node)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "balance", "r": "(n) do"},
+      {"t": "", "s": "    bf = height(n.l) - height(n.r)"},
+      {"t": "kw", "s": "    cond do"},
+      {"t": "", "s": "      bf >  1 -> rotate_right(n)"},
+      {"t": "", "s": "      bf < -1 -> rotate_left(n)"},
+      {"t": "kw", "s": "      true   -> n"},
+      {"t": "kw", "s": "    end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "tcp",
+    "title": "TCP 3-Way Handshake",
+    "tag": "net",
+    "file": "tcp.exs",
+    "views": 45,
+    "prev": "SYN - SYN-ACK - ACK",
+    "runKey": "tcp",
+    "explain": {
+      "cx": [
+        {"l": "Round trips", "v": "1.5 RTT", "c": "a"},
+        {"l": "Packets", "v": "3", "c": ""},
+        {"l": "TLS 1.3", "v": "0-RTT resume", "c": "g"}
+      ],
+      "desc": "TCP handshake establishes a <b>reliable, ordered, full-duplex connection</b>. Both parties must agree on <b>Initial Sequence Numbers (ISN)</b> - random values that prevent stale packets from a previous connection causing confusion. SYN sends the client ISN. SYN-ACK acknowledges it and sends the server ISN. ACK finalises. The 1.5-RTT cost is why <b>connection reuse (Keep-Alive, HTTP/2, QUIC)</b> matters at scale.",
+      "uc": [
+        ["HTTP/HTTPS", "Every browser tab request starts with this handshake unless reusing a connection."],
+        ["SSH sessions", "Secure shell establishes TCP before the SSH layer negotiates."],
+        ["Database connections", "PostgreSQL, MySQL, and Redis clients all connect over TCP."],
+        ["Microservices", "REST and gRPC calls between services use TCP - connection pools amortise the cost."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# TCP 3-Way Handshake - RFC 793"},
+      {"t": "cm", "s": "# Establishes reliable ordered connection"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "TCP do"},
+      {"t": "kw", "s": "  def ", "f": "connect", "r": "(client, server) do"},
+      {"t": "", "s": "    seq_c = random_isn()"},
+      {"t": "", "s": "    seq_s = random_isn()"},
+      {"t": "", "s": ""},
+      {"t": "cm", "s": "    # Step 1: SYN"},
+      {"t": "", "s": "    send(client, server, :SYN, seq_c)"},
+      {"t": "", "s": ""},
+      {"t": "cm", "s": "    # Step 2: SYN-ACK"},
+      {"t": "", "s": "    send(server, client, :SYN_ACK, seq_s, seq_c+1)"},
+      {"t": "", "s": ""},
+      {"t": "cm", "s": "    # Step 3: ACK"},
+      {"t": "", "s": "    send(client, server, :ACK, seq_s+1)"},
+      {"t": "", "s": ""},
+      {"t": "op", "s": "    :connection_established"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "hashmap",
+    "title": "HashMap Chaining",
+    "tag": "algo",
+    "file": "hashmap.exs",
+    "views": 42,
+    "prev": "O(1) avg - linked list per bucket",
+    "runKey": "hashmap",
+    "explain": {
+      "cx": [
+        {"l": "Get/Put avg", "v": "O(1)", "c": "g"},
+        {"l": "Get/Put worst", "v": "O(n)", "c": "r"},
+        {"l": "Space", "v": "O(n)", "c": ""}
+      ],
+      "desc": "A HashMap stores key-value pairs using a <b>hash function</b> to map keys to bucket indexes. Chaining resolves collisions by keeping a <b>linked list at each bucket</b>. Average O(1) lookup because the hash function distributes keys evenly. Worst case O(n) when all keys collide into one bucket. <b>Load factor</b> determines when to resize.",
+      "uc": [
+        ["Caches", "Fast key-based lookup in caches and session stores."],
+        ["Database indexes", "Hash indexes for exact-match queries in Postgres and MySQL."],
+        ["Compilers", "Symbol tables mapping variable names to memory addresses."],
+        ["Routing tables", "Web framework routers map URL patterns to handler functions."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# HashMap with Chaining - O(1) avg"},
+      {"t": "cm", "s": "# Collision resolution via linked lists"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "HashMap do"},
+      {"t": "kw", "s": "  def ", "f": "new", "r": "(size), do: %{size: size, buckets: %{}}"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  def ", "f": "put", "r": "(map, key, val) do"},
+      {"t": "", "s": "    idx = hash(key, map.size)"},
+      {"t": "", "s": "    bucket = Map.get(map.buckets, idx, [])"},
+      {"t": "", "s": "    new_bucket = [{key, val} | Enum.reject(bucket, &elem(&1,0)==key)]"},
+      {"t": "kw", "s": "    %{map | buckets: Map.put(map.buckets, idx, new_bucket)}"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  def ", "f": "get", "r": "(map, key) do"},
+      {"t": "", "s": "    idx = hash(key, map.size)"},
+      {"t": "", "s": "    bucket = Map.get(map.buckets, idx, [])"},
+      {"t": "kw", "s": "    case Enum.find(bucket, fn {k,_} -> k==key end) do"},
+      {"t": "", "s": "      {_, v} -> v"},
+      {"t": "kw", "s": "      nil    ", "r": "-> :not_found"},
+      {"t": "kw", "s": "    end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "quicksort",
+    "title": "Quick Sort",
+    "tag": "algo",
+    "file": "quick_sort.exs",
+    "views": 88,
+    "prev": "O(n log n) avg - divide and conquer",
+    "runKey": "quicksort",
+    "explain": {
+      "cx": [
+        {"l": "Best/Avg", "v": "O(n log n)", "c": "g"},
+        {"l": "Worst", "v": "O(n^2)", "c": "r"},
+        {"l": "Space", "v": "O(log n)", "c": ""}
+      ],
+      "desc": "Quick Sort picks a <b>pivot element</b> and partitions the array into elements smaller than and larger than the pivot. It then recursively sorts each partition. Average O(n log n) with excellent cache performance. Worst case O(n^2) on already-sorted input with a bad pivot - fixed by <b>randomised pivot selection</b>.",
+      "uc": [
+        ["Standard libraries", "Most language runtimes use introsort (quicksort + heapsort hybrid)."],
+        ["In-place sorting", "When memory is tight - quicksort needs only O(log n) stack space."],
+        ["Partial sorts", "Finding the k-th smallest element via quickselect."],
+        ["Database engines", "Used in external sort operations for large result sets."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Quick Sort - O(n log n) average"},
+      {"t": "cm", "s": "# Partition around a pivot element"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "QuickSort do"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "([]), do: []"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "([pivot | rest]) do"},
+      {"t": "", "s": "    left  = Enum.filter(rest, &(&1 <= pivot))"},
+      {"t": "", "s": "    right = Enum.filter(rest, &(&1 > pivot))"},
+      {"t": "kw", "s": "    sort", "r": "(left) ++ [pivot] ++ sort(right)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "bfs",
+    "title": "Breadth-First Search",
+    "tag": "algo",
+    "file": "bfs.exs",
+    "views": 134,
+    "prev": "O(V+E) - level-by-level traversal",
+    "runKey": "bfs",
+    "explain": {
+      "cx": [
+        {"l": "Time", "v": "O(V + E)", "c": "g"},
+        {"l": "Space", "v": "O(V)", "c": ""},
+        {"l": "Shortest path", "v": "unweighted", "c": "g"}
+      ],
+      "desc": "BFS explores a graph <b>level by level</b>, visiting all neighbours of the current node before moving deeper. It uses a <b>queue (FIFO)</b> to track nodes to visit. BFS guarantees the <b>shortest path in unweighted graphs</b>. All nodes at distance k are visited before any node at distance k+1.",
+      "uc": [
+        ["Shortest path", "Finding shortest hops in unweighted graphs - social network distance."],
+        ["Web crawlers", "Crawling web pages level by level from a seed URL."],
+        ["Peer-to-peer networks", "Finding nearby nodes in distributed networks like BitTorrent."],
+        ["Puzzle solving", "Solving shortest-path puzzles like sliding tiles or mazes."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# BFS - O(V + E)"},
+      {"t": "cm", "s": "# Explore all neighbours before going deeper"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "BFS do"},
+      {"t": "kw", "s": "  def ", "f": "run", "r": "(graph, start) do"},
+      {"t": "", "s": "    queue   = :queue.from_list([start])"},
+      {"t": "", "s": "    visited = MapSet.new([start])"},
+      {"t": "kw", "s": "    loop", "r": "(graph, queue, visited, [start])"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "loop", "r": "(_, q, v, acc) when :queue.is_empty(q), do: Enum.reverse(acc)"},
+      {"t": "kw", "s": "  defp ", "f": "loop", "r": "(graph, q, visited, acc) do"},
+      {"t": "", "s": "    {{:value, node}, q} = :queue.out(q)"},
+      {"t": "", "s": "    neighbours = Map.get(graph, node, [])"},
+      {"t": "", "s": "    {q, visited, acc} = Enum.reduce(neighbours, {q, visited, acc},"},
+      {"t": "", "s": "      fn nb, {q, v, a} ->"},
+      {"t": "kw", "s": "        if ", "r": "MapSet.member?(v, nb) do {q,v,a}"},
+      {"t": "kw", "s": "        else", "r": " {:queue.in(nb,q), MapSet.put(v,nb), [nb|a]} end"},
+      {"t": "", "s": "      end)"},
+      {"t": "kw", "s": "    loop", "r": "(graph, q, visited, acc)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "lru",
+    "title": "LRU Cache",
+    "tag": "sys",
+    "file": "lru_cache.exs",
+    "views": 205,
+    "prev": "O(1) get/put - doubly linked list",
+    "runKey": "lru",
+    "explain": {
+      "cx": [
+        {"l": "Get", "v": "O(1)", "c": "g"},
+        {"l": "Put", "v": "O(1)", "c": "g"},
+        {"l": "Space", "v": "O(capacity)", "c": ""}
+      ],
+      "desc": "An LRU Cache evicts the <b>Least Recently Used</b> item when full. It combines a <b>HashMap for O(1) lookup</b> with a <b>doubly linked list for O(1) eviction</b>. On every get or put, the accessed node moves to the front. The tail is always the least recently used item and is evicted first.",
+      "uc": [
+        ["CPU caches", "L1/L2/L3 cache replacement policy in processors."],
+        ["Browser cache", "Recently visited pages stay cached; old ones are evicted."],
+        ["Database buffer pool", "Postgres and MySQL use LRU variants for page caching."],
+        ["CDN edge nodes", "Content delivery networks cache hot assets at edge servers."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# LRU Cache - O(1) get and put"},
+      {"t": "cm", "s": "# HashMap + Doubly Linked List"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "LRUCache do"},
+      {"t": "kw", "s": "  def ", "f": "new", "r": "(cap), do: %{cap: cap, map: %{}, head: nil, tail: nil}"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  def ", "f": "get", "r": "(cache, key) do"},
+      {"t": "kw", "s": "    case Map.fetch(cache.map, key) do"},
+      {"t": "", "s": "      {:ok, node} -> {node.val, move_to_front(cache, node)}"},
+      {"t": "", "s": "      :error      -> {:not_found, cache}"},
+      {"t": "kw", "s": "    end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  def ", "f": "put", "r": "(cache, key, val) do"},
+      {"t": "kw", "s": "    cache = if ", "r": "map_size(cache.map) >= cache.cap"},
+      {"t": "", "s": "      do evict_lru(cache) else cache end"},
+      {"t": "kw", "s": "    insert_front", "r": "(cache, key, val)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "mergesort",
+    "title": "Merge Sort",
+    "tag": "algo",
+    "file": "merge_sort.exs",
+    "views": 167,
+    "prev": "O(n log n) - stable divide and conquer",
+    "runKey": "mergesort",
+    "explain": {
+      "cx": [
+        {"l": "All cases", "v": "O(n log n)", "c": "g"},
+        {"l": "Space", "v": "O(n)", "c": "a"},
+        {"l": "Stable", "v": "yes", "c": "g"}
+      ],
+      "desc": "Merge Sort <b>divides the array in half</b> recursively until each part has one element, then <b>merges sorted halves</b> back together. Unlike quicksort, it guarantees O(n log n) in all cases. It is <b>stable</b> - equal elements keep their original order. The trade-off is O(n) extra space for the merge step.",
+      "uc": [
+        ["External sorting", "Sorting data too large for memory - merge works on disk chunks."],
+        ["Linked lists", "Preferred over quicksort for linked lists due to sequential access."],
+        ["Counting inversions", "Modified merge sort counts how unsorted an array is."],
+        ["Parallel sorting", "Merge is embarrassingly parallel - ideal for multi-core sorting."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Merge Sort - O(n log n) guaranteed"},
+      {"t": "cm", "s": "# Stable sort - equal elements keep order"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "MergeSort do"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "([]),  do: []"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "([x]), do: [x]"},
+      {"t": "kw", "s": "  def ", "f": "sort", "r": "(list) do"},
+      {"t": "", "s": "    mid   = div(length(list), 2)"},
+      {"t": "", "s": "    left  = list |> Enum.take(mid) |> sort()"},
+      {"t": "", "s": "    right = list |> Enum.drop(mid) |> sort()"},
+      {"t": "kw", "s": "    merge", "r": "(left, right)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "merge", "r": "([], r), do: r"},
+      {"t": "kw", "s": "  defp ", "f": "merge", "r": "(l, []), do: l"},
+      {"t": "kw", "s": "  defp ", "f": "merge", "r": "([h1|t1], [h2|t2]) do"},
+      {"t": "kw", "s": "    if ", "r": "h1 <= h2"},
+      {"t": "", "s": "      do [h1 | merge(t1, [h2|t2])]"},
+      {"t": "", "s": "      else [h2 | merge([h1|t1], t2)] end"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "dfs",
+    "title": "Depth-First Search",
+    "tag": "algo",
+    "file": "dfs.exs",
+    "views": 98,
+    "prev": "O(V+E) - explore depth before breadth",
+    "runKey": "dfs",
+    "explain": {
+      "cx": [
+        {"l": "Time", "v": "O(V + E)", "c": "g"},
+        {"l": "Space", "v": "O(V)", "c": ""},
+        {"l": "Path finding", "v": "yes", "c": "g"}
+      ],
+      "desc": "DFS explores as far as possible along each branch before <b>backtracking</b>. It uses a <b>stack (explicit or call stack)</b> to track the current path. DFS is used for cycle detection, topological sorting, and finding connected components. Unlike BFS it does not guarantee the shortest path.",
+      "uc": [
+        ["Topological sort", "Ordering tasks with dependencies - build systems, Makefiles."],
+        ["Cycle detection", "Detecting circular dependencies in package managers."],
+        ["Maze generation", "Random DFS creates mazes with a unique solution path."],
+        ["Compiler analysis", "Control flow graphs and dominator trees use DFS."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# DFS - O(V + E)"},
+      {"t": "cm", "s": "# Go as deep as possible before backtracking"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "DFS do"},
+      {"t": "kw", "s": "  def ", "f": "run", "r": "(graph, start) do"},
+      {"t": "kw", "s": "    visit", "r": "(graph, start, MapSet.new(), [])"},
+      {"t": "kw", "s": "  end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "visit", "r": "(_, node, visited, acc) when MapSet.member?(visited, node)"},
+      {"t": "", "s": "    do {visited, acc} end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "  defp ", "f": "visit", "r": "(graph, node, visited, acc) do"},
+      {"t": "", "s": "    visited = MapSet.put(visited, node)"},
+      {"t": "", "s": "    acc     = [node | acc]"},
+      {"t": "", "s": "    neighbours = Map.get(graph, node, [])"},
+      {"t": "kw", "s": "    Enum.reduce(neighbours, {visited, acc}, fn nb, {v, a} ->"},
+      {"t": "kw", "s": "      visit", "r": "(graph, nb, v, a)"},
+      {"t": "", "s": "    end)"},
+      {"t": "kw", "s": "  end"},
+      {"t": "kw", "s": "end"}
+    ]
+  },
+  {
+    "id": "stack",
+    "title": "Stack & Queue",
+    "tag": "sys",
+    "file": "stack_queue.exs",
+    "views": 76,
+    "prev": "LIFO vs FIFO - fundamental data structures",
+    "runKey": "stack",
+    "explain": {
+      "cx": [
+        {"l": "Push/Pop", "v": "O(1)", "c": "g"},
+        {"l": "Enqueue/Dequeue", "v": "O(1)", "c": "g"},
+        {"l": "Space", "v": "O(n)", "c": ""}
+      ],
+      "desc": "A <b>Stack (LIFO)</b> adds and removes from the same end. A <b>Queue (FIFO)</b> adds at the back and removes from the front. Both achieve O(1) operations. In Elixir, stacks are plain lists (prepend = push). Queues use two lists - one for input, one for output - rotating when the output is empty.",
+      "uc": [
+        ["Call stack", "Every function call pushes a frame; return pops it."],
+        ["Undo/redo", "Text editors push actions to a stack to support undo."],
+        ["BFS/DFS", "BFS uses a queue; DFS uses a stack - the only structural difference."],
+        ["Expression parsing", "Shunting-yard algorithm uses a stack to parse math expressions."]
+      ]
+    },
+    "code": [
+      {"t": "cm", "s": "# Stack (LIFO) and Queue (FIFO)"},
+      {"t": "cm", "s": "# Foundation of almost every algorithm"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "Stack do"},
+      {"t": "kw", "s": "  def ", "f": "new", "r": "(),           do: []"},
+      {"t": "kw", "s": "  def ", "f": "push", "r": "(s, val),     do: [val | s]"},
+      {"t": "kw", "s": "  def ", "f": "pop", "r": "([h | t]),     do: {h, t}"},
+      {"t": "kw", "s": "  def ", "f": "peek", "r": "([h | _]),    do: h"},
+      {"t": "kw", "s": "  def ", "f": "empty?", "r": "(s),        do: s == []"},
+      {"t": "kw", "s": "end"},
+      {"t": "", "s": ""},
+      {"t": "kw", "s": "defmodule ", "f": "Queue do"},
+      {"t": "kw", "s": "  def ", "f": "new", "r": "(),            do: {[], []}"},
+      {"t": "kw", "s": "  def ", "f": "enqueue", "r": "({i, o}, v), do: {[v|i], o}"},
+      {"t": "kw", "s": "  def ", "f": "dequeue", "r": "({i, [h|t]}), do: {h, {i, t}}"},
+      {"t": "kw", "s": "  def ", "f": "dequeue", "r": "({i, []}), do: dequeue({[], Enum.reverse(i)})"},
+      {"t": "kw", "s": "end"}
+    ]
+  }
+]
