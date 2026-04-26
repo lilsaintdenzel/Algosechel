@@ -119,6 +119,7 @@ function toggleSpd() {
 function setStat(msg, step) {
   document.getElementById("stMsg").textContent = msg || "";
   if (step !== undefined) document.getElementById("stStep").textContent = step;
+  updateVizDesc(msg);
 }
 function hlLine(idx) {
   var spans = document.querySelectorAll("#codeEl span");
@@ -130,6 +131,20 @@ function hlLine(idx) {
 var INFO = {};
 var NOTES = [];
 var CORPUS = [];
+var VIZ_DESCRIPTIONS = {
+  bsearch: "Binary search keeps halving the remaining search window until the target is found or the range is exhausted.",
+  bubble: "Bubble sort repeatedly compares neighboring values and swaps them so larger items drift to the far end.",
+  dijkstra: "Dijkstra's algorithm expands the cheapest reachable node and relaxes edge costs to build shortest paths.",
+  avl: "AVL insertion checks balance factors after every insert and rotates nodes whenever one side grows too deep.",
+  tcp: "The TCP handshake establishes a reliable connection by exchanging sequence numbers across three packets.",
+  hashmap: "Hash map chaining groups colliding keys inside the same bucket so lookup stays organized even when slots clash.",
+  quicksort: "Quick sort chooses a pivot, partitions values around it, and recursively repeats that process on each side.",
+  bfs: "Breadth-first search visits the graph layer by layer so near nodes are explored before deeper ones.",
+  lru: "An LRU cache keeps recently used entries at the front and evicts the oldest one when space runs out.",
+  mergesort: "Merge sort splits the array into smaller pieces and then merges ordered halves back together.",
+  dfs: "Depth-first search follows one branch as far as it can before backtracking to the next branch.",
+  stack: "This view compares stack and queue operations so you can watch LIFO and FIFO ordering diverge in real time."
+};
 var TOPIC_RUNNERS = {
   bsearch: vizBsearch,
   bubble: vizBubble,
@@ -144,6 +159,19 @@ var TOPIC_RUNNERS = {
   dfs: vizDFS,
   stack: vizStackQueue
 };
+
+function vizIntro(id) {
+  if (!id) return "Pick a note and run it to see a brief explanation of what the animation is doing.";
+  return VIZ_DESCRIPTIONS[id] || "This visualization is stepping through the selected concept in small, readable stages.";
+}
+
+function updateVizDesc(detail) {
+  var el = document.getElementById("vizDesc");
+  if (!el) return;
+  var intro = vizIntro(activeId);
+  var cleanDetail = detail ? String(detail).replace(/[.!?]+$/, "") : "";
+  el.textContent = cleanDetail ? intro + " Current step: " + cleanDetail + "." : intro;
+}
 
 function applyTopicData(topics) {
   INFO = {};
@@ -260,6 +288,7 @@ function pickNote(id) {
   document.getElementById("stTopic").textContent = note.tag;
   document.getElementById("stStep").textContent = "typing...";
   setStat("typing code...");
+  updateVizDesc("Press Run to watch " + note.title + " animate step by step");
   document.getElementById("runBtn").disabled = true;
   renderExplain(id);
   goTab("code");
@@ -318,6 +347,7 @@ function runNow() {
   if (!activeId) return;
   cancelAnimationFrame(animFrame);
   syncPalette();
+  updateVizDesc("Starting the " + (NOTES.filter(function(n){ return n.id === activeId; })[0] || {}).title + " visualization");
   document.querySelectorAll(".cblink").forEach(function(e){ e.remove(); });
   document.getElementById("runBtn").disabled = true;
   goTab("viz");
