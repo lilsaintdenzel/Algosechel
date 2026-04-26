@@ -2,549 +2,1577 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALGOSECHEL :: Algorithms Through Elixir</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/home.css">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Algosechel - Algorithm &amp; System Thinking</title>
+<style>
+:root{
+  --bg:#090b10;--sb:#0c0e18;--panel:#0f1118;--surface:#13151f;
+  --b1:#1c1f2e;--b2:#252840;
+  --ac:#7c5cfc;--ac2:#a78bfa;--acg:rgba(124,92,252,.12);
+  --gr:#34d399;--am:#fbbf24;--ro:#fb7185;--sk:#38bdf8;
+  --tx:#dde1f0;--mu:#5a5d7a;--di:#252838;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:"Courier New",monospace;background:var(--bg);color:var(--tx)}
+
+.tb{height:42px;background:var(--sb);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 1rem;gap:.5rem;flex-shrink:0;position:relative;z-index:10}
+.wbtns{display:flex;gap:6px}
+.wb{width:12px;height:12px;border-radius:50%}
+.wb.r{background:#ff5f57}.wb.y{background:#febc2e}.wb.g{background:#28c840}
+.tb-mid{position:absolute;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--mu);white-space:nowrap;pointer-events:none}
+.tb-mid b{color:var(--tx)}
+.tb-right{margin-left:auto;display:flex;gap:.4rem;align-items:center}
+.pill{font-size:.56rem;padding:.14rem .48rem;border:1px solid var(--b2);color:var(--mu);border-radius:20px}
+.pill.live{color:var(--gr);border-color:rgba(52,211,153,.3);display:flex;align-items:center;gap:.3rem}
+.ld{width:5px;height:5px;border-radius:50%;background:var(--gr);animation:lp 2s infinite}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.25}}
+.menu-btn{display:none;background:none;border:none;color:var(--mu);cursor:pointer;padding:3px}
+
+.app{display:flex;flex:1;overflow:hidden;position:relative}
+.ov{display:none;position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:49}
+.ov.on{display:block}
+
+.sidebar{width:220px;flex-shrink:0;background:var(--sb);border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;z-index:50;transition:transform .22s ease}
+.sb-top{padding:.8rem 1rem .65rem;border-bottom:1px solid var(--b1);flex-shrink:0}
+.sb-prof{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
+.sb-av{width:28px;height:28px;border-radius:6px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff;flex-shrink:0}
+.sb-name{font-size:.7rem;font-weight:700}
+.sb-sub{font-size:.55rem;color:var(--mu);margin-top:1px}
+.sb-socials{display:flex;gap:.35rem;flex-wrap:wrap;padding:.6rem 1rem .55rem;border-bottom:1px solid var(--b1)}
+.sb-social{display:flex;align-items:center;gap:.3rem;font-size:.54rem;color:var(--mu);text-decoration:none;padding:.18rem .42rem;border:1px solid var(--b1);border-radius:3px;transition:all .15s;white-space:nowrap}
+.sb-social:hover{color:var(--tx);border-color:var(--b2);background:rgba(255,255,255,.04)}
+.sb-social.yt:hover{color:#ff4444;border-color:rgba(255,68,68,.35)}
+.sb-social.ig:hover{color:#c471ed;border-color:rgba(196,113,237,.35)}
+.sb-social.tt:hover{color:#69c9d0;border-color:rgba(105,201,208,.35)}
+.sb-social.li:hover{color:#0a66c2;border-color:rgba(10,102,194,.35)}
+.sb-social svg{width:11px;height:11px;fill:currentColor;flex-shrink:0}
+.sb-lbl{padding:.75rem 1rem .3rem;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--di)}
+.nl{flex:1;overflow-y:auto;padding-bottom:1rem}
+.nl::-webkit-scrollbar{width:2px}
+.nl::-webkit-scrollbar-thumb{background:var(--b2)}
+.ni{padding:.6rem 1rem;cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.ni:hover{background:var(--acg);border-left-color:rgba(124,92,252,.4)}
+.ni.on{background:var(--acg);border-left-color:var(--ac)}
+.ni-t{font-size:.7rem;font-weight:500;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on .ni-t{color:var(--ac2)}
+.ni-r{display:flex;align-items:center;gap:.35rem}
+.tg{font-size:.5rem;padding:.07rem .36rem;border-radius:3px;font-weight:700}
+.tg-algo{background:rgba(124,92,252,.18);color:var(--ac2)}
+.tg-net{background:rgba(56,189,248,.14);color:var(--sk)}
+.tg-sys{background:rgba(52,211,153,.14);color:var(--gr)}
+.ni-p{font-size:.56rem;color:var(--di);margin-top:.14rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative}
+
+.tabbar{height:38px;background:var(--surface);border-bottom:1px solid var(--b1);display:flex;align-items:stretch;flex-shrink:0;overflow:hidden;z-index:5}
+.tab{display:flex;align-items:center;gap:.35rem;padding:0 .85rem;font-size:.62rem;color:var(--mu);border-right:1px solid var(--b1);white-space:nowrap;cursor:pointer;transition:all .15s;user-select:none}
+.tab:hover{color:var(--tx);background:rgba(255,255,255,.03)}
+.tab.on{color:var(--tx);background:var(--panel);border-bottom:2px solid var(--ac)}
+.tdot{width:5px;height:5px;border-radius:50%;background:var(--ac);flex-shrink:0}
+.tab-id{overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.tr{margin-left:auto;padding:0 .7rem;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.run-btn{font-size:.6rem;padding:.2rem .6rem;background:var(--ac);color:#fff;border:none;cursor:pointer;border-radius:3px;font-family:inherit;display:flex;align-items:center;gap:.25rem;transition:background .15s}
+.run-btn:hover{background:#6d4ce8}
+.run-btn:disabled{opacity:.4;cursor:not-allowed}
+.spd-btn{font-size:.55rem;padding:.17rem .42rem;background:none;color:var(--mu);border:1px solid var(--b2);cursor:pointer;border-radius:3px;font-family:inherit;transition:all .15s}
+.spd-btn:hover,.spd-btn.on{border-color:var(--ac);color:var(--ac2);background:var(--acg)}
+.srch-btn{background:none;border:1px solid var(--b2);color:var(--mu);cursor:pointer;border-radius:3px;padding:.18rem .38rem;display:flex;align-items:center;transition:all .15s}
+.srch-btn:hover{border-color:var(--ac);color:var(--ac2)}
+
+.srch-ov{display:none;position:absolute;inset:0;z-index:80;background:rgba(9,11,16,.97);flex-direction:column}
+.srch-ov.on{display:flex}
+.srch-bar{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--b1);flex-shrink:0}
+.srch-bar input{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:inherit;font-size:.82rem;caret-color:var(--ac2)}
+.srch-bar input::placeholder{color:var(--di)}
+.srch-x{background:none;border:1px solid var(--b2);color:var(--mu);cursor:pointer;border-radius:3px;font-size:.6rem;padding:.17rem .4rem;font-family:inherit;transition:all .15s}
+.srch-x:hover{border-color:var(--ro);color:var(--ro)}
+.srch-res{flex:1;overflow-y:auto;padding:.6rem .85rem;display:flex;flex-direction:column;gap:.28rem}
+.srch-lbl{padding:.45rem .2rem .2rem;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--di)}
+.sri{display:flex;align-items:flex-start;gap:.75rem;padding:.62rem .75rem;background:var(--surface);border:1px solid var(--b1);cursor:pointer;border-radius:3px;transition:border-color .15s}
+.sri:hover,.sri.on{border-color:var(--ac);background:var(--acg)}
+.sri-ic{width:26px;height:26px;border-radius:5px;background:var(--acg);border:1px solid rgba(124,92,252,.25);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--ac2);font-weight:700;flex-shrink:0;margin-top:1px}
+.sri-body{flex:1;min-width:0}
+.sri-t{font-size:.7rem;font-weight:500;margin-bottom:.16rem}
+.sri-t mark,.sri-s mark{background:rgba(124,92,252,.22);color:var(--ac2);border-radius:2px;padding:0 2px}
+.sri-m{display:flex;align-items:center;gap:.38rem;margin-bottom:.16rem}
+.sri-cx{font-size:.56rem;color:var(--mu);margin-left:auto}
+.sri-s{font-size:.6rem;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srch-empty{padding:2rem;text-align:center;font-size:.68rem;color:var(--mu)}
+
+.panels{flex:1;display:flex;overflow:hidden;position:relative}
+.panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel.off{display:none}
+
+.panel-code{background:var(--panel)}
+.cb{display:flex;flex:1;overflow:hidden}
+.lc{width:40px;background:var(--surface);border-right:1px solid var(--b1);padding:.8rem 0;display:flex;flex-direction:column;align-items:flex-end;padding-right:.6rem;overflow:hidden;flex-shrink:0;user-select:none}
+.ln{font-size:.57rem;line-height:1.78rem;color:var(--di);min-height:1.78rem;font-variant-numeric:tabular-nums}
+.ln.hl{color:var(--ac2)}
+.ca{flex:1;overflow:auto;padding:.8rem .9rem .8rem .75rem}
+.ca::-webkit-scrollbar{width:3px}
+.ca::-webkit-scrollbar-thumb{background:var(--b2)}
+pre{font-size:.7rem;line-height:1.78rem;white-space:pre;font-family:inherit}
+.kw{color:var(--ac2)}.fn{color:var(--gr)}.op{color:var(--sk)}.cm{color:var(--mu);font-style:italic}
+.hl-line{background:rgba(124,92,252,.14);display:block;margin:0 -.75rem;padding:0 .75rem;border-left:2px solid var(--ac)}
+
+.panel-viz{background:var(--bg)}
+.vb{flex:1;position:relative;min-height:0}
+#canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+
+.panel-explain{background:var(--panel)}
+.ep-scroll{flex:1;overflow-y:auto;padding:1.5rem 1.8rem 2.5rem}
+.ep-scroll::-webkit-scrollbar{width:3px}
+.ep-scroll::-webkit-scrollbar-thumb{background:var(--b2)}
+.ep-h1{font-size:1.45rem;font-weight:700;color:var(--tx);letter-spacing:-.02em;margin-bottom:.3rem;line-height:1.2}
+.ep-meta{display:flex;align-items:center;gap:.6rem;margin-bottom:1.4rem;padding-bottom:1rem;border-bottom:1px solid var(--b1)}
+.ep-badges{display:flex;flex-wrap:wrap;gap:.32rem;margin-left:auto}
+.ep-badge{font-size:.58rem;padding:.15rem .5rem;border-radius:3px;font-weight:500;background:var(--acg);border:1px solid rgba(124,92,252,.3);color:var(--ac2)}
+.ep-badge.g{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.28);color:var(--gr)}
+.ep-badge.a{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.28);color:var(--am)}
+.ep-badge.r{background:rgba(251,113,133,.1);border-color:rgba(251,113,133,.28);color:var(--ro)}
+.ep-sec{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--di);margin-bottom:.6rem;margin-top:1.5rem}
+.ep-sec:first-of-type{margin-top:0}
+.ep-desc{font-size:.74rem;color:var(--mu);line-height:1.88;margin-bottom:.5rem}
+.ep-desc b{color:var(--tx);font-weight:500}
+.ep-hr{height:1px;background:var(--b1);margin:1.2rem 0}
+.ep-ucs{display:flex;flex-direction:column;gap:.5rem}
+.ep-uc{display:grid;grid-template-columns:14px 1fr;gap:.5rem .7rem;padding:.7rem .85rem;background:var(--surface);border:1px solid var(--b1);border-radius:3px;transition:border-color .15s}
+.ep-uc:hover{border-color:var(--b2)}
+.ep-uc-arr{color:var(--ac);font-size:.68rem;padding-top:.14rem}
+.ep-uc-t{font-size:.68rem;font-weight:500;color:var(--tx);margin-bottom:.16rem}
+.ep-uc-b{font-size:.63rem;color:var(--mu);line-height:1.6}
+
+.pg{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;border-top:1px solid var(--b1);flex-shrink:0;background:var(--sb)}
+.pg-info{font-size:.54rem;color:var(--di);letter-spacing:.06em}
+.pg-btns{display:flex;gap:.3rem}
+.pg-btn{background:none;border:1px solid var(--b1);color:var(--mu);cursor:pointer;border-radius:3px;font-size:.6rem;padding:.18rem .45rem;font-family:inherit;transition:all .15s;line-height:1}
+.pg-btn:hover:not(:disabled){border-color:var(--ac);color:var(--ac2)}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed}
+.pg-btn.on{border-color:var(--ac);color:var(--ac2);background:var(--acg)}
+
+.status{height:24px;background:var(--ac);display:flex;align-items:center;padding:0 1rem;gap:1rem;flex-shrink:0;z-index:10}
+.st{font-size:.56rem;color:rgba(255,255,255,.6);white-space:nowrap}
+.st b{color:#fff}
+#stMsg{margin-left:auto;font-size:.56rem;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+
+.mnav{display:none;height:54px;background:var(--sb);border-top:1px solid var(--b1);flex-shrink:0;z-index:10}
+.mb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;font-size:.5rem;color:var(--mu);letter-spacing:.06em;text-transform:uppercase;border:none;background:none;font-family:inherit;transition:color .15s;padding:0}
+.mb.on{color:var(--ac2)}
+.mb svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.cblink{display:inline-block;width:1.5px;height:.85em;background:var(--ac2);animation:bl 1s step-end infinite;vertical-align:text-bottom}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+
+@media(max-width:580px){
+  .wbtns{display:none}
+  .tb-mid{font-size:.6rem}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .sidebar{position:absolute;top:0;left:0;bottom:0;width:80vw;max-width:280px;transform:translateX(-100%);box-shadow:6px 0 28px rgba(0,0,0,.6)}
+  .sidebar.open{transform:translateX(0)}
+  .status{display:none}
+  .mnav{display:flex}
+  pre{font-size:.64rem}
+  .tab-id{max-width:60px}
+  .tab{padding:0 .5rem;font-size:.58rem}
+  .tr{padding:0 .4rem;gap:.3rem}
+  .run-btn{padding:.18rem .42rem;font-size:.56rem}
+  .rl{display:none}
+  .spd-btn{padding:.15rem .36rem}
+  .pill:not(.live){display:none}
+  .ep-scroll{padding:1rem 1.1rem 2rem}
+  .ep-h1{font-size:1.1rem}
+}
+@media(max-width:360px){
+  .sidebar{width:90vw}
+  .tb-mid{display:none}
+}
+</style>
 </head>
-<body>
-<div class="grid-bg"></div>
+<body style="display:flex;flex-direction:column;height:100%">
 
-<!-- ═══ NAV ═══════════════════════════════════════════════════════ -->
-<nav>
-  <a href="#" class="nav-brand">ALGOSE<span>CHEL</span></a>
-  <div class="nav-links">
-    <a href="#visualizers" class="nav-link active">Visualizers</a>
-    <a href="#philosophy" class="nav-link">Philosophy</a>
-    <a href="#roadmap"    class="nav-link">Roadmap</a>
-  </div>
-</nav>
-
-<!-- ═══ HERO ══════════════════════════════════════════════════════ -->
-<section class="hero" id="top">
-  <!-- Background animated graph -->
-  <div class="hero-graph-wrap">
-    <svg id="hero-svg" viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- edges drawn by JS -->
-    </svg>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">Algorithm Visualization Engine :: Elixir / OTP</div>
-    <div class="hero-title">ALGOSE<span class="hl">CHEL</span></div>
-    <div class="hero-subtitle">ALGORITHMS :: ELIXIR :: VISUAL</div>
-    <a href="#visualizers" class="hero-cta">
-      Explore Visualizers <span class="arrow">↓</span>
-    </a>
-  </div>
-
-  <div class="scroll-hint">
-    <span>SCROLL</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- ═══ PILLARS ═══════════════════════════════════════════════════ -->
-<div class="pillars">
-  <div class="pillar">
-    <div class="pillar-label">Language</div>
-    <div class="pillar-val">Elixir / OTP</div>
-    <div class="pillar-desc">Functional, concurrent, fault-tolerant. Every algorithm expressed in pure Elixir with pattern matching and pipe operators.</div>
-  </div>
-  <div class="pillar">
-    <div class="pillar-label">Paradigm</div>
-    <div class="pillar-val">Visual First</div>
-    <div class="pillar-desc">See the algorithm think. Every step animated, every data structure rendered. No pseudocode, no fruit arrays.</div>
-  </div>
-  <div class="pillar">
-    <div class="pillar-label">Philosophy</div>
-    <div class="pillar-val">Seeds Over Stats</div>
-    <div class="pillar-desc">Meaningful impact over viral metrics. Build understanding that compounds — not content that fades after 48 hours.</div>
+<div class="tb">
+  <button class="menu-btn" onclick="toggleSB()" style="width:28px;height:28px" aria-label="Toggle notes sidebar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="wbtns"><div class="wb r"></div><div class="wb y"></div><div class="wb g"></div></div>
+  <div class="tb-mid"><b>Algosechel</b> - notes</div>
+  <div class="tb-right">
+    <div class="pill live"><div class="ld"></div>live</div>
+    <div class="pill">@Algosechel</div>
   </div>
 </div>
 
-<!-- ═══ VISUALIZERS ════════════════════════════════════════════════ -->
-<section class="section" id="visualizers">
-  <div class="section-header">
-    <span class="section-label">01</span>
-    <span class="section-title">Visualizers</span>
-    <div class="section-line"></div>
-  </div>
+<div class="app">
+  <div class="ov" id="ov" onclick="toggleSB()"></div>
 
-  <div class="viz-grid">
-
-    <!-- Card 1: Dijkstra -->
-    <a href="dijkstra.html" class="viz-card">
-      <div class="viz-card-bar"></div>
-      <div class="viz-preview">
-        <svg id="card-dijkstra-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"></svg>
-      </div>
-      <div class="viz-body">
-        <div class="viz-tags">
-          <span class="viz-tag cyan">Greedy</span>
-          <span class="viz-tag">Graph</span>
-          <span class="viz-tag">O((V+E) log V)</span>
-        </div>
-        <div class="viz-name">Dijkstra's Algorithm</div>
-        <div class="viz-desc">Shortest path from source to all nodes. Watch the algorithm greedily select the closest unvisited node and relax its neighbors — step by step, in full Elixir.</div>
-      </div>
-      <div class="viz-footer">
-        <span>6 Elixir subtabs · 7 steps · Real-world use cases</span>
-        <span class="viz-open">OPEN <span>→</span></span>
-      </div>
-    </a>
-
-    <!-- Card 2: BST -->
-    <a href="bst.html" class="viz-card">
-      <div class="viz-card-bar"></div>
-      <div class="viz-preview">
-        <svg id="card-bst-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"></svg>
-      </div>
-      <div class="viz-body">
-        <div class="viz-tags">
-          <span class="viz-tag purple">Recursive</span>
-          <span class="viz-tag">Tree</span>
-          <span class="viz-tag">O(log n)</span>
-        </div>
-        <div class="viz-name">Binary Search Tree</div>
-        <div class="viz-desc">Database indexing engine. Insert, search, delete and range query a live BST. In-order traversal always yields sorted keys — the foundation of SQL range scans.</div>
-      </div>
-      <div class="viz-footer">
-        <span>8 Elixir subtabs · Interactive · DB use cases</span>
-        <span class="viz-open">OPEN <span>→</span></span>
-      </div>
-    </a>
-
-    <!-- Card 3: Coming Soon -->
-    <div class="viz-card soon">
-      <div class="viz-card-bar"></div>
-      <div class="viz-preview">
-        <div class="soon-label">// NEXT<span class="cursor-blink"></span></div>
-      </div>
-      <div class="viz-body">
-        <div class="viz-tags">
-          <span class="viz-tag">In Progress</span>
-        </div>
-        <div class="viz-name">Coming Soon</div>
-        <div class="viz-desc">Next visualizer in development. Follow the roadmap below.</div>
-      </div>
-      <div class="viz-footer">
-        <span>—</span>
-        <span>TBA</span>
+  <div class="sidebar" id="sb">
+    <div class="sb-top">
+      <div class="sb-prof">
+        <div class="sb-av">A</div>
+        <div><div class="sb-name">Algosechel</div><div class="sb-sub">Algorithm &amp; System Thinking</div></div>
       </div>
     </div>
-
-  </div>
-</section>
-
-<div class="separator"></div>
-
-<!-- ═══ PHILOSOPHY ════════════════════════════════════════════════ -->
-<section class="philosophy" id="philosophy">
-  <div class="philosophy-inner">
-    <div class="phil-eyebrow">02 :: Philosophy</div>
-
-    <div class="phil-quote">
-      Most people learn algorithms with <span class="gd">pseudocode</span> and fruit arrays.<br>
-      ALGOSECHEL teaches them through <span class="hi">Elixir</span> —<br>
-      where the algorithm <em>is</em> the code.
+    <div class="sb-socials">
+      <a class="sb-social yt" href="https://youtube.com/@Algosechel" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.1 2.8 12 2.8 12 2.8s-4.1 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.2.3 4.3.3 4.3s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.8 12 21.8 12 21.8s4.1 0 6.8-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.5l8.1 3.8-8.1 3.7z"/></svg>
+        YouTube
+      </a>
+      <a class="sb-social ig" href="https://instagram.com/Algosechel" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.1 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+        Instagram
+      </a>
+      <a class="sb-social tt" href="https://tiktok.com/@Algosechel" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M19.6 3.3A4.5 4.5 0 0 1 15.1 0h-3.4v16.3c0 1.5-1.2 2.7-2.7 2.7s-2.7-1.2-2.7-2.7 1.2-2.7 2.7-2.7c.3 0 .5 0 .8.1V10.2c-.3 0-.5-.1-.8-.1C4.9 10.1 2 13 2 16.6s2.9 6.4 6.4 6.4c3.6 0 6.4-2.9 6.4-6.4V8.2c1.4.9 3 1.4 4.7 1.4V6.1a4.5 4.5 0 0 1-1.9-.7V3.3z"/></svg>
+        TikTok
+      </a>
+      <a class="sb-social li" href="https://linkedin.com/in/Algosechel" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M20.4 20.4h-3.4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8v5.4H9.8V9h3.3v1.5h.1c.5-.9 1.6-1.8 3.3-1.8 3.5 0 4.1 2.3 4.1 5.3v6.4zM5.3 7.4a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm1.7 13H3.7V9h3.4v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6C0 23.2.8 24 1.8 24h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/></svg>
+        LinkedIn
+      </a>
     </div>
-
-    <div class="phil-body">
-      <div class="phil-item">
-        <span class="phil-item-num">01</span>
-        <div class="phil-item-text">Pattern matching is your decision tree. Every branch is explicit, every path is traced.</div>
+    <div class="sb-lbl">// select to run</div>
+    <div class="nl" id="nl"></div>
+    <div class="pg" id="pg">
+      <span class="pg-info" id="pgInfo"></span>
+      <div class="pg-btns">
+        <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">&#8592;</button>
+        <button class="pg-btn" id="pgNext" onclick="changePage(1)">&#8594;</button>
       </div>
-      <div class="phil-item">
-        <span class="phil-item-num">02</span>
-        <div class="phil-item-text">Recursion is your traversal. Tail-call optimization means the stack never lies.</div>
-      </div>
-      <div class="phil-item">
-        <span class="phil-item-num">03</span>
-        <div class="phil-item-text">The pipe operator is your data flow. Input → transform → output. Always readable.</div>
-      </div>
-      <div class="phil-item">
-        <span class="phil-item-num">04</span>
-        <div class="phil-item-text">Nothing abstracted away. You see the init, the loop, the relaxation, the reconstruction.</div>
-      </div>
-    </div>
-
-    <div class="phil-footer">
-      // built with Share Tech Mono · Rajdhani · VT323<br>
-      // inspired by terminal UIs and functional purity<br>
-      // seeds over stats — always
     </div>
   </div>
-</section>
 
-<!-- ═══ ELIXIR STRIP ══════════════════════════════════════════════ -->
-<div class="elixir-strip">
-  <div class="elixir-inner">
-    <div class="elixir-text">
-      <div class="label">Why Elixir</div>
-      <h2>Functional Clarity<br>at Every Step</h2>
-      <p>Elixir's immutable data and pattern matching make algorithms <em>transparent</em>. When you write <code style="color:var(--cyan)">def relax(nil, _key), do: nil</code> you're not hiding control flow — you're declaring it. That's the ALGOSECHEL difference.</p>
+  <div class="main">
+    <div class="tabbar">
+      <div class="tab on" id="t-code" onclick="goTab('code')">
+        <div class="tdot"></div><span class="tab-id" id="codeTabLabel">select_a_note.exs</span>
+      </div>
+      <div class="tab" id="t-viz" onclick="goTab('viz')">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span class="tab-id" id="vizTabLabel">visualization</span>
+      </div>
+      <div class="tab" id="t-explain" onclick="goTab('explain')">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        explain
+      </div>
+      <div class="tr">
+        <button class="spd-btn" id="spdBtn" onclick="toggleSpd()">1x</button>
+        <button class="srch-btn" onclick="openSearch()" title="Ctrl+K" aria-label="Open search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="run-btn" id="runBtn" onclick="runNow()" disabled>
+          &#9654;<span class="rl">&nbsp;Run</span>
+        </button>
+      </div>
     </div>
-    <div class="elixir-badges">
-      <div class="elixir-badge lit">Pattern Matching</div>
-      <div class="elixir-badge lit">Tail Recursion</div>
-      <div class="elixir-badge lit">Immutable Data</div>
-      <div class="elixir-badge">Pipe Operator</div>
-      <div class="elixir-badge">OTP / GenServer</div>
-      <div class="elixir-badge">Enum / Stream</div>
-      <div class="elixir-badge">MapSet / Map</div>
+
+    <div class="srch-ov" id="srchOv">
+      <div class="srch-bar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--mu);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="srchIn" placeholder="search notes, algorithms, use cases...">
+        <button class="srch-x" onclick="closeSearch()">&#10005;</button>
+      </div>
+      <div class="srch-res" id="srchRes"></div>
+    </div>
+
+    <div class="panels">
+      <div class="panel panel-code" id="p-code">
+        <div class="cb">
+          <div class="lc" id="lc"></div>
+          <div class="ca"><pre id="codeEl"><span class="cm">// select a note to begin</span></pre></div>
+        </div>
+      </div>
+
+      <div class="panel panel-viz off" id="p-viz">
+        <div class="vb" id="vb"><canvas id="canvas"></canvas></div>
+      </div>
+
+      <div class="panel panel-explain off" id="p-explain">
+        <div class="ep-scroll" id="epScroll"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ TERMINAL / ROADMAP ════════════════════════════════════════ -->
-<section class="terminal-section" id="roadmap">
-  <div class="section-header" style="margin-bottom:24px;">
-    <span class="section-label">03</span>
-    <span class="section-title">Roadmap</span>
-    <div class="section-line"></div>
-  </div>
+<div class="status">
+  <div class="st">notes: <b id="stNotes">0</b></div>
+  <div class="st">topic: <b id="stTopic">--</b></div>
+  <div class="st">step: <b id="stStep">--</b></div>
+  <div id="stMsg">algosechel.com</div>
+</div>
 
-  <div class="terminal">
-    <div class="terminal-bar">
-      <div class="t-dot t-dot-r"></div>
-      <div class="t-dot t-dot-y"></div>
-      <div class="t-dot t-dot-g"></div>
-      <span class="t-title">algosechel :: build log</span>
-    </div>
-    <div class="terminal-body">
-      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Dijkstra's Shortest Path — 6 Elixir subtabs, 7-step walkthrough, real-world use cases</span></div>
-      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Binary Search Tree — DB indexing engine, interactive insert/search/delete/range</span></div>
-      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Dark / Light mode toggle — persists across sessions via localStorage</span></div>
-      <div class="t-line"><span class="t-prompt">✓</span><span class="t-ok">SHIPPED</span><span>Mobile-responsive layouts — touch targets, scrollable tabs, stacked grids</span></div>
-      <div class="t-line" style="margin-top:8px;"><span class="t-prompt">→</span><span class="t-pending">IN PROGRESS</span><span>A* Search — heuristic pathfinding, Manhattan distance, grid visualization</span></div>
-      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Dynamic Programming — Fibonacci, LCS, Knapsack with memoization table</span></div>
-      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>GenServer Visualizer — Actor model, mailbox animation, OTP supervision tree</span></div>
-      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Red-Black Tree — self-balancing BST, rotation animations, color invariants</span></div>
-      <div class="t-line"><span class="t-prompt">→</span><span class="t-pending">PLANNED</span><span>Quicksort / Mergesort — divide and conquer, pivot selection, in-place vs functional</span></div>
-      <div class="t-line" style="margin-top:8px;"><span class="t-prompt">$</span><span class="t-muted">seeds over stats. building what matters.</span><span class="t-cursor"></span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
-<footer>
-  <div class="footer-brand">ALGOSE<span>CHEL</span></div>
-  <div class="footer-right">
-    <span>Algorithms Through Elixir</span>
-    <a href="dijkstra.html">Dijkstra</a>
-    <a href="bst.html">BST</a>
-  </div>
-</footer>
-
-<!-- ═══ THEME TOGGLE ══════════════════════════════════════════════ -->
-<button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">
-  <span id="theme-icon">☀️</span>
-  <span id="theme-label">Light Mode</span>
-</button>
+<div class="mnav">
+  <button class="mb" onclick="mNav('notes')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/></svg>Notes
+  </button>
+  <button class="mb on" id="mb-code" onclick="mNav('code')">
+    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Code
+  </button>
+  <button class="mb" id="mb-viz" onclick="mNav('viz')">
+    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Run
+  </button>
+  <button class="mb" id="mb-explain" onclick="mNav('explain')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Explain
+  </button>
+</div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-// THEME TOGGLE
-// ═══════════════════════════════════════════════════════════════
-function toggleTheme() {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const next = isLight ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-icon').textContent  = isLight ? '☀️' : '🌙';
-  document.getElementById('theme-label').textContent = isLight ? 'Light Mode' : 'Dark Mode';
-  rebuildHero();
-  rebuildCardPreviews();
-  try { localStorage.setItem('algosechel-theme', next); } catch(e) {}
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var vb = document.getElementById("vb");
+
+function syncCanvas() {
+  var w = vb.offsetWidth, h = vb.offsetHeight;
+  if (w > 0 && h > 0) { canvas.width = w; canvas.height = h; }
+}
+var ro = new ResizeObserver(syncCanvas);
+ro.observe(vb);
+
+function W() { return canvas.width || vb.offsetWidth || 400; }
+function H() { return canvas.height || vb.offsetHeight || 300; }
+
+var activeId = null;
+var activeTab = "code";
+var typing = false;
+var typeTimer = null;
+var animFrame = null;
+var speed = 1;
+var isMobile = false;
+var srchOpen = false;
+var srchIdx = 0;
+
+function goTab(tab) {
+  activeTab = tab;
+  ["code","viz","explain"].forEach(function(t) {
+    document.getElementById("t-"+t).classList.toggle("on", t === tab);
+    document.getElementById("p-"+t).classList.toggle("off", t !== tab);
+  });
+  ["mb-code","mb-viz","mb-explain"].forEach(function(id) {
+    var t = id.replace("mb-","");
+    document.getElementById(id).classList.toggle("on", t === tab);
+  });
+  if (tab === "viz") { requestAnimationFrame(syncCanvas); }
 }
 
-try {
-  const saved = localStorage.getItem('algosechel-theme');
-  if (saved === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    document.getElementById('theme-icon').textContent  = '🌙';
-    document.getElementById('theme-label').textContent = 'Dark Mode';
+function checkMobile() {
+  isMobile = window.innerWidth <= 580;
+  if (!isMobile) {
+    document.getElementById("sb").classList.remove("open");
+    document.getElementById("ov").classList.remove("on");
   }
-} catch(e) {}
+}
+function toggleSB() {
+  document.getElementById("sb").classList.toggle("open");
+  document.getElementById("ov").classList.toggle(
+    "on",
+    document.getElementById("sb").classList.contains("open")
+  );
+}
+function mNav(v) {
+  if (v === "notes") { toggleSB(); return; }
+  goTab(v);
+}
+window.addEventListener("resize", checkMobile);
 
-// ═══════════════════════════════════════════════════════════════
-// SVG HELPERS
-// ═══════════════════════════════════════════════════════════════
-function el(tag, attrs, parent) {
-  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-  if (parent) parent.appendChild(e);
-  return e;
+function toggleSpd() {
+  speed = speed === 1 ? 3 : 1;
+  document.getElementById("spdBtn").textContent = speed + "x";
+  document.getElementById("spdBtn").classList.toggle("on", speed > 1);
 }
 
-function isLight() {
-  return document.documentElement.getAttribute('data-theme') === 'light';
+function setStat(msg, step) {
+  document.getElementById("stMsg").textContent = msg || "";
+  if (step !== undefined) document.getElementById("stStep").textContent = step;
+}
+function hlLine(idx) {
+  var spans = document.querySelectorAll("#codeEl span");
+  var lns = document.querySelectorAll("#lc .ln");
+  spans.forEach(function(s, i) { s.classList.toggle("hl-line", i === idx); });
+  lns.forEach(function(l, i) { l.classList.toggle("hl", i === idx); });
 }
 
-// ═══════════════════════════════════════════════════════════════
-// HERO GRAPH — LOOPING DIJKSTRA ANIMATION
-// ═══════════════════════════════════════════════════════════════
-const H_NODES = { A:{x:100,y:190}, B:{x:260,y:80}, C:{x:440,y:130}, D:{x:430,y:290}, E:{x:250,y:300} };
-const H_EDGES = [['A','B',4],['A','E',2],['B','C',3],['B','D',5],['C','D',1],['D','E',6]];
+var INFO = {
+  bsearch: {
+    cx: [{l:"Best",v:"O(1)",c:"g"},{l:"Average",v:"O(log n)",c:""},{l:"Worst",v:"O(log n)",c:""},{l:"Space",v:"O(1)",c:"g"}],
+    desc: "Binary Search works by <b>halving the search space</b> on every step. Compare the target against the <b>middle element</b> of the current range. If it matches, done. If the target is smaller, discard the right half. If larger, discard the left half. Each iteration eliminates 50% of remaining candidates. <b>Only works on sorted arrays.</b>",
+    uc: [
+      ["Dictionary lookups", "Finding a word in a sorted word list or autocomplete index."],
+      ["Database indexes", "B-tree range queries use binary search internally."],
+      ["Git bisect", "Finds which commit introduced a bug by binary searching history."],
+      ["Standard libraries", "Python bisect, Java Arrays.binarySearch, and Elixir Enum all use this."],
+      ["Numeric approximation", "Finding square roots or solving equations by bisection."]
+    ]
+  },
+  bubble: {
+    cx: [{l:"Best",v:"O(n)",c:"g"},{l:"Average",v:"O(n^2)",c:"r"},{l:"Worst",v:"O(n^2)",c:"r"},{l:"Space",v:"O(1)",c:"g"}],
+    desc: "Bubble Sort makes repeated passes through the array, <b>comparing adjacent pairs</b> and swapping them if they are out of order. After each pass the largest unsorted element rises to its final position. The algorithm is <b>stable</b> (equal elements keep their order) and in-place, but O(n^2) average time makes it unsuitable for large datasets.",
+    uc: [
+      ["Teaching", "The clearest illustration of a comparison sort - ideal for learning."],
+      ["Nearly sorted data", "With early-exit, performs O(n) on almost-sorted input."],
+      ["Tiny datasets", "Acceptable for fewer than 20 elements where simplicity wins."],
+      ["Embedded systems", "When code size must be minimal and memory is very tight."]
+    ]
+  },
+  dijkstra: {
+    cx: [{l:"Time",v:"O((V+E) log V)",c:"a"},{l:"Space",v:"O(V)",c:""},{l:"Fib Heap",v:"O(E + V log V)",c:"g"}],
+    desc: "Dijkstra finds the <b>shortest path from a source node to all others</b> in a weighted graph. It works greedily - always expanding the <b>nearest unvisited node</b> via a min-heap. Stale entries in the priority queue are skipped when popped. <b>Does not work with negative edge weights</b> - use Bellman-Ford for those.",
+    uc: [
+      ["GPS navigation", "Google Maps and Waze use Dijkstra variants for route planning."],
+      ["Network routing", "OSPF protocol uses Dijkstra to build router forwarding tables."],
+      ["Game pathfinding", "NPC movement in games uses Dijkstra or its heuristic variant A*."],
+      ["Social networks", "Finding shortest connection between people (degrees of separation)."]
+    ]
+  },
+  avl: {
+    cx: [{l:"Search",v:"O(log n)",c:"g"},{l:"Insert",v:"O(log n)",c:"g"},{l:"Delete",v:"O(log n)",c:"g"},{l:"Space",v:"O(n)",c:""}],
+    desc: "An AVL tree is a <b>self-balancing Binary Search Tree</b>. After every insert or delete it checks the <b>balance factor</b> (height difference between left and right subtrees) at each node. If any node has a balance factor outside {-1, 0, 1}, one of four rotations restores balance. This guarantees O(log n) operations at all times - unlike a plain BST which degrades to O(n) with sorted input.",
+    uc: [
+      ["Database engines", "Index structures need fast reads and writes - AVL guarantees both."],
+      ["File systems", "Directory trees and inode indexes use balanced BST variants."],
+      ["Memory allocators", "Tracking free memory blocks in size-ordered balanced trees."],
+      ["Computational geometry", "Range and interval trees are built on AVL-like structures."]
+    ]
+  },
+  tcp: {
+    cx: [{l:"Round trips",v:"1.5 RTT",c:"a"},{l:"Packets",v:"3",c:""},{l:"TLS 1.3",v:"0-RTT resume",c:"g"}],
+    desc: "TCP handshake establishes a <b>reliable, ordered, full-duplex connection</b>. Both parties must agree on <b>Initial Sequence Numbers (ISN)</b> - random values that prevent stale packets from a previous connection causing confusion. SYN sends the client ISN. SYN-ACK acknowledges it and sends the server ISN. ACK finalises. The 1.5-RTT cost is why <b>connection reuse (Keep-Alive, HTTP/2, QUIC)</b> matters at scale.",
+    uc: [
+      ["HTTP/HTTPS", "Every browser tab request starts with this handshake unless reusing a connection."],
+      ["SSH sessions", "Secure shell establishes TCP before the SSH layer negotiates."],
+      ["Database connections", "PostgreSQL, MySQL, and Redis clients all connect over TCP."],
+      ["Microservices", "REST and gRPC calls between services use TCP - connection pools amortise the cost."]
+    ]
+  },
+  hashmap: {
+    cx: [{l:"Get/Put avg",v:"O(1)",c:"g"},{l:"Get/Put worst",v:"O(n)",c:"r"},{l:"Space",v:"O(n)",c:""}],
+    desc: "A HashMap stores key-value pairs using a <b>hash function</b> to map keys to bucket indexes. Chaining resolves collisions by keeping a <b>linked list at each bucket</b>. Average O(1) lookup because the hash function distributes keys evenly. Worst case O(n) when all keys collide into one bucket. <b>Load factor</b> determines when to resize.",
+    uc: [["Caches","Fast key-based lookup in caches and session stores."],["Database indexes","Hash indexes for exact-match queries in Postgres and MySQL."],["Compilers","Symbol tables mapping variable names to memory addresses."],["Routing tables","Web framework routers map URL patterns to handler functions."]]
+  },
+  quicksort: {
+    cx: [{l:"Best/Avg",v:"O(n log n)",c:"g"},{l:"Worst",v:"O(n^2)",c:"r"},{l:"Space",v:"O(log n)",c:""}],
+    desc: "Quick Sort picks a <b>pivot element</b> and partitions the array into elements smaller than and larger than the pivot. It then recursively sorts each partition. Average O(n log n) with excellent cache performance. Worst case O(n^2) on already-sorted input with a bad pivot - fixed by <b>randomised pivot selection</b>.",
+    uc: [["Standard libraries","Most language runtimes use introsort (quicksort + heapsort hybrid)."],["In-place sorting","When memory is tight - quicksort needs only O(log n) stack space."],["Partial sorts","Finding the k-th smallest element via quickselect."],["Database engines","Used in external sort operations for large result sets."]]
+  },
+  bfs: {
+    cx: [{l:"Time",v:"O(V + E)",c:"g"},{l:"Space",v:"O(V)",c:""},{l:"Shortest path",v:"unweighted",c:"g"}],
+    desc: "BFS explores a graph <b>level by level</b>, visiting all neighbours of the current node before moving deeper. It uses a <b>queue (FIFO)</b> to track nodes to visit. BFS guarantees the <b>shortest path in unweighted graphs</b>. All nodes at distance k are visited before any node at distance k+1.",
+    uc: [["Shortest path","Finding shortest hops in unweighted graphs - social network distance."],["Web crawlers","Crawling web pages level by level from a seed URL."],["Peer-to-peer networks","Finding nearby nodes in distributed networks like BitTorrent."],["Puzzle solving","Solving shortest-path puzzles like sliding tiles or mazes."]]
+  },
+  lru: {
+    cx: [{l:"Get",v:"O(1)",c:"g"},{l:"Put",v:"O(1)",c:"g"},{l:"Space",v:"O(capacity)",c:""}],
+    desc: "An LRU Cache evicts the <b>Least Recently Used</b> item when full. It combines a <b>HashMap for O(1) lookup</b> with a <b>doubly linked list for O(1) eviction</b>. On every get or put, the accessed node moves to the front. The tail is always the least recently used item and is evicted first.",
+    uc: [["CPU caches","L1/L2/L3 cache replacement policy in processors."],["Browser cache","Recently visited pages stay cached; old ones are evicted."],["Database buffer pool","Postgres and MySQL use LRU variants for page caching."],["CDN edge nodes","Content delivery networks cache hot assets at edge servers."]]
+  },
+  mergesort: {
+    cx: [{l:"All cases",v:"O(n log n)",c:"g"},{l:"Space",v:"O(n)",c:"a"},{l:"Stable",v:"yes",c:"g"}],
+    desc: "Merge Sort <b>divides the array in half</b> recursively until each part has one element, then <b>merges sorted halves</b> back together. Unlike quicksort, it guarantees O(n log n) in all cases. It is <b>stable</b> - equal elements keep their original order. The trade-off is O(n) extra space for the merge step.",
+    uc: [["External sorting","Sorting data too large for memory - merge works on disk chunks."],["Linked lists","Preferred over quicksort for linked lists due to sequential access."],["Counting inversions","Modified merge sort counts how unsorted an array is."],["Parallel sorting","Merge is embarrassingly parallel - ideal for multi-core sorting."]]
+  },
+  dfs: {
+    cx: [{l:"Time",v:"O(V + E)",c:"g"},{l:"Space",v:"O(V)",c:""},{l:"Path finding",v:"yes",c:"g"}],
+    desc: "DFS explores as far as possible along each branch before <b>backtracking</b>. It uses a <b>stack (explicit or call stack)</b> to track the current path. DFS is used for cycle detection, topological sorting, and finding connected components. Unlike BFS it does not guarantee the shortest path.",
+    uc: [["Topological sort","Ordering tasks with dependencies - build systems, Makefiles."],["Cycle detection","Detecting circular dependencies in package managers."],["Maze generation","Random DFS creates mazes with a unique solution path."],["Compiler analysis","Control flow graphs and dominator trees use DFS."]]
+  },
+  stack: {
+    cx: [{l:"Push/Pop",v:"O(1)",c:"g"},{l:"Enqueue/Dequeue",v:"O(1)",c:"g"},{l:"Space",v:"O(n)",c:""}],
+    desc: "A <b>Stack (LIFO)</b> adds and removes from the same end. A <b>Queue (FIFO)</b> adds at the back and removes from the front. Both achieve O(1) operations. In Elixir, stacks are plain lists (prepend = push). Queues use two lists - one for input, one for output - rotating when the output is empty.",
+    uc: [["Call stack","Every function call pushes a frame; return pops it."],["Undo/redo","Text editors push actions to a stack to support undo."],["BFS/DFS","BFS uses a queue; DFS uses a stack - the only structural difference."],["Expression parsing","Shunting-yard algorithm uses a stack to parse math expressions."]]
+  }
+};
 
-// Dijkstra steps for animation
-const H_STEPS = [
-  { active:null, visited:[], glow:[] },
-  { active:'A',  visited:[], glow:['A'] },
-  { active:'A',  visited:['A'], glow:['B','E'] },
-  { active:'E',  visited:['A','E'], glow:['B','D'] },
-  { active:'B',  visited:['A','E','B'], glow:['C'] },
-  { active:'C',  visited:['A','E','B','C'], glow:['D'] },
-  { active:'D',  visited:['A','E','B','C','D'], glow:[] },
+function renderExplain(id) {
+  var d = INFO[id];
+  var note = NOTES.filter(function(n){ return n.id === id; })[0];
+  var scroll = document.getElementById("epScroll");
+
+  if (!d || !note) {
+    scroll.innerHTML = "";
+    return;
+  }
+
+  var badges = d.cx.map(function(cx) {
+    return '<span class="ep-badge ' + cx.c + '">' + cx.l + ": " + cx.v + "</span>";
+  }).join("");
+
+  var ucs = d.uc.map(function(u) {
+    return '<div class="ep-uc"><div class="ep-uc-arr">&rarr;</div><div><div class="ep-uc-t">' + u[0] + '</div><div class="ep-uc-b">' + u[1] + "</div></div></div>";
+  }).join("");
+
+  scroll.innerHTML =
+    '<div class="ep-h1">' + note.title + "</div>" +
+    '<div class="ep-meta"><span class="tg tg-' + note.tag + '">' + note.tag + '</span><div class="ep-badges">' + badges + "</div></div>" +
+    '<div class="ep-sec">// how it works</div>' +
+    '<div class="ep-desc">' + d.desc + "</div>" +
+    '<div class="ep-hr"></div>' +
+    '<div class="ep-sec">// use cases</div>' +
+    '<div class="ep-ucs">' + ucs + "</div>";
+}
+
+var NOTES = [
+  {id:"bsearch",title:"Binary Search",tag:"algo",file:"binary_search.exs",views:446,prev:"O(log n) - halve the search space",
+   code:[
+    {t:"cm",s:"# Binary Search - O(log n)"},
+    {t:"cm",s:"# Requires a sorted array"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"BinarySearch do"},
+    {t:"kw",s:"  def ",f:"search",r:"(arr, target)"},
+    {t:"",s:"    lo = 0"},
+    {t:"",s:"    hi = length(arr) - 1"},
+    {t:"kw",s:"    do_search",r:"(arr, target, lo, hi)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"do_search",r:"(_, _, lo, hi) when lo > hi"},
+    {t:"op",s:"    :not_found"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"do_search",r:"(arr, t, lo, hi) do"},
+    {t:"",s:"    mid = div(lo + hi, 2)"},
+    {t:"",s:"    val = Enum.at(arr, mid)"},
+    {t:"kw",s:"    cond do"},
+    {t:"op",s:"      val == t",r:" -> mid"},
+    {t:"op",s:"      val <  t",r:" -> do_search(arr, t, mid+1, hi)"},
+    {t:"kw",s:"      true    ",r:" -> do_search(arr, t, lo, mid-1)"},
+    {t:"kw",s:"    end"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizBsearch},
+  {id:"bubble",title:"Bubble Sort",tag:"algo",file:"bubble_sort.exs",views:120,prev:"O(n^2) - swap adjacent pairs",
+   code:[
+    {t:"cm",s:"# Bubble Sort - O(n^2) time, O(1) space"},
+    {t:"cm",s:"# Swap adjacent out-of-order pairs"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"BubbleSort do"},
+    {t:"kw",s:"  def ",f:"sort",r:"(list) do"},
+    {t:"",s:"    n = length(list)"},
+    {t:"",s:"    arr = List.to_tuple(list)"},
+    {t:"kw",s:"    pass",r:"(arr, n, n)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"pass",r:"(arr, _, 0), do: arr"},
+    {t:"kw",s:"  defp ",f:"pass",r:"(arr, n, rem) do"},
+    {t:"",s:"    arr = sweep(arr, 0, n - 1)"},
+    {t:"kw",s:"    pass",r:"(arr, n, rem - 1)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"sweep",r:"(arr, i, m) when i >= m, do: arr"},
+    {t:"kw",s:"  defp ",f:"sweep",r:"(arr, i, m) do"},
+    {t:"",s:"    a = elem(arr, i); b = elem(arr, i+1)"},
+    {t:"kw",s:"    arr = if a > b, do: swap(arr,i,i+1), else: arr"},
+    {t:"kw",s:"    sweep",r:"(arr, i+1, m)"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizBubble},
+  {id:"dijkstra",title:"Dijkstra's Algorithm",tag:"algo",file:"dijkstra.exs",views:716,prev:"Greedy shortest path",
+   code:[
+    {t:"cm",s:"# Dijkstra - O((V+E) log V)"},
+    {t:"cm",s:"# Always expand nearest unvisited node"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"Dijkstra do"},
+    {t:"kw",s:"  def ",f:"run",r:"(graph, src) do"},
+    {t:"",s:"    dist = Map.new(nodes(graph), &{&1, :inf})"},
+    {t:"",s:"    dist = Map.put(dist, src, 0)"},
+    {t:"",s:"    pq   = [{0, src}]"},
+    {t:"kw",s:"    loop",r:"(graph, dist, pq)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"loop",r:"(_, dist, []), do: dist"},
+    {t:"kw",s:"  defp ",f:"loop",r:"(g, dist, [{cost,node}|rest]) do"},
+    {t:"kw",s:"    if ",r:"cost > dist[node] do"},
+    {t:"kw",s:"      loop",r:"(g, dist, rest)"},
+    {t:"kw",s:"    else"},
+    {t:"",s:"      {dist,pq} = relax(g,dist,rest,node,cost)"},
+    {t:"kw",s:"      loop",r:"(g, dist, Enum.sort(pq))"},
+    {t:"kw",s:"    end"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizDijkstra},
+  {id:"avl",title:"AVL Tree Rotations",tag:"algo",file:"avl_tree.exs",views:69,prev:"Self-balancing BST",
+   code:[
+    {t:"cm",s:"# AVL Tree - self-balancing BST"},
+    {t:"cm",s:"# bf = height(left) - height(right)"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"AVL do"},
+    {t:"kw",s:"  def ",f:"insert",r:"(nil, v), do: %{v:v, l:nil, r:nil}"},
+    {t:"kw",s:"  def ",f:"insert",r:"(node, v) do"},
+    {t:"kw",s:"    node = if ",r:"v < node.v"},
+    {t:"",s:"      do %{node | l: insert(node.l, v)}"},
+    {t:"",s:"      else %{node | r: insert(node.r, v)} end"},
+    {t:"kw",s:"    balance",r:"(node)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"balance",r:"(n) do"},
+    {t:"",s:"    bf = height(n.l) - height(n.r)"},
+    {t:"kw",s:"    cond do"},
+    {t:"",s:"      bf >  1 -> rotate_right(n)"},
+    {t:"",s:"      bf < -1 -> rotate_left(n)"},
+    {t:"kw",s:"      true   -> n"},
+    {t:"kw",s:"    end"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizAVL},
+  {id:"tcp",title:"TCP 3-Way Handshake",tag:"net",file:"tcp.exs",views:45,prev:"SYN - SYN-ACK - ACK",
+   code:[
+    {t:"cm",s:"# TCP 3-Way Handshake - RFC 793"},
+    {t:"cm",s:"# Establishes reliable ordered connection"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"TCP do"},
+    {t:"kw",s:"  def ",f:"connect",r:"(client, server) do"},
+    {t:"",s:"    seq_c = random_isn()"},
+    {t:"",s:"    seq_s = random_isn()"},
+    {t:"",s:""},
+    {t:"cm",s:"    # Step 1: SYN"},
+    {t:"",s:"    send(client, server, :SYN, seq_c)"},
+    {t:"",s:""},
+    {t:"cm",s:"    # Step 2: SYN-ACK"},
+    {t:"",s:"    send(server, client, :SYN_ACK, seq_s, seq_c+1)"},
+    {t:"",s:""},
+    {t:"cm",s:"    # Step 3: ACK"},
+    {t:"",s:"    send(client, server, :ACK, seq_s+1)"},
+    {t:"",s:""},
+    {t:"op",s:"    :connection_established"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizTCP},
+  {id:"hashmap",title:"HashMap Chaining",tag:"algo",file:"hashmap.exs",views:42,prev:"O(1) avg - linked list per bucket",
+   code:[
+    {t:"cm",s:"# HashMap with Chaining - O(1) avg"},
+    {t:"cm",s:"# Collision resolution via linked lists"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"HashMap do"},
+    {t:"kw",s:"  def ",f:"new",r:"(size), do: %{size: size, buckets: %{}}"},
+    {t:"",s:""},
+    {t:"kw",s:"  def ",f:"put",r:"(map, key, val) do"},
+    {t:"",s:"    idx = hash(key, map.size)"},
+    {t:"",s:"    bucket = Map.get(map.buckets, idx, [])"},
+    {t:"",s:"    new_bucket = [{key, val} | Enum.reject(bucket, &elem(&1,0)==key)]"},
+    {t:"kw",s:"    %{map | buckets: Map.put(map.buckets, idx, new_bucket)}"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  def ",f:"get",r:"(map, key) do"},
+    {t:"",s:"    idx = hash(key, map.size)"},
+    {t:"",s:"    bucket = Map.get(map.buckets, idx, [])"},
+    {t:"kw",s:"    case Enum.find(bucket, fn {k,_} -> k==key end) do"},
+    {t:"",s:"      {_, v} -> v"},
+    {t:"kw",s:"      nil    -> :not_found"},
+    {t:"kw",s:"    end"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizHashmap},
+  {id:"quicksort",title:"Quick Sort",tag:"algo",file:"quick_sort.exs",views:88,prev:"O(n log n) avg - divide and conquer",
+   code:[
+    {t:"cm",s:"# Quick Sort - O(n log n) average"},
+    {t:"cm",s:"# Partition around a pivot element"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"QuickSort do"},
+    {t:"kw",s:"  def ",f:"sort",r:"([]), do: []"},
+    {t:"kw",s:"  def ",f:"sort",r:"([pivot | rest]) do"},
+    {t:"",s:"    left  = Enum.filter(rest, &(&1 <= pivot))"},
+    {t:"",s:"    right = Enum.filter(rest, &(&1 > pivot))"},
+    {t:"kw",s:"    sort",r:"(left) ++ [pivot] ++ sort(right)"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizQuicksort},
+  {id:"bfs",title:"Breadth-First Search",tag:"algo",file:"bfs.exs",views:134,prev:"O(V+E) - level-by-level traversal",
+   code:[
+    {t:"cm",s:"# BFS - O(V + E)"},
+    {t:"cm",s:"# Explore all neighbours before going deeper"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"BFS do"},
+    {t:"kw",s:"  def ",f:"run",r:"(graph, start) do"},
+    {t:"",s:"    queue   = :queue.from_list([start])"},
+    {t:"",s:"    visited = MapSet.new([start])"},
+    {t:"kw",s:"    loop",r:"(graph, queue, visited, [start])"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"loop",r:"(_, q, v, acc) when :queue.is_empty(q), do: Enum.reverse(acc)"},
+    {t:"kw",s:"  defp ",f:"loop",r:"(graph, q, visited, acc) do"},
+    {t:"",s:"    {{:value, node}, q} = :queue.out(q)"},
+    {t:"",s:"    neighbours = Map.get(graph, node, [])"},
+    {t:"",s:"    {q, visited, acc} = Enum.reduce(neighbours, {q, visited, acc},"},
+    {t:"",s:"      fn nb, {q, v, a} ->"},
+    {t:"kw",s:"        if ",r:"MapSet.member?(v, nb) do {q,v,a}"},
+    {t:"kw",s:"        else",r:" {:queue.in(nb,q), MapSet.put(v,nb), [nb|a]} end"},
+    {t:"",s:"      end)"},
+    {t:"kw",s:"    loop",r:"(graph, q, visited, acc)"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizBFS},
+  {id:"lru",title:"LRU Cache",tag:"sys",file:"lru_cache.exs",views:205,prev:"O(1) get/put - doubly linked list",
+   code:[
+    {t:"cm",s:"# LRU Cache - O(1) get and put"},
+    {t:"cm",s:"# HashMap + Doubly Linked List"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"LRUCache do"},
+    {t:"kw",s:"  def ",f:"new",r:"(cap), do: %{cap: cap, map: %{}, head: nil, tail: nil}"},
+    {t:"",s:""},
+    {t:"kw",s:"  def ",f:"get",r:"(cache, key) do"},
+    {t:"kw",s:"    case Map.fetch(cache.map, key) do"},
+    {t:"",s:"      {:ok, node} -> {node.val, move_to_front(cache, node)}"},
+    {t:"",s:"      :error      -> {:not_found, cache}"},
+    {t:"kw",s:"    end"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  def ",f:"put",r:"(cache, key, val) do"},
+    {t:"kw",s:"    cache = if ",r:"map_size(cache.map) >= cache.cap"},
+    {t:"",s:"      do evict_lru(cache) else cache end"},
+    {t:"kw",s:"    insert_front",r:"(cache, key, val)"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizLRU},
+  {id:"mergesort",title:"Merge Sort",tag:"algo",file:"merge_sort.exs",views:167,prev:"O(n log n) - stable divide and conquer",
+   code:[
+    {t:"cm",s:"# Merge Sort - O(n log n) guaranteed"},
+    {t:"cm",s:"# Stable sort - equal elements keep order"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"MergeSort do"},
+    {t:"kw",s:"  def ",f:"sort",r:"([]),  do: []"},
+    {t:"kw",s:"  def ",f:"sort",r:"([x]), do: [x]"},
+    {t:"kw",s:"  def ",f:"sort",r:"(list) do"},
+    {t:"",s:"    mid   = div(length(list), 2)"},
+    {t:"",s:"    left  = list |> Enum.take(mid) |> sort()"},
+    {t:"",s:"    right = list |> Enum.drop(mid) |> sort()"},
+    {t:"kw",s:"    merge",r:"(left, right)"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"merge",r:"([], r), do: r"},
+    {t:"kw",s:"  defp ",f:"merge",r:"(l, []), do: l"},
+    {t:"kw",s:"  defp ",f:"merge",r:"([h1|t1], [h2|t2]) do"},
+    {t:"kw",s:"    if ",r:"h1 <= h2"},
+    {t:"",s:"      do [h1 | merge(t1, [h2|t2])]"},
+    {t:"",s:"      else [h2 | merge([h1|t1], t2)] end"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizMergesort},
+  {id:"dfs",title:"Depth-First Search",tag:"algo",file:"dfs.exs",views:98,prev:"O(V+E) - explore depth before breadth",
+   code:[
+    {t:"cm",s:"# DFS - O(V + E)"},
+    {t:"cm",s:"# Go as deep as possible before backtracking"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"DFS do"},
+    {t:"kw",s:"  def ",f:"run",r:"(graph, start) do"},
+    {t:"kw",s:"    visit",r:"(graph, start, MapSet.new(), [])"},
+    {t:"kw",s:"  end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"visit",r:"(_, node, visited, acc) when MapSet.member?(visited, node)"},
+    {t:"",s:"    do {visited, acc} end"},
+    {t:"",s:""},
+    {t:"kw",s:"  defp ",f:"visit",r:"(graph, node, visited, acc) do"},
+    {t:"",s:"    visited = MapSet.put(visited, node)"},
+    {t:"",s:"    acc     = [node | acc]"},
+    {t:"",s:"    neighbours = Map.get(graph, node, [])"},
+    {t:"kw",s:"    Enum.reduce(neighbours, {visited, acc}, fn nb, {v, a} ->"},
+    {t:"kw",s:"      visit",r:"(graph, nb, v, a)"},
+    {t:"",s:"    end)"},
+    {t:"kw",s:"  end"},
+    {t:"kw",s:"end"}
+   ],run:vizDFS},
+  {id:"stack",title:"Stack & Queue",tag:"sys",file:"stack_queue.exs",views:76,prev:"LIFO vs FIFO - fundamental data structures",
+   code:[
+    {t:"cm",s:"# Stack (LIFO) and Queue (FIFO)"},
+    {t:"cm",s:"# Foundation of almost every algorithm"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"Stack do"},
+    {t:"kw",s:"  def ",f:"new",r:"(),           do: []"},
+    {t:"kw",s:"  def ",f:"push",r:"(s, val),     do: [val | s]"},
+    {t:"kw",s:"  def ",f:"pop",r:"([h | t]),     do: {h, t}"},
+    {t:"kw",s:"  def ",f:"peek",r:"([h | _]),    do: h"},
+    {t:"kw",s:"  def ",f:"empty?",r:"(s),        do: s == []"},
+    {t:"kw",s:"end"},
+    {t:"",s:""},
+    {t:"kw",s:"defmodule ",f:"Queue do"},
+    {t:"kw",s:"  def ",f:"new",r:"(),            do: {[], []}"},
+    {t:"kw",s:"  def ",f:"enqueue",r:"({i, o}, v), do: {[v|i], o}"},
+    {t:"kw",s:"  def ",f:"dequeue",r:"({i, [h|t]}), do: {h, {i, t}}"},
+    {t:"kw",s:"  def ",f:"dequeue",r:"({i, []}), do: dequeue({[], Enum.reverse(i)})"},
+    {t:"kw",s:"end"}
+   ],run:vizStackQueue}
 ];
 
-let heroTimer = null;
-let heroStep = 0;
+var PAGE_SIZE = 10;
+var currentPage = 0;
 
-function buildHeroGraph(svg) {
-  svg.innerHTML = '';
-  const lt = isLight();
-  const edgeCol  = lt ? '#c4b9a8' : '#1e293b';
-  const nodeFill = lt ? '#f0ede8' : '#0a0a14';
-  const nodeStr  = lt ? '#d4d0c8' : '#1a1a2e';
-  const txtFill  = lt ? '#1a1a18' : '#e2e8f0';
+function totalPages() { return Math.ceil(NOTES.length / PAGE_SIZE); }
 
-  // defs arrowhead
-  const defs = el('defs', {}, svg);
-  const mk = (id, color) => {
-    const m = el('marker', {id, markerWidth:'7', markerHeight:'7', refX:'5', refY:'3', orient:'auto'}, defs);
-    el('path', {d:'M0,0 L0,6 L7,3 z', fill:color}, m);
-  };
-  mk('harr-def', edgeCol);
-  mk('harr-cyn', '#06b6d4');
+function renderNL() {
+  var nl = document.getElementById("nl");
+  var pgInfo = document.getElementById("pgInfo");
+  var pgPrev = document.getElementById("pgPrev");
+  var pgNext = document.getElementById("pgNext");
+  var pg = document.getElementById("pg");
 
-  for (const [a,b] of H_EDGES) {
-    const pa = H_NODES[a], pb = H_NODES[b];
-    el('line', {id:`hedge-${a}-${b}`, x1:pa.x, y1:pa.y, x2:pb.x, y2:pb.y,
-      stroke:edgeCol, 'stroke-width':'1.5', 'marker-end':'url(#harr-def)'}, svg);
-    el('line', {id:`hedge-${b}-${a}`, x1:pb.x, y1:pb.y, x2:pa.x, y2:pa.y,
-      stroke:edgeCol, 'stroke-width':'1.5', 'marker-end':'url(#harr-def)'}, svg);
-  }
+  nl.innerHTML = "";
 
-  for (const n of Object.keys(H_NODES)) {
-    const {x, y} = H_NODES[n];
-    const g = el('g', {id:`hnode-${n}`, transform:`translate(${x},${y})`}, svg);
-    el('circle', {id:`hcirc-${n}`, r:'22', fill:nodeFill, stroke:nodeStr, 'stroke-width':'1.5'}, g);
-    const t = el('text', {y:'5', 'text-anchor':'middle', 'font-family':'Rajdhani, sans-serif',
-      'font-size':'16', 'font-weight':'700', fill:txtFill}, g);
-    t.textContent = n;
-  }
-}
+  var start = currentPage * PAGE_SIZE;
+  var slice = NOTES.slice(start, start + PAGE_SIZE);
+  var total = totalPages();
 
-function applyHeroStep(step) {
-  const lt = isLight();
-  const s = H_STEPS[step];
-  const defEdge = lt ? '#c4b9a8' : '#1e293b';
-  const defNode = lt ? '#f0ede8' : '#0a0a14';
-  const defStr  = lt ? '#d4d0c8' : '#1a1a2e';
-
-  // reset all edges
-  for (const [a,b] of H_EDGES) {
-    for (const id of [`hedge-${a}-${b}`, `hedge-${b}-${a}`]) {
-      const e = document.getElementById(id);
-      if (e) { e.setAttribute('stroke', defEdge); e.setAttribute('stroke-width', '1.5'); }
-    }
-  }
-
-  // reset all nodes
-  for (const n of Object.keys(H_NODES)) {
-    const c = document.getElementById(`hcirc-${n}`);
-    if (c) { c.setAttribute('fill', defNode); c.setAttribute('stroke', defStr); c.setAttribute('stroke-width', '1.5'); }
-  }
-
-  // visited nodes — green
-  for (const n of s.visited) {
-    const c = document.getElementById(`hcirc-${n}`);
-    if (c) { c.setAttribute('fill', lt ? '#dcfce7' : '#1e3a2a'); c.setAttribute('stroke', lt ? '#15803d' : '#10b981'); c.setAttribute('stroke-width', '2'); }
-  }
-
-  // glowing/relaxed — blue
-  for (const n of s.glow) {
-    const c = document.getElementById(`hcirc-${n}`);
-    if (c) { c.setAttribute('fill', lt ? '#dbeafe' : '#1e3050'); c.setAttribute('stroke', lt ? '#2563eb' : '#06b6d4'); c.setAttribute('stroke-width', '2'); }
-  }
-
-  // active node — pink pulse
-  if (s.active) {
-    const c = document.getElementById(`hcirc-${s.active}`);
-    if (c) { c.setAttribute('fill', lt ? '#fde8f4' : '#2d1b4e'); c.setAttribute('stroke', lt ? '#be185d' : '#ec4899'); c.setAttribute('stroke-width', '3'); }
-    if (H_NODES[s.active]) {
-      for (const [a, b] of H_EDGES) {
-        if (a === s.active || b === s.active) {
-          const e1 = document.getElementById(`hedge-${a}-${b}`);
-          const e2 = document.getElementById(`hedge-${b}-${a}`);
-          if (e1) { e1.setAttribute('stroke', lt ? '#0369a1' : '#06b6d4'); e1.setAttribute('stroke-width', '2'); }
-          if (e2) { e2.setAttribute('stroke', lt ? '#0369a1' : '#06b6d4'); e2.setAttribute('stroke-width', '2'); }
-        }
+  slice.forEach(function(n) {
+    var el = document.createElement("div");
+    el.className = "ni" + (n.id === activeId ? " on" : "");
+    el.innerHTML = '<div class="ni-t">'+n.title+'</div><div class="ni-r"><span class="tg tg-'+n.tag+'">'+n.tag+'</span></div><div class="ni-p">'+n.prev+"</div>";
+    el.onclick = function() {
+      pickNote(n.id);
+      if (isMobile) {
+        document.getElementById("sb").classList.remove("open");
+        document.getElementById("ov").classList.remove("on");
       }
+    };
+    nl.appendChild(el);
+  });
+
+  if (total <= 1) {
+    pg.style.display = "none";
+  } else {
+    pg.style.display = "flex";
+    pgInfo.textContent = (currentPage + 1) + " / " + total;
+    pgPrev.disabled = currentPage === 0;
+    pgNext.disabled = currentPage >= total - 1;
+  }
+}
+
+function changePage(dir) {
+  var total = totalPages();
+  currentPage = Math.max(0, Math.min(currentPage + dir, total - 1));
+  renderNL();
+  document.getElementById("nl").scrollTop = 0;
+}
+
+function pickNote(id) {
+  stopAll();
+  activeId = id;
+  var idx = NOTES.findIndex(function(n){ return n.id === id; });
+  if (idx >= 0) currentPage = Math.floor(idx / PAGE_SIZE);
+  renderNL();
+  var note = NOTES.filter(function(n){ return n.id === id; })[0];
+  var vizNames = {bsearch:"array",bubble:"bar sort",dijkstra:"graph",avl:"tree",tcp:"network"};
+  document.getElementById("codeTabLabel").textContent = note.file;
+  document.getElementById("vizTabLabel").textContent = vizNames[id] || "visualization";
+  document.getElementById("stTopic").textContent = note.tag;
+  document.getElementById("stStep").textContent = "typing...";
+  setStat("typing code...");
+  document.getElementById("runBtn").disabled = true;
+  renderExplain(id);
+  goTab("code");
+  ctx.clearRect(0, 0, W(), H());
+  typeCode(note);
+}
+
+function stopAll() {
+  clearTimeout(typeTimer);
+  cancelAnimationFrame(animFrame);
+  typing = false;
+}
+
+function lineHTML(o) {
+  if (!o || o.s === undefined) return "";
+  var s = o.s || "", t = o.t || "", f = o.f || "", r = o.r || "";
+  if (t === "cm") return '<span class="cm">'+s+"</span>";
+  if (t === "kw") return '<span class="kw">'+s+'</span><span class="fn">'+f+"</span>"+r;
+  if (t === "op") return '<span class="op">'+s+"</span>"+r;
+  return s;
+}
+
+function typeCode(note) {
+  typing = true;
+  var pre = document.getElementById("codeEl");
+  pre.innerHTML = "";
+  var lc = document.getElementById("lc");
+  lc.innerHTML = "";
+  var i = 0;
+  function tick() {
+    if (i >= note.code.length) {
+      typing = false;
+      document.getElementById("runBtn").disabled = false;
+      document.getElementById("stStep").textContent = "ready";
+      setStat("press Run to animate");
+      var cur = document.createElement("span");
+      cur.className = "cblink";
+      pre.appendChild(cur);
+      return;
     }
+    var sp = document.createElement("span");
+    sp.innerHTML = lineHTML(note.code[i]) + "\n";
+    pre.appendChild(sp);
+    var ln = document.createElement("div");
+    ln.className = "ln";
+    ln.textContent = i + 1;
+    lc.appendChild(ln);
+    sp.scrollIntoView({block:"nearest"});
+    i++;
+    typeTimer = setTimeout(tick, speed === 1 ? 55 : 18);
   }
+  tick();
 }
 
-function rebuildHero() {
-  buildHeroGraph(document.getElementById('hero-svg'));
-  applyHeroStep(heroStep);
+function runNow() {
+  if (!activeId) return;
+  cancelAnimationFrame(animFrame);
+  document.querySelectorAll(".cblink").forEach(function(e){ e.remove(); });
+  document.getElementById("runBtn").disabled = true;
+  goTab("viz");
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      syncCanvas();
+      ctx.clearRect(0, 0, W(), H());
+      var note = NOTES.filter(function(n){ return n.id === activeId; })[0];
+      note.run();
+    });
+  });
 }
 
-function startHeroLoop() {
-  if (heroTimer) clearInterval(heroTimer);
-  heroTimer = setInterval(() => {
-    heroStep = (heroStep + 1) % H_STEPS.length;
-    applyHeroStep(heroStep);
-  }, 900);
-}
+var C = {bg:"#090b10",sur:"#13151f",br:"#1c1f2e",b1:"#1c1f2e",ac:"#7c5cfc",ac2:"#a78bfa",
+         gr:"#34d399",am:"#fbbf24",ro:"#fb7185",sk:"#38bdf8",
+         tx:"#dde1f0",mu:"#5a5d7a",di:"#252838"};
 
-// ═══════════════════════════════════════════════════════════════
-// CARD PREVIEW — DIJKSTRA MINI
-// ═══════════════════════════════════════════════════════════════
-const D_NODES = { A:{x:70,y:110}, B:{x:160,y:55}, C:{x:270,y:80}, D:{x:265,y:165}, E:{x:155,y:175} };
-const D_EDGES = [['A','B',4],['A','E',2],['B','C',3],['B','D',5],['C','D',1],['D','E',6]];
+function dl() { return new Promise(function(r){ setTimeout(r, speed === 1 ? 850 : 300); }); }
+function dl2() { return new Promise(function(r){ setTimeout(r, speed === 1 ? 180 : 60); }); }
+function pause(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
-function buildDijkstraCard(svg) {
-  svg.innerHTML = '';
-  const lt = isLight();
-  const edgeVisited = lt ? '#15803d' : '#10b981';
-  const edgeDef     = lt ? '#d4d0c8' : '#1e293b';
+async function vizBsearch() {
+  var arr=[8,14,21,33,40,47,55,61,72,80,88,95],target=61,lo=0,hi=arr.length-1,found=-1,step=0;
+  var n=arr.length,cw=Math.min(50,(W()-40)/n),ch=Math.min(42,H()*.11);
+  var sx=(W()-n*cw)/2,sy=H()/2-ch/2,fs=Math.max(9,Math.min(13,cw*.28));
 
-  const defs = el('defs', {}, svg);
-  const mk = (id, col) => {
-    const m = el('marker', {id, markerWidth:'6', markerHeight:'6', refX:'4', refY:'3', orient:'auto'}, defs);
-    el('path', {d:'M0,0 L0,6 L6,3 z', fill:col}, m);
-  };
-  mk('darr-v', edgeVisited);
-  mk('darr-d', edgeDef);
-
-  const optEdges = [['A','E'],['E','D'],['D','C'],['A','B']];
-
-  for (const [a,b] of D_EDGES) {
-    const pa = D_NODES[a], pb = D_NODES[b];
-    const isOpt = optEdges.some(([x,y]) => (x===a&&y===b)||(x===b&&y===a));
-    const col = isOpt ? (lt ? '#b45309' : '#f59e0b') : edgeDef;
-    const arrId = isOpt ? 'darr-v' : 'darr-d';
-    el('line', {x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y, stroke:col,
-      'stroke-width': isOpt ? '2' : '1.2',
-      'marker-end':`url(#${arrId})`,
-      opacity: isOpt ? '1' : '0.5'}, svg);
-  }
-
-  const nodeColors = {
-    A: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
-    B: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
-    C: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
-    D: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
-    E: { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#10b981' },
-  };
-  const dists = { A:'0', B:'4', C:'7', D:'8', E:'2' };
-
-  for (const n of Object.keys(D_NODES)) {
-    const {x, y} = D_NODES[n];
-    const nc = nodeColors[n];
-    const g = el('g', {transform:`translate(${x},${y})`}, svg);
-    el('circle', {r:'17', fill: nc.f, stroke: nc.s, 'stroke-width':'2'}, g);
-    const t = el('text', {y:'-2', 'text-anchor':'middle', 'font-family':'Rajdhani,sans-serif',
-      'font-size':'13', 'font-weight':'700', fill: nc.s}, g);
-    t.textContent = n;
-    const d = el('text', {y:'11', 'text-anchor':'middle', 'font-family':'Share Tech Mono,monospace',
-      'font-size':'9', fill: nc.s, opacity:'0.8'}, g);
-    d.textContent = dists[n];
+  function draw(mid,state) {
+    ctx.clearRect(0,0,W(),H());
+    ctx.font="600 "+fs+"px Courier New"; ctx.fillStyle=C.mu; ctx.textAlign="center";
+    ctx.fillText("target = "+target, W()/2, sy-34);
+    if (state !== "done") {
+      function lbl(i,t,c){ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=c;ctx.textAlign="center";ctx.fillText(t,sx+i*cw+cw/2,sy-14);}
+      lbl(lo,"lo",C.gr); lbl(hi,"hi",C.ro); if(mid!=null)lbl(mid,"mid",C.ac2);
+    }
+    arr.forEach(function(v,i){
+      var x=sx+i*cw,bg=C.sur,bc=C.br,tc=C.mu;
+      if(state==="done"&&i===found){bg=C.gr+"33";bc=C.gr;tc=C.gr;}
+      else if(i===mid){bg=C.ac+"33";bc=C.ac2;tc=C.ac2;}
+      else if(i>=lo&&i<=hi){tc=C.tx;}
+      else{bg="#0d0f16";tc=C.di;}
+      ctx.fillStyle=bg;ctx.strokeStyle=bc;ctx.lineWidth=i===mid?2:1;
+      ctx.fillRect(x,sy,cw-2,ch);ctx.strokeRect(x,sy,cw-2,ch);
+      ctx.font="600 "+fs+"px Courier New";ctx.fillStyle=tc;ctx.textAlign="center";
+      ctx.fillText(v,x+(cw-2)/2,sy+ch/2+fs*.38);
+    });
+    arr.forEach(function(_,i){
+      ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.di;ctx.textAlign="center";
+      ctx.fillText(i,sx+i*cw+(cw-2)/2,sy+ch+14);
+    });
   }
 
-  const t = el('text', {x:'340', y:'25', 'text-anchor':'end', 'font-family':'VT323,monospace',
-    'font-size':'14', fill: lt ? '#b45309' : '#f59e0b', 'letter-spacing':'2'}, svg);
-  t.textContent = 'ALL PATHS FOUND';
+  while(lo<=hi) {
+    var mid=Math.floor((lo+hi)/2); step++;
+    hlLine(13); setStat("lo="+lo+" hi="+hi+" mid="+mid+" val="+arr[mid],"step "+step);
+    draw(mid,"searching"); await dl();
+    if(arr[mid]===target){
+      hlLine(16); found=mid; setStat("Found "+target+" at index "+mid,"done");
+      var p=0;
+      function pulse(){if(p++>8){document.getElementById("runBtn").disabled=false;return;}draw(mid,p%2===0?"done":"searching");animFrame=setTimeout(pulse,200);}
+      pulse(); return;
+    } else if(arr[mid]<target){hlLine(17);setStat(arr[mid]+"<"+target+" search right","step "+step);lo=mid+1;}
+    else{hlLine(18);setStat(arr[mid]+">"+target+" search left","step "+step);hi=mid-1;}
+    await dl();
+  }
+  setStat("Not found","done"); document.getElementById("runBtn").disabled=false;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// CARD PREVIEW — BST MINI
-// ═══════════════════════════════════════════════════════════════
-function buildBSTCard(svg) {
-  svg.innerHTML = '';
-  const lt = isLight();
+async function vizBubble() {
+  var arr=W()<400?[64,25,12,88,45,37,72,19]:[64,25,12,88,45,37,72,19,56,33,81,50];
+  var n=arr.length,bw=Math.min(46,(W()-40)/n),maxH=H()-80;
+  var sx=(W()-n*bw)/2,by=H()-38,fs=Math.max(8,Math.min(11,bw*.25));
+  var cmp=[-1,-1],done=new Set(),step=0;
 
-  const nodes = [
-    {k:50, x:200, y:30,  level:0},
-    {k:25, x:110, y:85,  level:1},
-    {k:75, x:290, y:85,  level:1},
-    {k:10, x:65,  y:140, level:2},
-    {k:35, x:155, y:140, level:2},
-    {k:60, x:245, y:140, level:2},
-    {k:90, x:335, y:140, level:2},
-    {k:42, x:175, y:195, level:3},
-  ];
-  const edges = [[0,1],[0,2],[1,3],[1,4],[2,5],[2,6],[4,7]];
-
-  const lineCol = lt ? '#d4d0c8' : '#1e293b';
-  for (const [p, c] of edges) {
-    const pn = nodes[p], cn = nodes[c];
-    el('line', {x1:pn.x,y1:pn.y,x2:cn.x,y2:cn.y, stroke:lineCol,'stroke-width':'1.2', opacity:'0.7'}, svg);
+  function draw(){
+    ctx.clearRect(0,0,W(),H());
+    arr.forEach(function(v,i){
+      var bh=(v/100)*maxH,x=sx+i*bw,y=by-bh,col=C.ac;
+      if(done.has(i))col=C.gr; else if(i===cmp[0]||i===cmp[1])col=C.am;
+      ctx.fillStyle=col+"33";ctx.strokeStyle=col;ctx.lineWidth=1.5;
+      ctx.fillRect(x+2,y,bw-4,bh);ctx.strokeRect(x+2,y,bw-4,bh);
+      ctx.fillStyle=col;ctx.font=fs+"px Courier New";ctx.textAlign="center";ctx.fillText(v,x+bw/2,y-4);
+    });
+    ctx.strokeStyle=C.br;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(sx-8,by+2);ctx.lineTo(sx+n*bw+8,by+2);ctx.stroke();
   }
 
-  const colors = [
-    { f: lt ? '#ede9fe' : '#2e1a5e', s: lt ? '#6d28d9' : '#a78bfa' },
-    { f: lt ? '#dbeafe' : '#1e3050', s: lt ? '#1d4ed8' : '#60a5fa' },
-    { f: lt ? '#dbeafe' : '#1e3050', s: lt ? '#1d4ed8' : '#60a5fa' },
-    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
-    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
-    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
-    { f: lt ? '#dcfce7' : '#1e3a2a', s: lt ? '#15803d' : '#4ade80' },
-    { f: lt ? '#fef3c7' : '#3d2a0a', s: lt ? '#b45309' : '#fbbf24' },
-  ];
+  for(var p=0;p<n-1;p++){
+    for(var i=0;i<n-1-p;i++){
+      cmp=[i,i+1];step++;hlLine(16);setStat("Compare ["+i+"]="+arr[i]+" vs ["+(i+1)+"]="+arr[i+1],"pass "+(p+1));
+      draw();await dl2();
+      if(arr[i]>arr[i+1]){hlLine(19);setStat("Swap "+arr[i]+" and "+arr[i+1],"pass "+(p+1));var t=arr[i];arr[i]=arr[i+1];arr[i+1]=t;draw();await dl2();}
+    }
+    done.add(n-1-p);cmp=[-1,-1];
+  }
+  done.add(0);cmp=[-1,-1];draw();hlLine(10);setStat("Array sorted!","done");
+  document.getElementById("runBtn").disabled=false;
+}
 
-  for (let i = 0; i < nodes.length; i++) {
-    const n = nodes[i], c = colors[i];
-    const g = el('g', {transform:`translate(${n.x},${n.y})`}, svg);
-    el('circle', {r:'16', fill:c.f, stroke:c.s, 'stroke-width':'1.8'}, g);
-    const t = el('text', {y:'5', 'text-anchor':'middle',
-      'font-family':'Space Mono,monospace', 'font-size':'10',
-      'font-weight':'700', fill:c.s}, g);
-    t.textContent = n.k;
+async function vizDijkstra() {
+  var nodes=[{id:"A",x:.15,y:.22},{id:"B",x:.45,y:.1},{id:"C",x:.78,y:.22},{id:"D",x:.22,y:.62},{id:"E",x:.58,y:.62},{id:"F",x:.88,y:.68}];
+  var edges=[{a:"A",b:"B",w:4},{a:"A",b:"D",w:2},{a:"B",b:"C",w:5},{a:"B",b:"E",w:10},{a:"C",b:"F",w:3},{a:"D",b:"E",w:8},{a:"E",b:"F",w:2},{a:"B",b:"D",w:1}];
+  var dist={};nodes.forEach(function(n){dist[n.id]=Infinity;});dist.A=0;
+  var visited=new Set(),shortE=new Set(),pq=[{cost:0,id:"A"}],aN=null,aE=null,step=0;
+  var r=Math.min(W(),H())*.055,fs=Math.max(10,r*.65),wfs=Math.max(8,r*.48);
+
+  function np(id){var nd=nodes.filter(function(x){return x.id===id;})[0];return{x:nd.x*W(),y:nd.y*H()};}
+  function draw(){
+    ctx.clearRect(0,0,W(),H());
+    edges.forEach(function(e){
+      var a=np(e.a),b=np(e.b),k=e.a+"-"+e.b;
+      ctx.strokeStyle=shortE.has(k)?C.gr:aE===k?C.am:C.br;ctx.lineWidth=shortE.has(k)?2.5:aE===k?2:1;
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+      ctx.font=wfs+"px Courier New";ctx.fillStyle=aE===k?C.am:C.mu;ctx.textAlign="center";
+      ctx.fillText(e.w,(a.x+b.x)/2+5,(a.y+b.y)/2-5);
+    });
+    nodes.forEach(function(n){
+      var p=np(n.id),isA=n.id===aN,isV=visited.has(n.id),isS=n.id==="A";
+      ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+      ctx.fillStyle=isA?C.ac+"55":isV?C.gr+"22":C.sur;ctx.fill();
+      ctx.strokeStyle=isA?C.ac2:isV?C.gr:isS?C.sk:C.br;ctx.lineWidth=isA||isS?2:1;ctx.stroke();
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=isA?C.ac2:isV?C.gr:C.tx;ctx.textAlign="center";ctx.fillText(n.id,p.x,p.y+fs*.36);
+      ctx.font=wfs+"px Courier New";ctx.fillStyle=isV?C.gr:C.mu;ctx.fillText(dist[n.id]===Infinity?"inf":dist[n.id],p.x,p.y+r+wfs+2);
+    });
   }
 
-  const t = el('text', {x:'340', y:'218', 'text-anchor':'end', 'font-family':'VT323,monospace',
-    'font-size':'14', fill: lt ? '#6d28d9' : '#a78bfa', 'letter-spacing':'2'}, svg);
-  t.textContent = 'IN-ORDER → SORTED';
+  while(pq.length){
+    pq.sort(function(a,b){return a.cost-b.cost;});
+    var top=pq.shift(),cost=top.cost,id=top.id;
+    if(visited.has(id)||cost>dist[id])continue;
+    visited.add(id);aN=id;step++;hlLine(12);setStat("Visiting "+id+" dist="+cost,"step "+step);draw();await dl();
+    edges.filter(function(e){return e.a===id||e.b===id;}).forEach(function(e){
+      var nb=e.a===id?e.b:e.a;if(visited.has(nb))return;
+      aE=e.a+"-"+e.b;var nc=cost+e.w;
+      if(nc<dist[nb]){dist[nb]=nc;shortE.add(aE);pq.push({cost:nc,id:nb});}
+    });
+    hlLine(14);setStat("Relaxed edges from "+id,"step "+step);draw();await dl();
+    aE=null;aN=null;
+  }
+  draw();hlLine(10);setStat("Shortest paths from A complete!","done");
+  document.getElementById("runBtn").disabled=false;
 }
 
-function rebuildCardPreviews() {
-  buildDijkstraCard(document.getElementById('card-dijkstra-svg'));
-  buildBSTCard(document.getElementById('card-bst-svg'));
+async function vizAVL() {
+  var tree=null,hlN=null,step=0;
+  var vals=W()<400?[50,30,70,20,40,60]:[50,30,70,20,40,60,80,10,25,35,45];
+  function ht(n){return n?n.h:0;}
+  function upd(n){n.h=1+Math.max(ht(n.l),ht(n.r));n.bf=ht(n.l)-ht(n.r);}
+  function rR(y){var x=y.l;y.l=x.r;x.r=y;upd(y);upd(x);return x;}
+  function rL(x){var y=x.r;x.r=y.l;y.l=x;upd(x);upd(y);return y;}
+  function bal(n){upd(n);if(n.bf>1){if(n.l.bf<0)n.l=rL(n.l);return rR(n);}if(n.bf<-1){if(n.r.bf>0)n.r=rR(n.r);return rL(n);}return n;}
+  function ins(n,v){if(!n)return{v:v,l:null,r:null,h:1,bf:0};if(v<n.v)n.l=ins(n.l,v);else n.r=ins(n.r,v);return bal(n);}
+  var nr=Math.min(20,W()*.055),lh=Math.min(68,H()*.21),fs=Math.max(9,nr*.65),bfs=Math.max(7,nr*.5);
+  function dt(n,x,y,sp){
+    if(!n)return;
+    if(n.l){var cx=x-sp,cy=y+lh;ctx.strokeStyle=C.br;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y+nr);ctx.lineTo(cx,cy-nr);ctx.stroke();dt(n.l,cx,cy,sp/2);}
+    if(n.r){var cx2=x+sp,cy2=y+lh;ctx.strokeStyle=C.br;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y+nr);ctx.lineTo(cx2,cy2-nr);ctx.stroke();dt(n.r,cx2,cy2,sp/2);}
+    var hl=n.v===hlN;
+    ctx.beginPath();ctx.arc(x,y,nr,0,Math.PI*2);ctx.fillStyle=hl?C.ac+"55":C.sur;ctx.fill();
+    ctx.strokeStyle=hl?C.ac2:n.bf===0?C.gr:Math.abs(n.bf)===1?C.am:C.ro;ctx.lineWidth=hl?2.5:1.5;ctx.stroke();
+    ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=hl?C.ac2:C.tx;ctx.textAlign="center";ctx.fillText(n.v,x,y+fs*.38);
+    ctx.font=bfs+"px Courier New";ctx.fillStyle=Math.abs(n.bf)>1?C.ro:C.mu;ctx.fillText("bf:"+n.bf,x,y+nr+bfs+2);
+  }
+  function draw(){ctx.clearRect(0,0,W(),H());if(tree)dt(tree,W()/2,nr+10,W()/4);}
+  for(var vi=0;vi<vals.length;vi++){
+    step++;hlN=vals[vi];hlLine(4);setStat("Inserting "+vals[vi],"step "+step);
+    tree=ins(tree,vals[vi]);draw();await dl();hlN=null;draw();
+  }
+  setStat("AVL balanced! green=bf:0 amber=bf:+-1","done");
+  document.getElementById("runBtn").disabled=false;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SMOOTH NAV HIGHLIGHT ON SCROLL
-// ═══════════════════════════════════════════════════════════════
-const sections = ['visualizers', 'philosophy', 'roadmap'];
-const navLinks = document.querySelectorAll('.nav-link');
+async function vizTCP() {
+  var step=0;
+  var cX=W()*.18,sX=W()*.82,tY=H()*.12,bY=H()*.84;
+  var bw=Math.min(108,W()*.24),bh=46,fs=Math.max(9,Math.min(13,bw*.12));
+  var gap=Math.min(105,(bY-tY-80)/3);
+  var steps=[{from:"c",label:"SYN",sub:"seq=1000",col:C.ac2,cl:8},{from:"s",label:"SYN-ACK",sub:"seq=5000, ack=1001",col:C.am,cl:12},{from:"c",label:"ACK",sub:"ack=5001",col:C.gr,cl:15}];
+  var pkts=[],est=false;
 
-const observer = new IntersectionObserver(entries => {
-  for (const e of entries) {
-    if (e.isIntersecting) {
-      const id = e.target.id;
-      navLinks.forEach(l => {
-        l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
+  function box(x,lbl,sub){
+    ctx.fillStyle=C.sur;ctx.strokeStyle=C.br;ctx.lineWidth=1;ctx.fillRect(x-bw/2,tY-10,bw,bh);ctx.strokeRect(x-bw/2,tY-10,bw,bh);
+    ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=C.tx;ctx.textAlign="center";ctx.fillText(lbl,x,tY+fs);
+    ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.mu;ctx.fillText(sub,x,tY+fs*2.2);
+    ctx.strokeStyle=C.br;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(x,tY+bh-8);ctx.lineTo(x,bY+18);ctx.stroke();ctx.setLineDash([]);
+  }
+  function still(){
+    ctx.clearRect(0,0,W(),H());box(cX,"CLIENT","TCP Stack");box(sX,"SERVER","TCP Stack");
+    pkts.forEach(function(p){
+      ctx.strokeStyle=p.col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.fx,p.y);ctx.lineTo(p.tx,p.y);ctx.stroke();
+      var d=p.tx>p.fx?1:-1;ctx.fillStyle=p.col;ctx.beginPath();ctx.moveTo(p.tx,p.y);ctx.lineTo(p.tx-d*9,p.y-5);ctx.lineTo(p.tx-d*9,p.y+5);ctx.closePath();ctx.fill();
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=p.col;ctx.textAlign="center";ctx.fillText(p.label,(p.fx+p.tx)/2,p.y-9);
+      if(W()>350){ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.mu;ctx.fillText(p.sub,(p.fx+p.tx)/2,p.y+18);}
+    });
+    if(est){ctx.font="700 "+(Math.max(11,fs))+"px Courier New";ctx.fillStyle=C.gr;ctx.textAlign="center";ctx.fillText("Connection Established",W()/2,bY+42);}
+  }
+  function animPkt(s,yp){
+    return new Promise(function(res){
+      var fx=s.from==="c"?cX:sX,tx=s.from==="c"?sX:cX,dur=speed===1?900:380,t0=performance.now();
+      function fr(now){
+        var t=Math.min((now-t0)/dur,1),e=t<.5?2*t*t:-1+(4-2*t)*t,px=fx+(tx-fx)*e,dir=tx>fx?1:-1;
+        still();ctx.strokeStyle=s.col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(fx,yp);ctx.lineTo(px,yp);ctx.stroke();
+        ctx.fillStyle=s.col;ctx.beginPath();ctx.moveTo(px,yp);ctx.lineTo(px-dir*9,yp-5);ctx.lineTo(px-dir*9,yp+5);ctx.closePath();ctx.fill();
+        ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=s.col;ctx.textAlign="center";ctx.fillText(s.label,(fx+px)/2,yp-9);
+        if(t<1)animFrame=requestAnimationFrame(fr);
+        else{pkts.push({fx:fx,tx:tx,y:yp,label:s.label,sub:s.sub,col:s.col});still();res();}
+      }
+      animFrame=requestAnimationFrame(fr);
+    });
+  }
+
+  for(var si=0;si<steps.length;si++){
+    var s=steps[si];step++;var yp=tY+bh+28+si*gap;
+    hlLine(s.cl);setStat("Sending "+s.label+" - "+s.sub,"step "+step);
+    await animPkt(s,yp);await pause(speed===1?450:180);
+  }
+  est=true;still();hlLine(17);setStat("TCP connection established!","done");
+  document.getElementById("runBtn").disabled=false;
+}
+
+async function vizHashmap() {
+  var buckets = new Array(8).fill(null).map(function(){ return []; });
+  var keys = ["cat","dog","fox","ant","bee","elk","gnu","owl","pig","cow"];
+  var colors = [C.ac2, C.gr, C.am, C.ro, C.sk, C.ac2, C.gr, C.am, C.ro, C.sk];
+  var step = 0;
+
+  function hashFn(k) {
+    var h = 0;
+    for (var i=0;i<k.length;i++) h = (h + k.charCodeAt(i)) % 8;
+    return h;
+  }
+
+  var bw = Math.min(60, (W()-40)/8);
+  var bh = 36;
+  var sx = (W() - 8*bw) / 2;
+  var by = H()*0.28;
+  var fs = Math.max(9, Math.min(12, bw*0.22));
+
+  function draw(highlightBucket) {
+    ctx.clearRect(0,0,W(),H());
+    ctx.font = fs+"px Courier New"; ctx.textAlign="center"; ctx.fillStyle=C.mu;
+    ctx.fillText("hash(key) % 8  =  bucket index", W()/2, by-28);
+
+    for (var i=0;i<8;i++) {
+      var x = sx + i*bw;
+      var isHl = i === highlightBucket;
+      ctx.strokeStyle = isHl ? C.ac2 : C.br;
+      ctx.lineWidth = isHl ? 2 : 1;
+      ctx.fillStyle = isHl ? C.ac+"22" : C.sur;
+      ctx.fillRect(x, by, bw-2, bh);
+      ctx.strokeRect(x, by, bw-2, bh);
+      ctx.fillStyle = isHl ? C.ac2 : C.di;
+      ctx.font = (fs-1)+"px Courier New"; ctx.textAlign="center";
+      ctx.fillText(i, x+(bw-2)/2, by+bh+14);
+
+      var chain = buckets[i];
+      chain.forEach(function(entry, ci) {
+        var cy = by + bh + 26 + ci*28;
+        ctx.fillStyle = entry.col+"33";
+        ctx.strokeStyle = entry.col;
+        ctx.lineWidth = 1;
+        ctx.fillRect(x, cy, bw-2, 22);
+        ctx.strokeRect(x, cy, bw-2, 22);
+        ctx.fillStyle = entry.col;
+        ctx.font = (fs-1)+"px Courier New"; ctx.textAlign="center";
+        ctx.fillText(entry.key, x+(bw-2)/2, cy+14);
+        if (ci > 0) {
+          ctx.strokeStyle = entry.col+"88"; ctx.lineWidth=1;
+          ctx.beginPath(); ctx.moveTo(x+(bw-2)/2, cy); ctx.lineTo(x+(bw-2)/2, cy-6); ctx.stroke();
+        }
       });
     }
   }
-}, { threshold: 0.4 });
 
-for (const id of sections) {
-  const el_ = document.getElementById(id);
-  if (el_) observer.observe(el_);
+  var dl3 = function(){ return new Promise(function(r){ setTimeout(r, speed===1?700:250); }); };
+
+  for (var ki=0; ki<keys.length; ki++) {
+    var key = keys[ki]; var col = colors[ki];
+    var idx = hashFn(key); step++;
+    hlLine(8);
+    setStat('hash("'+key+'") = '+idx+" - inserting into bucket "+idx, "step "+step);
+    draw(idx); await dl3();
+    buckets[idx].push({key:key, col:col});
+    draw(idx); await dl3();
+  }
+  draw(-1);
+  setStat("All keys inserted - collisions chained in buckets", "done");
+  document.getElementById("runBtn").disabled = false;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════════════════════
-buildHeroGraph(document.getElementById('hero-svg'));
-applyHeroStep(0);
-startHeroLoop();
-rebuildCardPreviews();
+async function vizQuicksort() {
+  var arr = W()<400 ? [7,2,9,4,6,1,8,3] : [7,2,9,4,6,1,8,3,5,10,11,0];
+  var n = arr.length;
+  var bw = Math.min(46,(W()-40)/n), maxH = H()-80;
+  var sx = (W()-n*bw)/2, by = H()-38;
+  var fs = Math.max(8,Math.min(11,bw*.25));
+  var colors = new Array(n).fill(C.ac);
+  var pivotIdx = -1, step = 0;
+
+  function draw() {
+    ctx.clearRect(0,0,W(),H());
+    arr.forEach(function(v,i) {
+      var bh=(v/12)*maxH, x=sx+i*bw, y=by-bh;
+      var col = i===pivotIdx ? C.am : colors[i];
+      ctx.fillStyle=col+"33"; ctx.strokeStyle=col; ctx.lineWidth=1.5;
+      ctx.fillRect(x+2,y,bw-4,bh); ctx.strokeRect(x+2,y,bw-4,bh);
+      ctx.fillStyle=col; ctx.font=fs+"px Courier New"; ctx.textAlign="center";
+      ctx.fillText(v,x+bw/2,y-4);
+    });
+    ctx.strokeStyle=C.br; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(sx-8,by+2); ctx.lineTo(sx+n*bw+8,by+2); ctx.stroke();
+  }
+
+  async function qsort(lo, hi) {
+    if (lo >= hi) { if (lo >= 0 && lo < colors.length) colors[lo] = C.gr; draw(); return; }
+    pivotIdx = hi; step++;
+    hlLine(6); setStat("Pivot = "+arr[hi]+" at idx "+hi+", partitioning ["+lo+".."+hi+"]", "step "+step);
+    draw(); await dl2();
+    var piv = arr[hi], si = lo;
+    for (var i=lo; i<hi; i++) {
+      if (arr[i] <= piv) {
+        var t=arr[si]; arr[si]=arr[i]; arr[i]=t;
+        si++;
+      }
+      draw(); await new Promise(function(r){setTimeout(r, speed===1?80:28);});
+    }
+    var t2=arr[si]; arr[si]=arr[hi]; arr[hi]=t2;
+    colors[si] = C.gr; pivotIdx = -1;
+    draw(); await dl2();
+    await qsort(lo, si-1);
+    await qsort(si+1, hi);
+  }
+
+  await qsort(0, arr.length-1);
+  pivotIdx=-1; colors=new Array(n).fill(C.gr); draw();
+  hlLine(4); setStat("Array sorted!", "done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+async function vizBFS() {
+  var nodes = [{id:"A",x:.12,y:.15},{id:"B",x:.38,y:.08},{id:"C",x:.65,y:.08},{id:"D",x:.88,y:.15},{id:"E",x:.12,y:.5},{id:"F",x:.38,y:.42},{id:"G",x:.65,y:.42},{id:"H",x:.88,y:.5},{id:"I",x:.25,y:.82},{id:"J",x:.75,y:.82}];
+  var edges = [{a:"A",b:"B"},{a:"A",b:"E"},{a:"B",b:"C"},{a:"B",b:"F"},{a:"C",b:"D"},{a:"C",b:"G"},{a:"D",b:"H"},{a:"E",b:"F"},{a:"E",b:"I"},{a:"F",b:"G"},{a:"G",b:"H"},{a:"G",b:"J"},{a:"H",b:"J"},{a:"I",b:"J"}];
+  var r = Math.min(W(),H())*0.048, fs = Math.max(9,r*.7);
+  var visited = new Set(), queue = ["A"], order = [], activeEdges = new Set(), step = 0;
+  var nodeColors = {}, edgeColors = {};
+
+  function np(id){ var nd=nodes.filter(function(x){return x.id===id;})[0]; return{x:nd.x*W(),y:nd.y*H()}; }
+  function draw() {
+    ctx.clearRect(0,0,W(),H());
+    edges.forEach(function(e) {
+      var a=np(e.a),b=np(e.b),k=e.a+"-"+e.b;
+      ctx.strokeStyle=activeEdges.has(k)?C.am:edgeColors[k]===C.gr?C.gr:C.br;
+      ctx.lineWidth=activeEdges.has(k)||edgeColors[k]===C.gr?2:1;
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    });
+    nodes.forEach(function(n) {
+      var p=np(n.id), col=nodeColors[n.id]||C.sur;
+      var bc = col===C.sur?C.br:col;
+      ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+      ctx.fillStyle=col==="cur"?C.am+"55":col===C.gr?C.gr+"22":C.sur;ctx.fill();
+      ctx.strokeStyle=col==="cur"?C.am:col===C.gr?C.gr:bc;ctx.lineWidth=col==="cur"?2.5:1;ctx.stroke();
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=col==="cur"?C.am:col===C.gr?C.gr:C.tx;ctx.textAlign="center";ctx.fillText(n.id,p.x,p.y+fs*.36);
+    });
+    var qstr="Queue: ["+queue.join(", ")+"]";
+    ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=C.mu;ctx.textAlign="center";ctx.fillText(qstr,W()/2,H()-12);
+  }
+
+  nodeColors.A = "cur";
+  while (queue.length) {
+    var cur = queue.shift(); step++;
+    nodeColors[cur]="cur"; draw(); await dl();
+    visited.add(cur); order.push(cur);
+    hlLine(11); setStat("Visited "+cur+" - order: ["+order.join(", ")+"]", "step "+step);
+    var nbrs = edges.filter(function(e){return e.a===cur||e.b===cur;}).map(function(e){return e.a===cur?e.b:e.a;});
+    nbrs.forEach(function(nb) {
+      if(!visited.has(nb)&&queue.indexOf(nb)===-1) {
+        queue.push(nb); nodeColors[nb]=C.ac+"55";
+        var k=cur+"-"+nb; activeEdges.add(k); edgeColors[k]=C.gr;
+      }
+    });
+    nodeColors[cur]=C.gr; draw(); await dl();
+    activeEdges.clear();
+  }
+  draw(); setStat("BFS complete - visited: ["+order.join(", ")+"]", "done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+async function vizLRU() {
+  var CAP = 4;
+  var cache = [];
+  var ops = [["get","A"],["put","A",1],["put","B",2],["put","C",3],["put","D",4],["get","A"],["put","E",5],["get","C"],["put","F",6],["get","B"]];
+  var step=0, bw=Math.min(70,(W()-60)/CAP), bh=50, gap=10;
+  var sx=(W()-(CAP*(bw+gap)-gap))/2, by=H()/2-bh/2, fs=Math.max(9,Math.min(12,bw*.18));
+  var msg="";
+
+  function draw() {
+    ctx.clearRect(0,0,W(),H());
+    ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=C.mu;ctx.textAlign="center";
+    ctx.fillText("Capacity: "+CAP+"   MRU ---> LRU", W()/2, by-38);
+    ctx.fillText(msg, W()/2, by+bh+34);
+
+    for (var si=0;si<CAP;si++) {
+      var x=sx+si*(bw+gap), entry=cache[si];
+      var col = entry ? (si===0?C.gr:C.ac) : C.br;
+      ctx.fillStyle=entry?col+"22":C.sur;ctx.strokeStyle=col;ctx.lineWidth=si===0?2:1;
+      ctx.fillRect(x,by,bw,bh);ctx.strokeRect(x,by,bw,bh);
+      if (entry) {
+        ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=col;ctx.textAlign="center";ctx.fillText(entry.key,x+bw/2,by+bh/2-4);
+        ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.mu;ctx.fillText("val:"+entry.val,x+bw/2,by+bh/2+10);
+      } else {
+        ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.di;ctx.textAlign="center";ctx.fillText("empty",x+bw/2,by+bh/2+4);
+      }
+      if (si===0) { ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.gr;ctx.textAlign="center";ctx.fillText("MRU",x+bw/2,by-8); }
+      if (si===CAP-1) { ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.ro;ctx.textAlign="center";ctx.fillText("LRU",x+bw/2,by-8); }
+    }
+  }
+
+  for (var oi=0;oi<ops.length;oi++) {
+    var op=ops[oi]; step++;
+    if (op[0]==="put") {
+      hlLine(11);
+      cache = cache.filter(function(e){return e&&e.key!==op[1];});
+      if (cache.length>=CAP) { var evicted=cache.pop(); msg="PUT "+op[1]+" - evicted "+evicted.key+" (LRU)"; }
+      else msg="PUT "+op[1]+"="+op[2];
+      cache.unshift({key:op[1],val:op[2]});
+    } else {
+      hlLine(7);
+      var hit=cache.filter(function(e){return e&&e.key===op[1];})[0];
+      if (hit) { cache=cache.filter(function(e){return e&&e.key!==op[1];}); cache.unshift(hit); msg="GET "+op[1]+" - HIT, moved to MRU"; }
+      else msg="GET "+op[1]+" - MISS";
+    }
+    setStat(msg,"step "+step); draw(); await dl();
+  }
+  setStat("LRU simulation complete", "done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+async function vizMergesort() {
+  var orig = W()<400 ? [6,3,8,1,5,2,7,4] : [6,3,8,1,5,2,7,4,9,0,11,10];
+  var n = orig.length;
+  var bw = Math.min(42,(W()-40)/n), maxH = H()-100;
+  var sx = (W()-n*bw)/2, by = H()-38, fs = Math.max(8,Math.min(11,bw*.26));
+  var arr = orig.slice(), step = 0;
+  var highlights = new Array(n).fill(C.ac);
+
+  function draw() {
+    ctx.clearRect(0,0,W(),H());
+    arr.forEach(function(v,i) {
+      var bh=Math.max(4,(v/(n+1))*maxH), x=sx+i*bw, y=by-bh, col=highlights[i];
+      ctx.fillStyle=col+"33";ctx.strokeStyle=col;ctx.lineWidth=1.5;
+      ctx.fillRect(x+2,y,bw-4,bh);ctx.strokeRect(x+2,y,bw-4,bh);
+      ctx.fillStyle=col;ctx.font=fs+"px Courier New";ctx.textAlign="center";ctx.fillText(v,x+bw/2,y-4);
+    });
+    ctx.strokeStyle=C.br;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(sx-8,by+2);ctx.lineTo(sx+n*bw+8,by+2);ctx.stroke();
+  }
+
+  async function msort(lo, hi) {
+    if (lo>=hi) { highlights[lo]=C.gr; draw(); return; }
+    var mid=Math.floor((lo+hi)/2);
+    for(var i=lo;i<=mid;i++) highlights[i]=C.sk;
+    for(var i2=mid+1;i2<=hi;i2++) highlights[i2]=C.am;
+    step++; hlLine(7); setStat("Split ["+lo+".."+mid+"] | ["+(mid+1)+".."+hi+"]", "step "+step);
+    draw(); await dl2();
+    await msort(lo,mid); await msort(mid+1,hi);
+    var left=arr.slice(lo,mid+1), right=arr.slice(mid+1,hi+1), merged=[], li=0, ri=0;
+    while(li<left.length&&ri<right.length){
+      if(left[li]<=right[ri]){merged.push(left[li++]);}else{merged.push(right[ri++]);}
+    }
+    merged=merged.concat(left.slice(li)).concat(right.slice(ri));
+    merged.forEach(function(v,i){arr[lo+i]=v;highlights[lo+i]=C.gr;});
+    step++; hlLine(13); setStat("Merged ["+lo+".."+hi+"] = ["+merged.join(",")+"]", "step "+step);
+    draw(); await dl2();
+  }
+
+  await msort(0, arr.length-1);
+  highlights=new Array(n).fill(C.gr); draw();
+  setStat("Array sorted!","done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+async function vizDFS() {
+  var nodes = [{id:"A",x:.12,y:.15},{id:"B",x:.38,y:.08},{id:"C",x:.65,y:.08},{id:"D",x:.88,y:.15},{id:"E",x:.12,y:.5},{id:"F",x:.38,y:.42},{id:"G",x:.65,y:.42},{id:"H",x:.88,y:.5},{id:"I",x:.25,y:.82},{id:"J",x:.75,y:.82}];
+  var edges = [{a:"A",b:"B"},{a:"A",b:"E"},{a:"B",b:"C"},{a:"B",b:"F"},{a:"C",b:"D"},{a:"C",b:"G"},{a:"D",b:"H"},{a:"E",b:"F"},{a:"E",b:"I"},{a:"F",b:"G"},{a:"G",b:"H"},{a:"G",b:"J"},{a:"H",b:"J"},{a:"I",b:"J"}];
+  var r=Math.min(W(),H())*0.048, fs=Math.max(9,r*.7);
+  var visited=new Set(), order=[], step=0;
+  var visitedEdges=new Set(), activeNode=null;
+
+  function np(id){var nd=nodes.filter(function(x){return x.id===id;})[0];return{x:nd.x*W(),y:nd.y*H()};}
+  function draw(){
+    ctx.clearRect(0,0,W(),H());
+    edges.forEach(function(e){
+      var a=np(e.a),b=np(e.b),k=e.a+"-"+e.b;
+      ctx.strokeStyle=visitedEdges.has(k)?C.ac2:C.br;ctx.lineWidth=visitedEdges.has(k)?2:1;
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    });
+    nodes.forEach(function(n){
+      var p=np(n.id),isA=n.id===activeNode,isV=visited.has(n.id);
+      ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+      ctx.fillStyle=isA?C.am+"55":isV?C.ac+"22":C.sur;ctx.fill();
+      ctx.strokeStyle=isA?C.am:isV?C.ac2:C.br;ctx.lineWidth=isA?2.5:1;ctx.stroke();
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=isA?C.am:isV?C.ac2:C.tx;ctx.textAlign="center";ctx.fillText(n.id,p.x,p.y+fs*.36);
+      if(isV){ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.ac2;ctx.fillText(order.indexOf(n.id)+1,p.x+r*.7,p.y-r*.7);}
+    });
+    ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=C.mu;ctx.textAlign="center";ctx.fillText("Visited: ["+order.join(", ")+"]",W()/2,H()-12);
+  }
+
+  async function dfs(node, from) {
+    if(visited.has(node)) return;
+    visited.add(node); order.push(node); activeNode=node; step++;
+    if(from){var k=from+"-"+node; visitedEdges.add(k);}
+    hlLine(11); setStat("Visiting "+node+" - depth stack: ["+order.join(", ")+"]","step "+step);
+    draw(); await dl();
+    var nbrs=edges.filter(function(e){return e.a===node||e.b===node;}).map(function(e){return e.a===node?e.b:e.a;});
+    for(var i=0;i<nbrs.length;i++){ await dfs(nbrs[i],node); }
+    activeNode=null;
+  }
+
+  await dfs("A", null);
+  draw(); setStat("DFS complete - visited: ["+order.join(", ")+"]","done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+async function vizStackQueue() {
+  var step=0;
+  var stack=[], queue=[];
+  var ops=[
+    {ds:"stack",op:"push",val:10},{ds:"stack",op:"push",val:20},{ds:"stack",op:"push",val:30},
+    {ds:"queue",op:"enqueue",val:"A"},{ds:"queue",op:"enqueue",val:"B"},{ds:"queue",op:"enqueue",val:"C"},
+    {ds:"stack",op:"pop"},{ds:"queue",op:"dequeue"},
+    {ds:"stack",op:"push",val:40},{ds:"queue",op:"enqueue",val:"D"},
+    {ds:"stack",op:"pop"},{ds:"queue",op:"dequeue"}
+  ];
+  var bw=Math.min(50,(W()/2-40)/5), bh=38, halfW=W()/2;
+  var fs=Math.max(8,Math.min(11,bw*.22));
+  var hlStack=-1, hlQueue=-1;
+
+  function draw() {
+    ctx.clearRect(0,0,W(),H());
+    var labelY=H()*.18;
+    ctx.font="700 "+(fs+1)+"px Courier New";ctx.fillStyle=C.ac2;ctx.textAlign="center";
+    ctx.fillText("STACK (LIFO)",halfW/2,labelY);
+    ctx.fillText("QUEUE (FIFO)",halfW+halfW/2,labelY);
+
+    var sBy=H()-40;
+    ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.mu;ctx.textAlign="center";
+    ctx.fillText("push / pop",halfW/2,sBy+16);
+    stack.forEach(function(v,i){
+      var x=halfW/2-bw/2, y=sBy-bh-(i*(bh+3));
+      var isHl=i===stack.length-1&&hlStack===1;
+      ctx.fillStyle=(isHl?C.am:C.ac)+"33";ctx.strokeStyle=isHl?C.am:C.ac;ctx.lineWidth=isHl?2:1;
+      ctx.fillRect(x,y,bw,bh);ctx.strokeRect(x,y,bw,bh);
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=isHl?C.am:C.ac2;ctx.textAlign="center";ctx.fillText(v,x+bw/2,y+bh/2+fs*.35);
+    });
+    if(stack.length===0){ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=C.di;ctx.textAlign="center";ctx.fillText("empty",halfW/2,sBy-bh/2);}
+    ctx.strokeStyle=C.b1;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(halfW/2-bw/2-8,sBy);ctx.lineTo(halfW/2+bw/2+8,sBy);ctx.stroke();
+
+    var qY=H()/2-bh/2, qSx=halfW+20;
+    ctx.font=(fs-2)+"px Courier New";ctx.fillStyle=C.gr;ctx.textAlign="left";ctx.fillText("enqueue -->",qSx,qY+bh+18);
+    ctx.fillStyle=C.ro;ctx.textAlign="right";ctx.fillText("<-- dequeue",W()-20,qY+bh+18);
+    queue.forEach(function(v,i){
+      var x=qSx+i*(bw+3);
+      var isHl=(i===0&&hlQueue===-1)||(i===queue.length-1&&hlQueue===1);
+      ctx.fillStyle=(isHl?C.gr:C.ac)+"33";ctx.strokeStyle=isHl?C.gr:C.ac;ctx.lineWidth=isHl?2:1;
+      ctx.fillRect(x,qY,bw,bh);ctx.strokeRect(x,qY,bw,bh);
+      ctx.font="700 "+fs+"px Courier New";ctx.fillStyle=isHl?C.gr:C.ac2;ctx.textAlign="center";ctx.fillText(v,x+bw/2,qY+bh/2+fs*.35);
+    });
+    if(queue.length===0){ctx.font=(fs-1)+"px Courier New";ctx.fillStyle=C.di;ctx.textAlign="center";ctx.fillText("empty",halfW+halfW/2,qY+bh/2+4);}
+
+    var divX=halfW;
+    ctx.strokeStyle=C.b1;ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(divX,20);ctx.lineTo(divX,H()-20);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  for(var oi=0;oi<ops.length;oi++){
+    var op=ops[oi]; step++;
+    hlStack=-1; hlQueue=-1;
+    if(op.ds==="stack"){
+      if(op.op==="push"){stack.push(op.val);hlStack=1;hlLine(4);setStat("Stack push("+op.val+") - top is now "+op.val,"step "+step);}
+      else{var popped=stack.pop();hlLine(5);setStat("Stack pop() - removed "+popped+", top is "+(stack[stack.length-1]||"empty"),"step "+step);}
+    } else {
+      if(op.op==="enqueue"){queue.push(op.val);hlQueue=1;hlLine(10);setStat("Queue enqueue("+op.val+") - back of line","step "+step);}
+      else{var dq=queue.shift();hlLine(11);setStat("Queue dequeue() - removed "+dq+" from front","step "+step);}
+    }
+    draw(); await dl();
+  }
+  hlStack=-1;hlQueue=-1;draw();
+  setStat("Stack = LIFO, Queue = FIFO - same O(1) ops, opposite order","done");
+  document.getElementById("runBtn").disabled = false;
+}
+
+function buildCorpus() {
+  return NOTES.map(function(n) {
+    var d = INFO[n.id] || {};
+    var cxTxt = (d.cx||[]).map(function(c){return c.l+" "+c.v;}).join(" ");
+    var ucTxt = (d.uc||[]).map(function(u){return u[0]+" "+u[1];}).join(" ");
+    var dTxt  = (d.desc||"").replace(/<[^>]+>/g,"");
+    return {id:n.id,title:n.title,tag:n.tag,prev:n.prev,
+      blob:[n.title,n.tag,n.prev,cxTxt,ucTxt,dTxt].join(" ").toLowerCase(),
+      cx:d.cx||[],uc:d.uc||[],desc:dTxt};
+  });
+}
+var CORPUS = buildCorpus();
+
+function hlMatch(text,q) {
+  if (!q) return text;
+  return text.replace(new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>");
+}
+function getSnippet(item,q) {
+  for (var i=0;i<item.uc.length;i++){
+    var s=item.uc[i][0]+" - "+item.uc[i][1];
+    if(s.toLowerCase().indexOf(q)>-1){var idx=s.toLowerCase().indexOf(q);return hlMatch((idx>20?"...":"")+s.slice(Math.max(0,idx-20),idx+q.length+40)+"...",q);}
+  }
+  if(item.desc.toLowerCase().indexOf(q)>-1){var idx2=item.desc.toLowerCase().indexOf(q);return hlMatch((idx2>20?"...":"")+item.desc.slice(Math.max(0,idx2-20),idx2+q.length+40)+"...",q);}
+  return hlMatch(item.prev,q);
+}
+
+function openSearch() {
+  srchOpen=true; srchIdx=0;
+  document.getElementById("srchOv").classList.add("on");
+  document.getElementById("srchIn").value="";
+  renderSrch("");
+  setTimeout(function(){document.getElementById("srchIn").focus();},50);
+}
+function closeSearch() {
+  srchOpen=false;
+  document.getElementById("srchOv").classList.remove("on");
+}
+function renderSrch(q) {
+  var res=document.getElementById("srchRes");
+  var term=q.trim().toLowerCase();
+  var list=term?CORPUS.filter(function(c){return c.blob.indexOf(term)>-1;}):CORPUS;
+  if(!list.length){res.innerHTML='<div class="srch-empty">no results</div>';return;}
+  var html='<div class="srch-lbl">'+( term?list.length+" result"+(list.length>1?"s":""):"all notes" )+"</div>";
+  list.forEach(function(item,i){
+    var cxv=item.cx[1]?item.cx[1].v:item.cx[0]?item.cx[0].v:"";
+    html+='<div class="sri'+(i===srchIdx?" on":"")+'" onclick="pickSrch(\''+item.id+'\')">'+
+      '<div class="sri-ic">'+item.title.slice(0,2).toUpperCase()+'</div>'+
+      '<div class="sri-body">'+
+        '<div class="sri-t">'+hlMatch(item.title,term)+'</div>'+
+        '<div class="sri-m"><span class="tg tg-'+item.tag+'">'+item.tag+'</span><span class="sri-cx">'+cxv+"</span></div>"+
+        '<div class="sri-s">'+getSnippet(item,term)+"</div>"+
+      "</div></div>";
+  });
+  res.innerHTML=html;
+}
+function pickSrch(id){closeSearch();pickNote(id);}
+
+window.addEventListener("load", function() {
+  document.getElementById("stNotes").textContent = NOTES.length;
+
+  document.getElementById("srchIn").addEventListener("input", function(e) {
+    srchIdx = 0;
+    renderSrch(e.target.value);
+  });
+
+  document.addEventListener("keydown", function(e) {
+    if ((e.ctrlKey||e.metaKey) && e.key==="k") { e.preventDefault(); srchOpen ? closeSearch() : openSearch(); return; }
+    if (!srchOpen) return;
+    var items = document.querySelectorAll(".sri");
+    if (e.key==="Escape") { closeSearch(); return; }
+    if (e.key==="ArrowDown") { e.preventDefault(); srchIdx = Math.min(srchIdx+1, items.length-1); }
+    else if (e.key==="ArrowUp") { e.preventDefault(); srchIdx = Math.max(srchIdx-1, 0); }
+    else if (e.key==="Enter") { var a = items[srchIdx]; if (a) { var m = a.getAttribute("onclick").match(/'([^']+)'/); if (m) pickSrch(m[1]); } }
+    items.forEach(function(el,i) { el.classList.toggle("on", i===srchIdx); });
+    if (items[srchIdx]) items[srchIdx].scrollIntoView({block:"nearest"});
+  });
+
+  checkMobile();
+  renderNL();
+});
 </script>
 </body>
 </html>
